@@ -18,4 +18,6 @@ public class Customer
 
     // relationship
     public virtual ICollection<Order> Orders { get; set; }
+    public virtual ICollection<UsePointHistory> UsePointHistories { get; set; }
+    
 }

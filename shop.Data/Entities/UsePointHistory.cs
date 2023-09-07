@@ -11,6 +11,8 @@ public class UsePointHistory
     public Guid OrderId { get; set; }
     public virtual Customer Customer { get; set; }
     public virtual ExchangePoint ExchangePoint { get; set; }
+    public virtual Order Order { get; set; }
 
     // thiếu phần quan hệ cho order
+
 }
