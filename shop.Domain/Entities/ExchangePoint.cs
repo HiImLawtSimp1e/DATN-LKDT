@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class ExchangePoint
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class ExchangePoint : BaseEntity
 {
     public Guid Id { get; set; }
     public int Point { get; set; }

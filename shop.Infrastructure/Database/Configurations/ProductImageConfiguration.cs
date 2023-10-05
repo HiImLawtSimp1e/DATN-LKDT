@@ -14,6 +14,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(x => x.IsDefault).IsRequired();
             builder.Property(x => x.SortOrder).IsRequired();
 
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

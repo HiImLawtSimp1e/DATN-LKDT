@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class UsePointHistory
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class UsePointHistory : BaseEntity
 {
     public Guid Id { get; set; }
     public int UsedPoint { get; set; }

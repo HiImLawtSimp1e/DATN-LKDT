@@ -18,9 +18,11 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(c => c.Email).HasColumnType("varchar(320)").IsRequired();
             builder.Property(c => c.PhoneNumber).IsRequired();
             builder.Property(c => c.PasswordHash).IsRequired();
+            builder.Property(x => x.Salt).IsRequired();
             builder.Property(c => c.Status).IsRequired();
 
             builder.HasOne(s => s.Role).WithMany(r => r.Staffs).HasForeignKey(s => s.RoleId);
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

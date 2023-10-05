@@ -8,11 +8,12 @@ namespace shop.Infrastructure.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductInCategory> builder)
         {
-            builder.HasKey(pic => new { pic.ProductId, pic.CategoryId });
+            builder.HasKey(pic => pic.Id);
 
             builder.HasOne(pic => pic.Product).WithMany(p => p.ProductInCategories).HasForeignKey(pic => pic.ProductId);
 
             builder.HasOne(pic => pic.Category).WithMany(c => c.ProductInCategories).HasForeignKey(pic => pic.CategoryId);
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

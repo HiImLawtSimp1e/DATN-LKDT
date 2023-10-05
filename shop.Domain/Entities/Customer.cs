@@ -15,6 +15,7 @@ public class Customer : BaseEntity
     public string PhoneNumber { get; set; }
     public bool PhoneNumberConfirmed { get; set; }
     public string PasswordHash { get; set; }
+    public string Salt { get; set; }
     public int Point { get; set; }
     public int Status { get; set; }
     public virtual ICollection<Order>? Orders { get; set; }

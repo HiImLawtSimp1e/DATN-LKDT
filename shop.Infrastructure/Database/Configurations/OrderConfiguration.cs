@@ -23,6 +23,8 @@ namespace shop.Infrastructure.Database.Configurations
 
             builder.HasOne(o => o.Voucher).WithMany(v => v.Orders).HasForeignKey(o => o.VoucherId);
             builder.HasOne(o => o.Staff).WithMany(s => s.Orders).HasForeignKey(o => o.StaffId);
+
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

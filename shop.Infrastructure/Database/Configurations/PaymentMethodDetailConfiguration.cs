@@ -15,6 +15,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasOne(pmd => pmd.PaymentMethod).WithMany(pm => pm.PaymentMethodDetails).HasForeignKey(pmd => pmd.PaymentMethodId);
             builder.HasOne(pmd => pmd.Order).WithMany(o => o.PaymentMethodDetails).HasForeignKey(pmd => pmd.OrderId);
 
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }
