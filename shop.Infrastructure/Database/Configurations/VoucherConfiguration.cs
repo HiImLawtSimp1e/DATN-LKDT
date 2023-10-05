@@ -18,7 +18,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(v => v.Description).IsRequired();
             builder.Property(v => v.Status).IsRequired();
 
-
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace shop.Infrastructure.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
-            builder.HasKey(od => new { od.OrderId, od.ProductDetailId });
+            builder.HasKey(od => od.Id);
             builder.Property(od => od.Quantity).IsRequired();
             builder.Property(od => od.Price).IsRequired();
             builder.Property(od => od.Status).IsRequired();
@@ -16,7 +16,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasOne(od => od.Order).WithMany(o => o.OrderDetails).HasForeignKey(od => od.OrderId);
 
             builder.HasOne(od => od.ProductDetail).WithMany(pd => pd.OrderDetails).HasForeignKey(od => od.ProductDetailId);
-
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class ProductImage
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class ProductImage : BaseEntity
 {
     public Guid Id { get; set; }
     public string ImagePath { get; set; }

@@ -13,6 +13,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(e => e.Point).IsRequired();
             builder.Property(e => e.AddPointRatio).IsRequired();
             builder.Property(e => e.UsePointHistories).IsRequired();
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace shop.Infrastructure.Database.Configurations
         {
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Name).IsRequired();
-
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

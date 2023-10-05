@@ -15,6 +15,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasOne(u => u.Customer).WithMany(c => c.UsePointHistories).HasForeignKey(u => u.CustomerId);
             builder.HasOne(u => u.ExchangePoint).WithMany(e => e.UsePointHistories).HasForeignKey(u => u.ExchangePointId);
             builder.HasOne(u => u.Order).WithMany(o => o.UsePointsHistories).HasForeignKey(u => u.OrderId);
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

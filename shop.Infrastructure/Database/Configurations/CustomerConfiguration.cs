@@ -20,9 +20,10 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(c => c.PhoneNumber).IsRequired();
             builder.Property(c => c.PhoneNumberConfirmed);
             builder.Property(c => c.PasswordHash).IsRequired();
+            builder.Property(x => x.Salt).IsRequired();
             builder.Property(c => c.Point);
             builder.Property(c => c.Status).IsRequired();
-
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }
