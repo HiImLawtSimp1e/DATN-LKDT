@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class ProductInCategory
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class ProductInCategory : BaseEntity
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }

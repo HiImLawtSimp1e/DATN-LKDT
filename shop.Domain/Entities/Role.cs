@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class Role
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class Role : BaseEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

@@ -11,6 +11,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasKey(r => r.Id);
             builder.Property(r => r.Name).IsRequired();
             builder.Property(r => r.Status).IsRequired();
+            builder.Property(x => x.CreatedDate).IsRequired();
         }
     }
 }

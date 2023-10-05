@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class Staff
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class Staff : BaseEntity
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
@@ -11,6 +13,7 @@ public class Staff
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public string PasswordHash { get; set; }
+    public string Salt { get; set; }
     public int Status { get; set; }
     public Guid RoleId { get; set; }
     public virtual Role? Role { get; set; }

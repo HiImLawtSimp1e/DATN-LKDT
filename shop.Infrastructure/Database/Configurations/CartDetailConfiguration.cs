@@ -8,7 +8,7 @@ namespace shop.Infrastructure.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<CartDetail> builder)
         {
-            builder.HasKey(cd => new { cd.ProductDetailId, cd.CustomerId });
+            builder.HasKey(cd => cd.Id);
             builder.Property(cd => cd.Quantity).IsRequired();
             builder.Property(cd => cd.Price).IsRequired();
 

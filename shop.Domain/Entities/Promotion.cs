@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class Promotion
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class Promotion : BaseEntity
 {
     public Guid Id { get; set; }
     public string PromotionCode { get; set; }

@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class PaymentMethodDetail
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class PaymentMethodDetail : BaseEntity
 {
     public Guid Id { get; set; }
     public decimal Amount { get; set; }

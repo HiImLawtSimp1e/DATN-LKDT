@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class Voucher
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class Voucher : BaseEntity
 {
     public Guid Id { get; set; }
     public string VoucherCode { get; set; }

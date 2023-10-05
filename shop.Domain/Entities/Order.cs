@@ -1,5 +1,7 @@
-﻿namespace shop.Domain.Entities;
-public class Order
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities;
+public class Order : BaseEntity
 {
     public Guid Id { get; set; }
     public string OrderCode { get; set; }
