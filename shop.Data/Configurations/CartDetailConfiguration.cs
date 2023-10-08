@@ -7,20 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Data.Configurations
+namespace shop.Data.Configurations;
+
+public class CartDetailConfiguration : IEntityTypeConfiguration<CartDetail>
 {
-    public class CartDetailConfiguration : IEntityTypeConfiguration<CartDetail>
+    public void Configure(EntityTypeBuilder<CartDetail> builder)
     {
-        public void Configure(EntityTypeBuilder<CartDetail> builder)
-        {
-            builder.HasKey(cd => new {cd.ProductDetailId, cd.CustomerId });
-            builder.Property(cd=>cd.Quantity).IsRequired();
-            builder.Property(cd=>cd.Price).IsRequired();
+        builder.HasKey(cd => new {cd.ProductDetailId, cd.CustomerId });
+        builder.Property(cd=>cd.Quantity).IsRequired();
+        builder.Property(cd=>cd.Price).IsRequired();
 
-            builder.HasOne(cd => cd.Cart).WithMany(c => c.CartDetails).HasForeignKey(cd => cd.CustomerId);
+        builder.HasOne(cd => cd.Cart).WithMany(c => c.CartDetails).HasForeignKey(cd => cd.CustomerId);
 
-            builder.HasOne(cd => cd.ProductDetail).WithMany(pd => pd.CartDetails).HasForeignKey(cd => cd.ProductDetailId);
+        builder.HasOne(cd => cd.ProductDetail).WithMany(pd => pd.CartDetails).HasForeignKey(cd => cd.ProductDetailId);
 
-        }
     }
 }

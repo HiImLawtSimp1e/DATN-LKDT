@@ -7,16 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Data.Configurations
-{
-    public class SizeConfiguration : IEntityTypeConfiguration<Size>
-    {
-        public void Configure(EntityTypeBuilder<Size> builder)
-        {
-            builder.HasKey(s => s.Id);
+namespace shop.Data.Configurations;
 
-            builder.Property(s => s.SizeNumber).IsRequired();
-            
-        }
+public class SizeConfiguration : IEntityTypeConfiguration<Size>
+{
+    public void Configure(EntityTypeBuilder<Size> builder)
+    {
+        builder.HasKey(s => s.Id);
+
+        builder.Property(s => s.SizeNumber).IsRequired();
+        
     }
 }

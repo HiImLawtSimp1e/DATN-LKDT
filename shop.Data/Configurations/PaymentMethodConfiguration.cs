@@ -7,15 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Data.Configurations
+namespace shop.Data.Configurations;
+
+public class PaymentMethodConfiguration : IEntityTypeConfiguration<PaymentMethod>
 {
-    public class PaymentMethodConfiguration : IEntityTypeConfiguration<PaymentMethod>
+    public void Configure(EntityTypeBuilder<PaymentMethod> builder)
     {
-        public void Configure(EntityTypeBuilder<PaymentMethod> builder)
-        {
-            builder.HasKey(pm=>pm.Id);
-            builder.Property(pm=>pm.Name).IsRequired();
-            builder.Property(pm=>pm.Status).IsRequired();
-        }
+        builder.HasKey(pm=>pm.Id);
+        builder.Property(pm=>pm.Name).IsRequired();
+        builder.Property(pm=>pm.Status).IsRequired();
     }
 }

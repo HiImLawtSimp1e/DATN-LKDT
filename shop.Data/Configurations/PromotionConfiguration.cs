@@ -7,21 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Data.Configurations
+namespace shop.Data.Configurations;
+
+public class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
 {
-    public class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
+    public void Configure(EntityTypeBuilder<Promotion> builder)
     {
-        public void Configure(EntityTypeBuilder<Promotion> builder)
-        {
-            builder.HasKey(p => p.Id);
-            builder.Property(p=> p.PromotionCode).IsRequired();
-            builder.Property(p=> p.StartedDate).IsRequired();
-            builder.Property(p=> p.FinishedDate).IsRequired();
-            builder.Property(p=> p.DiscountAmount).IsRequired();
-            builder.Property(p=> p.DiscountPercent).IsRequired();
-            builder.Property(p=> p.Status).IsRequired();
-            
-            
-        }
+        builder.HasKey(p => p.Id);
+        builder.Property(p=> p.PromotionCode).IsRequired();
+        builder.Property(p=> p.StartedDate).IsRequired();
+        builder.Property(p=> p.FinishedDate).IsRequired();
+        builder.Property(p=> p.DiscountAmount).IsRequired();
+        builder.Property(p=> p.DiscountPercent).IsRequired();
+        builder.Property(p=> p.Status).IsRequired();
+        
+        
     }
 }
