@@ -17,5 +17,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x=>x.Name).IsRequired();
         builder.Property(x=>x.Description).IsRequired();
         builder.Property(x=>x.Status).IsRequired();
+        builder.Property(x => x.CreatedDate).IsRequired();
     }
 }

@@ -27,6 +27,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(c=>c.PasswordHash).IsRequired();
         builder.Property(c=>c.Point);
         builder.Property(c=>c.Status).IsRequired();
+        builder.Property(x => x.CreatedDate).IsRequired();
 
     }
 }

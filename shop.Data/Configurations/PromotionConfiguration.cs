@@ -20,7 +20,8 @@ public class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
         builder.Property(p=> p.DiscountAmount).IsRequired();
         builder.Property(p=> p.DiscountPercent).IsRequired();
         builder.Property(p=> p.Status).IsRequired();
-        
-        
+        builder.Property(x => x.CreatedDate).IsRequired();
+
+
     }
 }

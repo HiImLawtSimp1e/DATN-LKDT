@@ -16,6 +16,7 @@ public class UsePointHistoryConfiguration : IEntityTypeConfiguration<UsePointHis
         builder.HasKey(u => u.Id);
         builder.Property(u=>u.UsedPoint).IsRequired();
         builder.Property(u=>u.Status).IsRequired();
+        builder.Property(x => x.CreatedDate).IsRequired();
 
         builder.HasOne(u=>u.Customer).WithMany(c => c.UsePointHistories).HasForeignKey(u=>u.CustomerId);
         builder.HasOne(u=>u.ExchangePoint).WithMany(e => e.UsePointHistories).HasForeignKey(u=>u.ExchangePointId);
