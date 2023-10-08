@@ -12,11 +12,12 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(od => od.Quantity).IsRequired();
             builder.Property(od => od.Price).IsRequired();
             builder.Property(od => od.Status).IsRequired();
+            builder.Property(x => x.CreatedDate).IsRequired();
 
-        builder.HasOne(od => od.Order).WithMany(o => o.OrderDetails).HasForeignKey(od => od.OrderId);
+            builder.HasOne(od => od.Order).WithMany(o => o.OrderDetails).HasForeignKey(od => od.OrderId);
 
             builder.HasOne(od => od.ProductDetail).WithMany(pd => pd.OrderDetails).HasForeignKey(od => od.ProductDetailId);
-            builder.Property(x => x.CreatedDate).IsRequired();
+            
         }
     }
 }

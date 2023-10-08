@@ -20,7 +20,7 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasOne(pd => pd.Size).WithMany(s => s.ProductDetails).HasForeignKey(pd => pd.SizeId);
             builder.HasOne(pd => pd.Promotion).WithMany(pr => pr.ProductDetails).HasForeignKey(pd => pd.PromotionId);
 
-            builder.Property(x => x.CreatedDate).IsRequired();
+            
         }
     }
 }

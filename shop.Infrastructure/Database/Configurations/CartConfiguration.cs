@@ -8,9 +8,10 @@ namespace shop.Infrastructure.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasKey(c => c.CustomerId);
+            builder.HasKey(c => c.Id);
             builder.Property(c => c.CreatedDate).IsRequired();
 
+            builder.HasOne(c => c.Customer).WithOne(c => c.Cart).HasForeignKey<Customer>(c=>c.Id);
 
         }
     }

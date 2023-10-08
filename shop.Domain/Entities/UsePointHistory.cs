@@ -1,4 +1,5 @@
 ﻿using shop.Domain.Entities.Base;
+using System;
 
 namespace shop.Domain.Entities;
 public class UsePointHistory : BaseEntity
@@ -9,6 +10,7 @@ public class UsePointHistory : BaseEntity
     public Guid CustomerId { get; set; }
     public Guid ExchangePointId { get; set; }
     public Guid OrderId { get; set; }
+    public DateTime CreatedDate { get; set; }
     public virtual Customer Customer { get; set; }
     public virtual ExchangePoint ExchangePoint { get; set; }
     public virtual Order Order { get; set; }
