@@ -15,7 +15,6 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(p => p.DiscountAmount).IsRequired();
             builder.Property(p => p.DiscountPercent).IsRequired();
             builder.Property(p => p.Status).IsRequired();
-
             builder.Property(x => x.CreatedDate).IsRequired();
         }
     }

@@ -5,5 +5,6 @@ public class Size : BaseEntity
 {
     public Guid Id { get; set; }
     public int SizeNumber { get; set; }
+    public DateTime CreatedDate { get; set; }
     public virtual ICollection<ProductDetail>? ProductDetails { get; set; }
 }

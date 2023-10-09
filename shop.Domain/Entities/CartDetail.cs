@@ -8,6 +8,7 @@ public class CartDetail : BaseEntity
     public decimal Price { get; set; }
     public Guid CustomerId { get; set; }
     public Guid ProductDetailId { get; set; }
+    public DateTime CreatedDate { get; set; }
     public virtual Cart? Cart { get; set; }
     public virtual ProductDetail? ProductDetail { get; set; }
 }
