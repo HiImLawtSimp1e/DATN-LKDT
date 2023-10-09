@@ -8,6 +8,7 @@ public class PaymentMethodDetail : BaseEntity
     public int Status { get; set; }
     public Guid PaymentMethodId { get; set; }
     public Guid OrderId { get; set; }
+    public DateTime CreatedDate { get; set; }
     public virtual PaymentMethod? PaymentMethod { get; set; }
     public virtual Order? Order { get; set; }
 }

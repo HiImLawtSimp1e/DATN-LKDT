@@ -11,11 +11,12 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasKey(pmd => pmd.Id);
             builder.Property(pmd => pmd.Amount).IsRequired();
             builder.Property(pmd => pmd.Status).IsRequired();
+            builder.Property(x => x.CreatedDate).IsRequired();
 
             builder.HasOne(pmd => pmd.PaymentMethod).WithMany(pm => pm.PaymentMethodDetails).HasForeignKey(pmd => pmd.PaymentMethodId);
             builder.HasOne(pmd => pmd.Order).WithMany(o => o.PaymentMethodDetails).HasForeignKey(pmd => pmd.OrderId);
 
-            builder.Property(x => x.CreatedDate).IsRequired();
+            
         }
     }
 }

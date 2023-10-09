@@ -26,23 +26,23 @@ else
         </thead>
         <tbody>
             @foreach (var forecast in forecasts)
-            {
-                <tr>
+        {
+            <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
                 </tr>
-            }
+        }
         </tbody>
     </table>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+private WeatherForecast[]? forecasts;
 
-    protected override async Task OnInitializedAsync()
-    {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-    }
+protected override async Task OnInitializedAsync()
+{
+    forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+}
 }
