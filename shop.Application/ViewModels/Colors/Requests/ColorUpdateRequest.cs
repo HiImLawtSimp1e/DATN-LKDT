@@ -1,6 +1,6 @@
 namespace shop.Application.ViewModels.Colors.Requests;
 
-public class ColorCreateRequest
+public class ColorUpdateRequest
 {
     public string Name { get; set; }
 }

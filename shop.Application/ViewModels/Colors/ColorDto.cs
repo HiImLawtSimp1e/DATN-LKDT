@@ -1,4 +1,4 @@
-namespace shop.Application.ViewModels;
+namespace shop.Application.ViewModels.Colors;
 
 public class ColorDto
 {
