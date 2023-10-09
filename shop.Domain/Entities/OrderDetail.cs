@@ -9,6 +9,7 @@ public class OrderDetail : BaseEntity
     public int Status { get; set; }
     public Guid OrderId { get; set; }
     public Guid ProductDetailId { get; set; }
+    public DateTime CreatedDate { get; set; }
     public virtual Order? Order { get; set; }
     public virtual ProductDetail? ProductDetail { get; set; }
 }

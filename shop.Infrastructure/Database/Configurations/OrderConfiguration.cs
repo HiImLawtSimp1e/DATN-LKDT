@@ -20,11 +20,12 @@ namespace shop.Infrastructure.Database.Configurations
             builder.Property(o => o.ShipPhoneNumber).IsRequired();
             builder.Property(o => o.Total).IsRequired();
             builder.Property(o => o.Status).IsRequired();
+            builder.Property(x => x.CreatedDate).IsRequired();
 
             builder.HasOne(o => o.Voucher).WithMany(v => v.Orders).HasForeignKey(o => o.VoucherId);
             builder.HasOne(o => o.Staff).WithMany(s => s.Orders).HasForeignKey(o => o.StaffId);
 
-            builder.Property(x => x.CreatedDate).IsRequired();
+            
         }
     }
 }

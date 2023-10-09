@@ -11,11 +11,11 @@ namespace shop.Infrastructure.Database.Configurations
             builder.HasKey(cd => cd.Id);
             builder.Property(cd => cd.Quantity).IsRequired();
             builder.Property(cd => cd.Price).IsRequired();
+            builder.Property(x => x.CreatedDate).IsRequired();
 
             builder.HasOne(cd => cd.Cart).WithMany(c => c.CartDetails).HasForeignKey(cd => cd.CustomerId);
 
             builder.HasOne(cd => cd.ProductDetail).WithMany(pd => pd.CartDetails).HasForeignKey(cd => cd.ProductDetailId);
-
         }
     }
 }
