@@ -12,8 +12,8 @@ using shop.Infrastructure.Database.Context;
 namespace shop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231008093826_Initial")]
-    partial class Initial
+    [Migration("20231009163619_Add_Col_Status_For_Color")]
+    partial class Add_Col_Status_For_Color
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,6 +142,9 @@ namespace shop.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
