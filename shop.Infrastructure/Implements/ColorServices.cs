@@ -8,6 +8,8 @@ using shop.Application.ViewModels.Colors.Requests;
 using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
 using System.Linq;
+using PagedList;
+using shop.Application.Common.Pagination;
 
 namespace shop.Infrastructure.Implements;
 
@@ -20,7 +22,7 @@ public class ColorServices : IColorServices
         _dbContext = dbContext;
     }
 
-    public async Task<ApiResponse<List<ColorDto>>> GetAllColors()
+    public async Task<ApiResponse<List<ColorDto>>> GetAllColors(int page = 1, int pageSize = 10)
     {
         var query = from c in _dbContext.Colors
                     select new ColorDto
@@ -29,9 +31,16 @@ public class ColorServices : IColorServices
                         Name = c.Name
                     };
 
-        var result = await query.ToListAsync();
+        var queryResult = await query.ToListAsync();
 
-        return new ApiSuccessResponse<List<ColorDto>>("Get all colors successfully", result);
+     var colorDataPaged =   new PagedResultBase()
+        {
+            PageIndex= page,
+            PageSize= pageSize,
+            TotalRecords= queryResult.Count
+        };
+
+        return new ApiSuccessResponse<List<ColorDto>>("Get all colors successfully", colorDataPaged);
     }
 
     public async Task<ApiResponse<bool>> CreateColor(ColorCreateRequest request)

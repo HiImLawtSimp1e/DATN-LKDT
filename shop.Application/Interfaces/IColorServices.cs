@@ -7,7 +7,7 @@ namespace shop.Application.Interfaces;
 
 public interface IColorServices
 {
-    Task<ApiResponse<List<ColorDto>>> GetAllColors();
+    Task<ApiResponse<List<ColorDto>>> GetAllColors(int page=1,int pageSize=10);
     Task<ApiResponse<ColorDto>> GetColorById(ColorGetByIdRequest request);
     Task<ApiResponse<bool>> CreateColor(ColorCreateRequest request);
     Task<ApiResponse<bool>> UpdateColor(ColorUpdateRequest request);
