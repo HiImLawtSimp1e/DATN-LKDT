@@ -26,12 +26,15 @@ public class ColorServices : IColorServices
                     select new ColorDto
                     {
                         Id = c.Id,
-                        Name = c.Name
+                        Name = c.Name,
+                        CreateDate = c.CreatedDate,
+                        LastModiFileDate = c.ModifiedDate,
+                        
                     };
 
         var result = await query.ToListAsync();
 
-        return new ApiSuccessResponse<List<ColorDto>>("Get all colors successfully", result);
+        return new ApiSuccessResponse<List<ColorDto>>("Get all colors successfully", result.OrderBy(c=>c.Name).ToList());
     }
 
     public async Task<ApiResponse<bool>> CreateColor(ColorCreateRequest request)
@@ -95,6 +98,7 @@ public class ColorServices : IColorServices
         }
 
         existingColor.Name = request.Name;
+        existingColor.ModifiedDate= DateTime.Now;
         await _dbContext.SaveChangesAsync();
 
         return new ApiSuccessResponse<bool>("Update color success", true);
