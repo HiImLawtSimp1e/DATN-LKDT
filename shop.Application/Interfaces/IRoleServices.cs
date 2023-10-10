@@ -11,7 +11,7 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<List<RoleDto>>> GetAllRoles();
         Task<ApiResponse<RoleDto>> GetRoleById(RoleGetByIdRequest request);
         Task<ApiResponse<bool>> CreateRole(RoleCreateRequest request);
-        Task<ApiResponse<bool>> UpdateRole(RoleUpdateRequest request);
+        Task<ApiResponse<bool>> UpdateRole(Guid ID,RoleUpdateRequest request);
         Task<ApiResponse<bool>> DeleteRole(RoleDeleteRequest request);
     }
 }

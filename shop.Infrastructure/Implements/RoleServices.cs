@@ -64,7 +64,7 @@ namespace shop.Infrastructure.Implements
 
             var result = await query.ToListAsync();
 
-            return new ApiSuccessResponse<List<RoleDto>>("Get all colors successfully", result);
+            return new ApiSuccessResponse<List<RoleDto>>("Get all role successfully", result);
         }
 
         public async Task<ApiResponse<RoleDto>> GetRoleById(RoleGetByIdRequest request)
@@ -89,9 +89,9 @@ namespace shop.Infrastructure.Implements
             };
         }
 
-        public async Task<ApiResponse<bool>> UpdateRole(RoleUpdateRequest request)
+        public async Task<ApiResponse<bool>> UpdateRole(Guid ID,RoleUpdateRequest request)
         {
-            var queryResult = await _dbContext.Roles.FirstOrDefaultAsync(c => c.Name == request.Name);
+            var queryResult = await _dbContext.Roles.FirstOrDefaultAsync(c => c.Id == ID);
 
             if (queryResult == null)
             {
