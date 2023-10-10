@@ -28,7 +28,7 @@ public class ColorServices : IColorServices
                         Id = c.Id,
                         Name = c.Name,
                         CreateDate = c.CreatedDate,
-                        LastModiFileDate = c.ModifiedDate,
+                        LastModiFileDate = c.ModifiedDate?? DateTime.Now,
                         
                     };
 
@@ -56,7 +56,7 @@ public class ColorServices : IColorServices
         await _dbContext.Colors.AddAsync(newColor);
         await _dbContext.SaveChangesAsync();
 
-        return new ApiSuccessResponse<bool>("create new color success", true);
+        return new ApiSuccessResponse<bool>("Create new color success", true);
     }
 
     public async Task<ApiResponse<ColorDto>> GetColorById(ColorGetByIdRequest request)
@@ -91,7 +91,7 @@ public class ColorServices : IColorServices
             return new ApiSuccessResponse<bool>("Color does not exist", false);
         }
 
-        var duplicateColor = await _dbContext.Colors.FirstOrDefaultAsync(c => c.Name == request.Name && c.Id != ID);
+        var duplicateColor = await _dbContext.Colors.FirstOrDefaultAsync(c => c.Name.ToLower() == request.Name.ToLower() && c.Id != ID);
         if (duplicateColor != null)
         {
             return new ApiSuccessResponse<bool>("Color with the same name already exists", false);
