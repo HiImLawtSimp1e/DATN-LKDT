@@ -36,7 +36,7 @@ public class ColorServices : IColorServices
 
     public async Task<ApiResponse<bool>> CreateColor(ColorCreateRequest request)
     {
-        var colorNameExit = await _dbContext.Colors.FirstOrDefaultAsync(c=>c.Name==request.Name);
+        var colorNameExit = await _dbContext.Colors.FirstOrDefaultAsync(c=>c.Name.ToLower()==request.Name.ToLower());
 
         if (colorNameExit==null)
         {
@@ -79,17 +79,24 @@ public class ColorServices : IColorServices
 
     }
 
-    public async Task<ApiResponse<bool>> UpdateColor(ColorUpdateRequest request)
+    public async Task<ApiResponse<bool>> UpdateColor(Guid ID, ColorUpdateRequest request)
     {
-        var queryResult = await _dbContext.Colors.FirstOrDefaultAsync(c => c.Name == request.Name);
+        var existingColor = await _dbContext.Colors.FirstOrDefaultAsync(c => c.Id == ID);
 
-        if (queryResult == null)
+        if (existingColor == null)
         {
             return new ApiSuccessResponse<bool>("Color does not exist", false);
         }
 
-        queryResult.Name = request.Name; 
+        var duplicateColor = await _dbContext.Colors.FirstOrDefaultAsync(c => c.Name == request.Name && c.Id != ID);
+        if (duplicateColor != null)
+        {
+            return new ApiSuccessResponse<bool>("Color with the same name already exists", false);
+        }
+
+        existingColor.Name = request.Name;
         await _dbContext.SaveChangesAsync();
+
         return new ApiSuccessResponse<bool>("Update color success", true);
     }
 
