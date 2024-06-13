@@ -1,7 +1,15 @@
-﻿namespace shop.Domain.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace shop.Domain.Entities.Base;
+
+[NotMapped]
 public class BaseEntity
 {
-    public DateTime CreatedDate { get; set; }
-    public DateTime? ModifiedDate { get; set; }
-    public DateTime? DeletedDate { get; set; }
+    public virtual Guid? CreatedByUserId { get; set; }
+
+    public virtual Guid? LastModifiedByUserId { get; set; }
+
+    public virtual DateTime? LastModifiedOnDate { get; set; } = DateTime.Now;
+
+    public virtual DateTime? CreatedOnDate { get; set; } = DateTime.Now;
 }
