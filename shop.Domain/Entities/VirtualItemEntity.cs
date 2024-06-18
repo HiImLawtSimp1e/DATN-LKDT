@@ -8,8 +8,8 @@ namespace shop.Domain.Entities
     public class VirtualItemEntity : BaseEntity
     {
         public Guid Id { get; set; }
-        public Guid Code { get; set; }
-        public string ParenId { get; set; }
+        public string Code { get; set; }
+        public Guid ParenId { get; set; }
         public string Type { get; set; }
         public string? Name { get; set; }
         public string VirtualType { get; set; }
@@ -43,6 +43,6 @@ namespace shop.Domain.Entities
         [NotMapped]
         public List<MetadataEntity> Metadata { get; set; }
         public int? Solid { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
     }
 }

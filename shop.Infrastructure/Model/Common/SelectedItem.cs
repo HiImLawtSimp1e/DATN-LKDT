@@ -1,4 +1,4 @@
-namespace shop.Application.Common;
+namespace shop.Infrastructure.Model.Common;
 
 public class SelectedItem
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppBusiness.Model.Ultil
+namespace shop.Infrastructure.Model.Common.MetadataQueryModel
 {
     public class CompareModel
     {

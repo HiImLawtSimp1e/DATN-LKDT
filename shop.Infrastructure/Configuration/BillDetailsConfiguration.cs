@@ -12,7 +12,6 @@ namespace AppData.Configuration
 
             builder.HasOne(p => p.Discounts).WithMany().HasForeignKey(p => p.IdDiscount);
 
-            builder.HasOne(p => p.Bills).WithMany().HasForeignKey(p => p.IdBill);
         }
     }
 }

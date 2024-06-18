@@ -11,9 +11,6 @@ namespace AppData.Configuration
 
             builder.HasOne(p => p.Accounts).WithMany().HasForeignKey(p => p.IdAccount);
 
-            builder.HasMany(c => c.BillDetails)
-             .WithOne(cd => cd.Bills)
-             .HasForeignKey(cd => cd.Id);
         }
     }
 }
