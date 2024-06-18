@@ -9,14 +9,14 @@ namespace MicroBase.Share.Extensions
 {
     public static class DataSetExtensions
     {
-        public static IEnumerable<T> DataTableToModel<T>(this DataTable dataTable) where T : new()
+        public static IEnumerable<T> DataTableToModel<T>(this DataTable dataTable)
         {
             var rows = new List<T>();
 
-            var propertiesInfo = typeof(T).GetProperties();
+            var propertiesInfo = ((T)Activator.CreateInstance(typeof(T))).GetType().GetProperties();
             foreach (DataRow row in dataTable.Rows)
             {
-                var entityModel = new T();
+                var entityModel = (T)Activator.CreateInstance(typeof(T));
                 foreach (PropertyInfo propertyInfo in propertiesInfo)
                 {
                     var fieldName = propertyInfo.Name;
@@ -39,18 +39,25 @@ namespace MicroBase.Share.Extensions
                     var colVal = row[fieldName];
                     if (colVal != DBNull.Value)
                     {
-                        try
-                        {
-                            // Attempt to convert the value to the appropriate type and set it
-                            var targetType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-                            var convertedValue = Convert.ChangeType(colVal, targetType);
-                            propertyInfo.SetValue(entityModel, convertedValue);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Handle conversion or setting errors if necessary
-                            Console.WriteLine($"Error setting property {propertyInfo.Name}: {ex.Message}");
-                        }
+                        var field = entityModel.GetType().GetProperty(propertyInfo.Name);
+                        //if (field.PropertyType == typeof(Guid) || field.PropertyType == typeof(Guid?))
+                        //{
+                        //    var rawId = BitConverter.ToString((byte[])colVal).Replace("-", "");
+                        //    colVal = rawId.OracleRawToGuid();
+                        //}
+                        //else if (field.PropertyType == typeof(bool) || field.PropertyType == typeof(bool?))
+                        //{
+                        //    if (colVal.ToString() == "1")
+                        //    {
+                        //        colVal = true;
+                        //    }
+                        //    else
+                        //    {
+                        //        colVal = false;
+                        //    }
+                        //}
+
+                        entityModel.SetValueToObject<T>(field, colVal);
                     }
                 }
 
