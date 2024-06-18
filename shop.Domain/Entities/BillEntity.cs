@@ -25,7 +25,7 @@
         public string? Note { get; set; }
         public Guid? IdAccount { get; set; }
 
-        public virtual List<BillDetailsEntity> BillDetails { get; set; }
+        public virtual IEnumerable<BillDetailsEntity> BillDetails { get; set; }
         public virtual AccountEntity Accounts { get; set; }
 
     }

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Implements\" />
   </ItemGroup>
 
@@ -24,7 +23,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-  </ItemGroup>
+	<PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="7.102.3" />
+	<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.102.3" />
+</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\shop.Application\shop.Application.csproj" />

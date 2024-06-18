@@ -10,6 +10,6 @@ namespace shop.Domain.Entities
         public string UserName { get; set; }
         public string? Description { get; set; }
         public virtual AccountEntity? Accounts { get; set; }
-        public virtual List<CartDetailsEntity>? CartDetails { get; set; }
+        public virtual IEnumerable<CartDetailsEntity>? CartDetails { get; set; }
     }
 }

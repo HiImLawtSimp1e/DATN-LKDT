@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using shop.Domain.Entities;
+using System.Reflection;
 
 namespace shop.Infrastructure.Database.Context;
 public class AppDbContext : DbContext
@@ -32,4 +33,21 @@ public class AppDbContext : DbContext
     public DbSet<VirtualItemObjRelationEntity> ItemObjRelationEntities { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<VirtualItemEntity> VirtualItems { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<CartEntity>().HasOne(c => c.Accounts).WithOne(p => p.Carts).HasForeignKey<CartEntity>();
+
+        builder.Entity<VirtualItemEntity>().HasKey(p => p.Id);
+        //builder.Entity<VW_Phone>().ToView("VW_Phone").HasNoKey();
+        //builder.Entity<VW_PhoneDetail>().ToView("VW_PhoneDetail").HasNoKey();
+        //builder.Entity<VW_Phone_Group>().ToView("VW_Phone_Group").HasNoKey();
+        //builder.Entity<VW_List_By_IdPhone>().ToView("VW_List_By_IdPhone").HasNoKey();
+        //builder.Entity<VTop5_PhoneSell>().ToView("VTop5_PhoneSell").HasNoKey();
+        //builder.Entity<vOverView>().ToView("vOverView").HasNoKey();
+        //builder.Entity<BillGanDay>().ToView("BillGanDay").HasNoKey();
+        //builder.Entity<PhoneStatitics>().ToView("PhoneStatitics").HasNoKey();
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 }
