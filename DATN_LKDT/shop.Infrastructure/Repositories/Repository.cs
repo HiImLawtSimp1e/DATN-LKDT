@@ -370,12 +370,12 @@ namespace MicroBase.Entity.Repositories
             return await microDbContext.Set<T>().Where(filterExpression).Select(projection).FirstOrDefaultAsync();
         }
 
-        public T GetById(int id)
+        public T GetById(Guid id)
         {
             return microDbContext.Set<T>().Find(id);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await microDbContext.Set<T>().FindAsync(id);
         }

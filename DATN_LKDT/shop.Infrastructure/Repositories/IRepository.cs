@@ -49,9 +49,9 @@ namespace MicroBase.Entity.Repositories
 
         Task<TProjection> FindOneAsync<TProjection>(Expression<Func<T, bool>> filterExpression, Expression<Func<T, TProjection>> projection);
 
-        T GetById(int id);
+        T GetById(Guid id);
 
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(Guid id);
 
         #endregion Fine
 

@@ -1,15 +1,17 @@
-﻿namespace shop.Domain.Entities
+﻿using shop.Domain.Entities.Base;
+using System.Web.Mvc;
+
+namespace shop.Domain.Entities
 {
-    public class BlogEntity
+    public class BlogEntity : BaseEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string? Title { get; set; }
         public string IntroText { get; set; }
 
+        [AllowHtml]
         public string? Content { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
 
         public string? Images { get; set; }
 
