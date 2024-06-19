@@ -1,0 +1,12 @@
+E:\DATN_LKDT\shop.Domain\bin\Debug\net6.0\shop.Domain.deps.json
+E:\DATN_LKDT\shop.Domain\bin\Debug\net6.0\shop.Domain.dll
+E:\DATN_LKDT\shop.Domain\bin\Debug\net6.0\shop.Domain.pdb
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.csproj.AssemblyReference.cache
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.AssemblyInfoInputs.cache
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.AssemblyInfo.cs
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.csproj.CoreCompileInputs.cache
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.dll
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\refint\shop.Domain.dll
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\shop.Domain.pdb
+E:\DATN_LKDT\shop.Domain\obj\Debug\net6.0\ref\shop.Domain.dll

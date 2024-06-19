@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "DMHfUd+w6IVSTHHx1MvyMjH3pqnqe8hx/qKwrinenJw=",
+  "Source": "shop.BackendApi",
+  "BasePath": "_content/shop.BackendApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
