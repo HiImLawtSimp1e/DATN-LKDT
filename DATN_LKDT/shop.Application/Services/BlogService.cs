@@ -1,11 +1,13 @@
 ﻿using AppBusiness.Model.Pagination;
 using AutoMapper;
 using MicroBase.Entity.Repositories;
+using Microsoft.EntityFrameworkCore;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs;
 using shop.Application.ViewModels.ResponseDTOs;
 using shop.Domain.Entities;
+using shop.Infrastructure.Database.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +20,18 @@ namespace shop.Application.Services
     {
         private readonly IRepository<BlogEntity> _repo;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _context;
 
-        public BlogService(IRepository<BlogEntity> repo, IMapper mapper)
+        public BlogService(IRepository<BlogEntity> repo, IMapper mapper, AppDbContext context)
         {
             _repo = repo;
             _mapper = mapper;
+            _context = context;
         }
         public async Task<ApiResponse<bool>> CreateBlog(AddBlogDto newBlog)
         {
             var blog = _mapper.Map<BlogEntity>(newBlog);
+            blog.Status = 1;
 
             await _repo.InsertAsync(blog);
             return new ApiResponse<bool>
@@ -37,9 +42,30 @@ namespace shop.Application.Services
             };
         }
 
-        public Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageSize)
         {
-            throw new NotImplementedException();
+            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.Status != 0).Count() / pageSize));
+
+            var blogs = await _context.Blogs
+                               .Where(b => b.Status != 0) // Filter blog that status has deleted 
+                               .OrderByDescending(b => b.LastModifiedByUserId)
+                               .Skip((currentPage - 1) * pageSize)
+                               .Take(pageSize)
+                               .ToListAsync();
+            var pagingData = new Pagination<List<BlogEntity>>
+            {
+                Content = blogs,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                TotalPages = (int)pageCount
+            };
+
+            return new ApiResponse<Pagination<List<BlogEntity>>>
+            {
+                ResultObject = pagingData,
+                IsSuccessed = true,
+            };
+
         }
 
         public async Task<ApiResponse<BlogEntity>> GetAdminSingleBlog(Guid id)
@@ -60,9 +86,32 @@ namespace shop.Application.Services
             };
         }
 
-        public Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageSize)
         {
-            throw new NotImplementedException();
+            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.Status != 0 && b.Status != 2).Count() / pageSize));
+
+            var blogs = await _context.Blogs
+                               .Where(b => b.Status != 0 && b.Status != 2) // Filter blog that status has deleted & status is unactive
+                               .OrderByDescending(b => b.LastModifiedByUserId)
+                               .Skip((currentPage - 1) * pageSize)
+                               .Take(pageSize)
+                               .ToListAsync();
+
+            var result = _mapper.Map<List<CustomerBlogResponse>>(blogs);
+
+            var pagingData = new Pagination<List<CustomerBlogResponse>>
+            {
+                Content = result,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                TotalPages = (int)pageCount
+            };
+
+            return new ApiResponse<Pagination<List<CustomerBlogResponse>>>
+            {
+                ResultObject = pagingData,
+                IsSuccessed = true,
+            };
         }
 
         public async Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(Guid id)
@@ -84,9 +133,28 @@ namespace shop.Application.Services
             };
         }
 
-        public Task<ApiResponse<bool>> SoftDeleteBlog(Guid blogId)
+        public async Task<ApiResponse<bool>> SoftDeleteBlog(Guid blogId)
         {
-            throw new NotImplementedException();
+            var dbBlog = await _repo.GetByIdAsync(blogId);
+            if (dbBlog == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    IsSuccessed = false,
+                    Message = "Không tìm thấy blog"
+                };
+            }
+
+            dbBlog.Status = 0;
+
+            await _repo.UpdateAsync(dbBlog);
+
+            return new ApiResponse<bool>
+            {
+                ResultObject = true,
+                IsSuccessed = true,
+                Message = "Xóa blog thành công"
+            };
         }
 
         public async Task<ApiResponse<bool>> UpdateBlog(Guid blogId, UpdateBlogDto updateBlog)
@@ -104,10 +172,13 @@ namespace shop.Application.Services
             _mapper.Map(updateBlog, dbBlog);
             dbBlog.LastModifiedOnDate = DateTime.Now;
 
+            await _repo.UpdateAsync(dbBlog);
+
             return new ApiResponse<bool>
             {
                 ResultObject = true,
                 IsSuccessed = true,
+                Message = "Update blog thành công"
             };
         }
     }

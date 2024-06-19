@@ -18,7 +18,7 @@ namespace AppBusiness.Model.Pagination
 
         public int TotalRecords { get; set; }
 
-        public IEnumerable<T> Content { get; set; }
+        public T? Content { get; set; }
 
         public Pagination()
         {
@@ -42,7 +42,7 @@ namespace AppBusiness.Model.Pagination
             TotalPages = (int)Math.Ceiling(a);
         }
 
-        public Pagination(IEnumerable<T> content, int totalRecords, int currentPage, int pageSize)
+        public Pagination(T content, int totalRecords, int currentPage, int pageSize)
         {
             Content = content;
             TotalRecords = totalRecords;

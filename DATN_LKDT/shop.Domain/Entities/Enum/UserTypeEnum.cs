@@ -12,4 +12,11 @@ namespace AppData.Enum
         Staff =2,
         Client=3
     }
+
+    public enum EntityStatusEnum
+    {
+        Deleted = 0,
+        Active = 1,
+        Passive = 2
+    }
 }

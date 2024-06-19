@@ -9,13 +9,14 @@ namespace shop.Application.ViewModels.ResponseDTOs
 {
     public class CustomerBlogResponse
     {
-        public string? Title { get; set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
         public string IntroText { get; set; }
 
         [AllowHtml]
-        public string? Content { get; set; }
+        public string Content { get; set; }
 
         public string? Images { get; set; }
-        public DateTime? CreatedOnDate { get; set; }
+        public DateTime CreatedOnDate { get; set; }
     }
 }
