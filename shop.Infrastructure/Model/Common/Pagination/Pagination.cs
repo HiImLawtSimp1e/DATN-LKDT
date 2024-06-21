@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppBusiness.Model.Pagination
+namespace shop.Infrastructure.Model.Common.Pagination
 {
     public class Pagination<T> : IPagination
     {
@@ -38,7 +38,7 @@ namespace AppBusiness.Model.Pagination
             CurrentPage = currentPage;
             PageSize = pageSize;
             NumberOfRecords = totalRecords;
-            double a = (double)TotalRecords / (double)pageSize;
+            double a = TotalRecords / (double)pageSize;
             TotalPages = (int)Math.Ceiling(a);
         }
 
@@ -49,7 +49,7 @@ namespace AppBusiness.Model.Pagination
             CurrentPage = currentPage;
             PageSize = pageSize;
             NumberOfRecords = totalRecords;
-            double a = (double)TotalRecords / (double)pageSize;
+            double a = TotalRecords / (double)pageSize;
             TotalPages = (int)Math.Ceiling(a);
         }
     }

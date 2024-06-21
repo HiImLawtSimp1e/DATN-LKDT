@@ -1,4 +1,4 @@
-namespace shop.Application.Common;
+namespace shop.Infrastructure.Model.Common.Api;
 
 public class ApiSuccessResponse<T> : ApiResponse<T>
 {

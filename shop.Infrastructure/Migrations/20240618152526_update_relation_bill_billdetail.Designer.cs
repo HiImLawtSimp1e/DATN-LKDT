@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using shop.Infrastructure.Database.Context;
 
@@ -11,9 +12,11 @@ using shop.Infrastructure.Database.Context;
 namespace shop.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240618152526_update_relation_bill_billdetail")]
+    partial class update_relation_bill_billdetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,6 +188,9 @@ namespace shop.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BillEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdBill")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdDiscount")

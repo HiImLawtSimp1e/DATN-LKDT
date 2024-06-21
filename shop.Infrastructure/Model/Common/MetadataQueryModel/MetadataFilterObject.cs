@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AppBusiness.Model.Ultil
+namespace shop.Infrastructure.Model.Common.MetadataQueryModel
 {
-    public  class MetadataFilterObject
+    public class MetadataFilterObject
     {
         [Required]
         public virtual string FieldName { get; set; }

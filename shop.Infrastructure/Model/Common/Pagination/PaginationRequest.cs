@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppBusiness.Model.Pagination
+namespace shop.Infrastructure.Model.Common.Pagination
 {
     public class PaginationRequest
     {
