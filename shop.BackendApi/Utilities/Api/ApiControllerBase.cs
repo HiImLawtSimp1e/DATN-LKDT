@@ -22,7 +22,7 @@ namespace shop.BackendApi.Utilities.Api
         {
             _logger = logger;
         }
-        protected virtual async Task<IActionResult> ExecuteFunction<T>(Func<Task<T>> func)
+        public virtual async Task<IActionResult> ExecuteFunction<T>(Func<Task<T>> func)
         {
             try
             {
