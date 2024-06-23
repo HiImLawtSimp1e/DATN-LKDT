@@ -5,9 +5,9 @@
         public DetailedErrorResponse(string x, string y)
         {
             Key = x;
-            Value = y;
+            ErrorMessage = y;
         }
         public string Key { get; }
-        public string Value { get; }
+        public string ErrorMessage { get; }
     }
 }

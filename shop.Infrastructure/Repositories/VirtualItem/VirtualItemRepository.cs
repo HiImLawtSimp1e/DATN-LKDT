@@ -47,6 +47,8 @@ namespace shop.Infrastructure.Repositories.VirtualItem
         public async Task<VirtualItemEntity> FindAsync(Guid Id)
         {
             var result = await _dbContext.VirtualItems.AsNoTracking().FirstOrDefaultAsync(x =>x.Id == Id&& x.Isdeleted!=false);
+            if (result == null)
+                throw new ArgumentException(IVirtualItemRepository.Message_VirtualItemNotFound);
             return result;
         }
 
@@ -106,7 +108,8 @@ namespace shop.Infrastructure.Repositories.VirtualItem
                 }
 
                 if(exist == null) {
-                _dbContext.VirtualItems.Add(exist);
+                _dbContext.VirtualItems.Add(e);
+                    updated.Add(e);
                 }
                 else
                 {
