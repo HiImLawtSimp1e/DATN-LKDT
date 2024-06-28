@@ -31,6 +31,7 @@ public class AppDbContext : DbContext
     public DbSet<SalesEntity> Sales { get; set; }
     public DbSet<SaleDetaildEntity> SalePhoneDetailds { get; set; }
     public DbSet<VirtualItemObjRelationEntity> ItemObjRelationEntities { get; set; }
+    
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<VirtualItemEntity> VirtualItems { get; set; }
 
