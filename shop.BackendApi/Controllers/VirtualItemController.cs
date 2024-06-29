@@ -56,8 +56,18 @@ namespace shop.BackendApi.Controllers
 
         // PUT api/<VirtualItemController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(Guid id, [FromBody] VirtualItemEntity  virtualItemEntity)
         {
+            return await ExecuteFunction(async () =>
+            {
+                var exist = await _virtualItemBusiness.FindAsync( id);
+
+                if (exist == null )
+                    throw new ArgumentException("VirtualItem_NotFound");
+
+                var res = await _virtualItemBusiness.SaveAsync(virtualItemEntity);
+                return res;
+            });
         }
 
         // DELETE api/<VirtualItemController>/5
