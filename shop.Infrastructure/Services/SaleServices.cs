@@ -57,6 +57,7 @@ namespace shop.Infrastructure.Services
 
         public SalesEntity Update(SalesEntity obj)
         {
+
             var data = _appDbContext.Sales.FirstOrDefault(c => c.Id == obj.Id);
             try
             {

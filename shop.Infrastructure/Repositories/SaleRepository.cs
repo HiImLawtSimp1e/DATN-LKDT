@@ -1,6 +1,9 @@
-﻿using shop.Domain.Entities;
+
+﻿using Microsoft.EntityFrameworkCore;
+using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
-using shop.Infrastructure.IRepositories;
+
+
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

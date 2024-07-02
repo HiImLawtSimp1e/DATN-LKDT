@@ -1,6 +1,7 @@
-﻿using shop.Domain.Entities;
+using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
-using shop.Infrastructure.IRepositories;
+
+
 using shop.Infrastructure.IServices;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace shop.Infrastructure.Services
         {
             _appDbContext = appDbContext;
         }
+
         public List<SaleDetaildEntity> GetSaleDetailsByIdAccount(Guid id)
         {
             var lst = new List<SaleDetaildEntity>();
