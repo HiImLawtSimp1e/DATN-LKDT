@@ -1,6 +1,7 @@
 ﻿using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
 using shop.Infrastructure.IRepositories;
+using shop.Infrastructure.Repositories.Sale;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -46,7 +47,7 @@ namespace shop.Infrastructure.Repositories
 
         public async Task<List<SaleDetaildEntity>> GetAll()
         {
-            return await _appDbContext.SalePhoneDetailds.ToListAsync();
+            return await _appDbContext.SaleDetaild.ToListAsync();
         }
 
         public Task<bool> Update(Guid id, Guid idsale, Guid iddetaild)

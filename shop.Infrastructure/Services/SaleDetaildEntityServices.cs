@@ -25,7 +25,7 @@ namespace shop.Infrastructure.Services
             var lst = new List<SaleDetaildEntity>();
             try
             {
-                lst = _appDbContext.SalePhoneDetailds.Where(c => c.IdSales == id).ToList();
+                lst = _appDbContext.SaleDetaild.Where(c => c.IdSales == id).ToList();
             }
             catch (Exception e)
             {

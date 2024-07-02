@@ -26,7 +26,7 @@ public class AppDbContext : DbContext
     public DbSet<WarrantyEntity> Warranty { get; set; }
     public DbSet<WarrantyCardEntity> WarrantyCards { get; set; }
     public DbSet<SalesEntity> Sales { get; set; }
-    public DbSet<SaleDetaildEntity> SalePhoneDetailds { get; set; }
+    public DbSet<SaleDetaildEntity> SaleDetaild { get; set; }
     public DbSet<VirtualItemObjRelationEntity> ItemObjRelationEntities { get; set; }
     
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
