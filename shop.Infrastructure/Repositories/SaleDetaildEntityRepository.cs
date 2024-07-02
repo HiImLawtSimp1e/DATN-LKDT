@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace shop.Infrastructure.Repositories
 {
-    public class SaleDetaildEntityRepository : ISaleDetaildEntityRepository
+    public class SaleDetaildEntityRepository 
     {
         public readonly AppDbContext _appDbContext;
 
