@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Infrastructure.IServices
+namespace shop.Infrastructure.Repositories.SaleDetaild
 {
-    public interface ISaleDetaildEntityRepository
+    public interface ISaleDetaildRepository
     {
         Task<bool> Add(Guid idsale, Guid iddetaild);
         Task<bool> Update(Guid id, Guid idsale, Guid iddetaild);

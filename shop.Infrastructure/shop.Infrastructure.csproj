@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Business\SalesEntity\" />
     <Folder Include="Implements\" />
   </ItemGroup>
 

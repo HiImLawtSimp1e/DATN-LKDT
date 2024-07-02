@@ -1,7 +1,5 @@
 ﻿using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
-using shop.Infrastructure.IRepositories;
-using shop.Infrastructure.Repositories.Sale;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Infrastructure.Repositories
+namespace shop.Infrastructure.Repositories.SaleDetaild
 {
-    public class SaleDetaildEntityRepository 
+    public class SaleDetaildRepository : ISaleDetaildRepository
     {
         public readonly AppDbContext _appDbContext;
 
-        public SaleDetaildEntityRepository()
+        public SaleDetaildRepository()
         {
             _appDbContext = new AppDbContext();
         }
+
         public async Task<bool> Add(Guid idsale, Guid iddetaild)
         {
             try
@@ -40,9 +39,11 @@ namespace shop.Infrastructure.Repositories
             }
         }
 
-        public Task Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var a = await _appDbContext.SaleDetaild.FindAsync(id);
+            _appDbContext.SaleDetaild.Remove(a);
+            await _appDbContext.SaveChangesAsync();
         }
 
         public async Task<List<SaleDetaildEntity>> GetAll()
