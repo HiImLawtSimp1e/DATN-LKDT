@@ -32,6 +32,13 @@ public class AppDbContext : DbContext
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<VirtualItemEntity> VirtualItems { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-GEO6VF4;Initial Catalog=DuAnTotNghiep_LKDT;Integrated Security=True; TrustServerCertificate = True");
+        //cái này là db online
+        // optionsBuilder.UseSqlServer("Server = tcp:bazaizaidb.database.windows.net,1433; Initial Catalog = bazaizaidb; Persist Security Info = False; User ID = bazaizai; Password = Trinhanh0311; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;");
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
