@@ -1,6 +1,8 @@
-﻿namespace shop.Domain.Entities
+﻿using shop.Domain.Entities.Base;
+
+namespace shop.Domain.Entities
 {
-    public class WarrantyEntity
+    public class WarrantyEntity:BaseEntity
     {
         public Guid Id { get; set; }
 

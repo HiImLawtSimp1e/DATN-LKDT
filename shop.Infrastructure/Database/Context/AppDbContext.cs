@@ -15,15 +15,12 @@ public class AppDbContext : DbContext
 
     public DbSet<ContactEntity> Contact { get; set; }
     public DbSet<AccountEntity> Accounts { get; set; }
-    public DbSet<AddressEntity> Address { get; set; }
     public DbSet<BillEntity> Bill { get; set; }
     public DbSet<BillDetailsEntity> BillDetails { get; set; }
     public DbSet<BlogEntity> Blogs { get; set; }
     public DbSet<CartEntity> Carts { get; set; }
     public DbSet<CartDetailsEntity> CartDetails { get; set; }
     public DbSet<DiscountEntity> Discount { get; set; }
-    public DbSet<ListImageEntity> ListImage { get; set; }
-    public DbSet<ProductionCompanyEntity> ProductionCompany { get; set; }
     public DbSet<RankEntity> Ranks { get; set; }
     public DbSet<ReviewEntity> Reviews { get; set; }
     public DbSet<WarrantyEntity> Warranty { get; set; }
