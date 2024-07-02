@@ -1,27 +1,53 @@
-﻿namespace shop.Domain.Entities
+﻿using Newtonsoft.Json;
+using shop.Domain.Entities.Base;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.SymbolStore;
+
+namespace shop.Domain.Entities
 {
-    public class WarrantyCardEntity
+    public class WarrantyCardEntity : BaseEntity
     {
+        [Key]
         public Guid Id { get; set; }
 
         public Guid? IdBillDetail { get; set; }
 
-        public Guid? IdAccount { get; set; }
-
-        public Guid? IdPhoneDetail { get; set; }
-
-        public Guid? IdPhone { get; set; }
-        public string Imei { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
+        public Guid? IdWaranty { get; set; }
+        public Guid? IdVirtualItem { get; set; }
+        public string Type { get;set; }
         public string? Description { get; set; }
 
-        public DateTime? ThoiGianConBaoHanh { get; set; }
+        public DateTime? ExpirationDate { get; set; }
 
-        public DateTime? AppointmentDate { get; set; }
+        public bool Isdelete { get; set; }  
 
         public int? Status { get; set; }
+
+        public string MetadataJson
+        {
+            get
+            {
+                if (Metadata != null)
+                {
+                    return JsonConvert.SerializeObject(Metadata);
+                }
+                return null;
+            }
+            set
+            {
+                try
+                {
+                    Metadata = JsonConvert.DeserializeObject<List<MetadataEntity>>(value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+        }
+        [NotMapped]
+        public List<MetadataEntity> Metadata { get; set; }
 
     }
 }
