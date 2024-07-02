@@ -1,5 +1,7 @@
 ﻿using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
+using shop.Infrastructure.Model;
+using shop.Infrastructure.Model.Common.Pagination;
 using shop.Infrastructure.Repositories.VirtualItem;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,16 @@ namespace shop.Infrastructure.Repositories.Discount
             if (result == null)
                 throw new ArgumentException(IVirtualItemRepository.Message_VirtualItemNotFound);
             return result;
+        }
+
+        public Task<Pagination<RankEntity>> GetAllAsync(DiscountQueryModel discountQueryModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<RankEntity>> ListAllAsync(DiscountQueryModel discountQueryModel)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<DiscountEntity> SaveAsync(DiscountEntity discountEntity)

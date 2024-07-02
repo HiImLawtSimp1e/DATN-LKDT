@@ -11,8 +11,8 @@ namespace shop.Infrastructure.Repositories.Discount
 {
     public interface IDiscountRepository
     {
-        /*public Task<Pagination<RankEntity>> GetAllAsync(VirtualItemQueryModel virtualItemQueryModel);
-        public Task<List<RankEntity>> ListAllAsync(VirtualItemQueryModel virtualItemQueryModel);*/
+        public Task<Pagination<RankEntity>> GetAllAsync(DiscountQueryModel  discountQueryModel);
+        public Task<List<RankEntity>> ListAllAsync(DiscountQueryModel  discountQueryModel);
         public Task<DiscountEntity> SaveAsync(DiscountEntity discountEntity);
         public Task<List<DiscountEntity>> SaveAsync(List<DiscountEntity> discountEntity);
         public Task<DiscountEntity> FindAsync(Guid Id);
