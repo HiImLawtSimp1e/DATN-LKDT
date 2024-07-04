@@ -1,6 +1,10 @@
-﻿using shop.Domain.Entities;
+﻿using LinqKit;
+using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
+using shop.Infrastructure.Model;
+using shop.Infrastructure.Model.Common.Pagination;
 using shop.Infrastructure.Repositories.VirtualItem;
+using shop.Infrastructure.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -45,6 +49,40 @@ namespace shop.Infrastructure.Repositories.Discount
             if (result == null)
                 throw new ArgumentException(IVirtualItemRepository.Message_VirtualItemNotFound);
             return result;
+        }
+
+        public async Task<Pagination<DiscountEntity>> GetAllAsync(DiscountQueryModel discountQueryModel)
+        {
+            IQueryable<DiscountEntity> query = BuildQuery(discountQueryModel);
+
+            var sortExpression = string.Empty;
+            if (string.IsNullOrWhiteSpace(discountQueryModel.Sort) || discountQueryModel.Sort.Equals("-LastModifiedOnDate"))
+            {
+                query = query.OrderByDescending(x => x.LastModifiedOnDate);
+            }
+            else
+            {
+                sortExpression = discountQueryModel.Sort;
+            }
+
+            var result = await query.GetPagedAsync(discountQueryModel.CurrentPage.Value, discountQueryModel.PageSize.Value, sortExpression);
+            return result;
+        }
+
+        public async Task<List<DiscountEntity>> ListAllAsync(DiscountQueryModel discountQueryModel)
+        {
+            IQueryable<DiscountEntity> query = BuildQuery(discountQueryModel);
+
+            var sortExpression = string.Empty;
+            if (string.IsNullOrWhiteSpace(discountQueryModel.Sort) || discountQueryModel.Sort.Equals("-LastModifiedOnDate"))
+            {
+                query = query.OrderByDescending(x => x.LastModifiedOnDate);
+            }
+            else
+            {
+                query = query.ApplySorting(discountQueryModel.Sort);
+            }
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<DiscountEntity> SaveAsync(DiscountEntity discountEntity)
@@ -93,6 +131,14 @@ namespace shop.Infrastructure.Repositories.Discount
 
             }
             return updated;
+        }
+        protected virtual IQueryable<DiscountEntity> BuildQuery(DiscountQueryModel queryModel)
+        {
+            IQueryable<DiscountEntity> query;
+            query = _dbContext.Discount.AsNoTracking().Where(x => x. == false);
+
+           
+            return query;
         }
     }
 }

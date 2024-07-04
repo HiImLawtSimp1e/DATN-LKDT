@@ -1,6 +1,10 @@
-﻿using shop.Domain.Entities;
+﻿using LinqKit;
+using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
+using shop.Infrastructure.Model;
+using shop.Infrastructure.Model.Common.Pagination;
 using shop.Infrastructure.Repositories.VirtualItem;
+using shop.Infrastructure.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -94,6 +98,46 @@ namespace shop.Infrastructure.Repositories.Contact
 
             }
             return updated;
+        }
+
+        async Task<Pagination<ContactEntity>> IContactRepository.GetAllAsync(ContactQueryModel contactQueryModel)
+        {
+            IQueryable<ContactEntity> query = BuildQuery(contactQueryModel);
+
+            var sortExpression = string.Empty;
+            if (string.IsNullOrWhiteSpace(contactQueryModel.Sort) || contactQueryModel.Sort.Equals("-LastModifiedOnDate"))
+            {
+                query = query.OrderByDescending(x => x.LastModifiedOnDate);
+            }
+            else
+            {
+                sortExpression = contactQueryModel.Sort;
+            }
+
+            var result = await query.GetPagedAsync(contactQueryModel.CurrentPage.Value, contactQueryModel.PageSize.Value, sortExpression);
+            return result;
+        }
+
+        async Task<List<ContactEntity>> IContactRepository.ListAllAsync(ContactQueryModel contactQueryModel)
+        {
+            IQueryable<ContactEntity> query = BuildQuery(contactQueryModel);
+
+            var sortExpression = string.Empty;
+            if (string.IsNullOrWhiteSpace(contactQueryModel.Sort) || contactQueryModel.Sort.Equals("-LastModifiedOnDate"))
+            {
+                query = query.OrderByDescending(x => x.LastModifiedOnDate);
+            }
+            else
+            {
+                query = query.ApplySorting(contactQueryModel.Sort);
+            }
+            return await query.AsNoTracking().ToListAsync();
+        }
+        protected virtual IQueryable<ContactEntity> BuildQuery(ContactQueryModel queryModel)
+        {
+            IQueryable<ContactEntity> query;
+            query = _dbContext.Contact.AsNoTracking().Where(x => x. == false);
+            return query;
         }
     }
 }

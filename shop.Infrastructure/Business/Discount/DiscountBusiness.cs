@@ -37,6 +37,18 @@ namespace shop.Infrastructure.Business.Discount
             return res;
         }
 
+        public async Task<Pagination<DiscountEntity>> GetAllAsync(DiscountQueryModel discountQueryModel)
+        {
+            var res = await _discountRepository.GetAllAsync(discountQueryModel);
+            return res;
+        }
+
+        public async Task<List<DiscountEntity>> ListAllAsync(DiscountQueryModel discountQueryModel)
+        {
+            var res = await _discountRepository.ListAllAsync(discountQueryModel);
+            return res;
+        }
+
         public async Task<DiscountEntity> PatchAsync(DiscountEntity discountEntity)
         {
             throw new NotImplementedException();

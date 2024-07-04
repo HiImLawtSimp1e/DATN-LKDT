@@ -53,5 +53,17 @@ namespace shop.Infrastructure.Business.Contact
             var result = await _contactRepository.SaveAsync(contactEntity);
             return result;
         }
+
+        public async Task<Pagination<ContactEntity>> GetAllAsync(ContactQueryModel contactQueryModel)
+        {
+            var res = await _contactRepository.GetAllAsync(contactQueryModel);
+            return res;
+        }
+
+        public async Task<List<ContactEntity>> ListAllAsync(ContactQueryModel contactQueryModel)
+        {
+            var res = await _contactRepository.ListAllAsync(contactQueryModel);
+            return res;
+        }
     }
 }
