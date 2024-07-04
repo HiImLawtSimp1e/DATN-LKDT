@@ -100,14 +100,14 @@ namespace shop.Infrastructure.Repositories.Contact
             return updated;
         }
 
-        async Task<Pagination<ContactEntity>> IContactRepository.GetAllAsync(ContactQueryModel contactQueryModel)
+        public async Task<Pagination<ContactEntity>> GetAllAsync(ContactQueryModel contactQueryModel)
         {
             IQueryable<ContactEntity> query = BuildQuery(contactQueryModel);
 
             var sortExpression = string.Empty;
-            if (string.IsNullOrWhiteSpace(contactQueryModel.Sort) || contactQueryModel.Sort.Equals("-LastModifiedOnDate"))
+            if (string.IsNullOrWhiteSpace(contactQueryModel.Sort) || contactQueryModel.Sort.Equals("-ModifyDate"))
             {
-                query = query.OrderByDescending(x => x.LastModifiedOnDate);
+                query = query.OrderByDescending(x => x.ModifyDate);
             }
             else
             {
@@ -118,14 +118,15 @@ namespace shop.Infrastructure.Repositories.Contact
             return result;
         }
 
-        async Task<List<ContactEntity>> IContactRepository.ListAllAsync(ContactQueryModel contactQueryModel)
+
+        public async Task<List<ContactEntity>> ListAllAsync(ContactQueryModel contactQueryModel)
         {
             IQueryable<ContactEntity> query = BuildQuery(contactQueryModel);
 
             var sortExpression = string.Empty;
-            if (string.IsNullOrWhiteSpace(contactQueryModel.Sort) || contactQueryModel.Sort.Equals("-LastModifiedOnDate"))
+            if (string.IsNullOrWhiteSpace(contactQueryModel.Sort) || contactQueryModel.Sort.Equals("-ModifyDate"))
             {
-                query = query.OrderByDescending(x => x.LastModifiedOnDate);
+                query = query.OrderByDescending(x => x.ModifyDate);
             }
             else
             {
@@ -133,11 +134,54 @@ namespace shop.Infrastructure.Repositories.Contact
             }
             return await query.AsNoTracking().ToListAsync();
         }
+
         protected virtual IQueryable<ContactEntity> BuildQuery(ContactQueryModel queryModel)
         {
-            IQueryable<ContactEntity> query;
-            query = _dbContext.Contact.AsNoTracking().Where(x => x. == false);
+            IQueryable<ContactEntity> query = _dbContext.Contact.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(queryModel.CODE))
+            {
+                query = query.Where(x => x.CODE.Contains(queryModel.CODE));
+            }
+            if (!string.IsNullOrEmpty(queryModel.FullName))
+            {
+                query = query.Where(x => x.FullName.Contains(queryModel.FullName));
+            }
+            if (!string.IsNullOrEmpty(queryModel.Email))
+            {
+                query = query.Where(x => x.Email.Contains(queryModel.Email));
+            }
+            if (!string.IsNullOrEmpty(queryModel.PhoneNumber))
+            {
+                query = query.Where(x => x.PhoneNumber.Contains(queryModel.PhoneNumber));
+            }
+            if (queryModel.Status.HasValue)
+            {
+                query = query.Where(x => x.Status == queryModel.Status.Value);
+            }
+            if (!string.IsNullOrEmpty(queryModel.Type))
+            {
+                query = query.Where(x => x.Type == queryModel.Type);
+            }
+            if (!string.IsNullOrEmpty(queryModel.Address))
+            {
+                query = query.Where(x => x.Address.Contains(queryModel.Address));
+            }
+            if (!string.IsNullOrEmpty(queryModel.Topic))
+            {
+                query = query.Where(x => x.Topic.Contains(queryModel.Topic));
+            }
+            if (queryModel.CreateDate.HasValue)
+            {
+                query = query.Where(x => x.CreateDate >= queryModel.CreateDate.Value);
+            }
+            if (queryModel.ModifyDate.HasValue)
+            {
+                query = query.Where(x => x.ModifyDate <= queryModel.ModifyDate.Value);
+            }
+
             return query;
         }
+
     }
 }

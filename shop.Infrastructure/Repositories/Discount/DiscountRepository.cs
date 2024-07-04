@@ -134,11 +134,47 @@ namespace shop.Infrastructure.Repositories.Discount
         }
         protected virtual IQueryable<DiscountEntity> BuildQuery(DiscountQueryModel queryModel)
         {
-            IQueryable<DiscountEntity> query;
-            query = _dbContext.Discount.AsNoTracking().Where(x => x. == false);
+            IQueryable<DiscountEntity> query = _dbContext.Discount.AsNoTracking();
 
-           
+            if (!string.IsNullOrEmpty(queryModel.MaVoucher))
+            {
+                query = query.Where(x => x.MaVoucher.Contains(queryModel.MaVoucher));
+            }
+            if (!string.IsNullOrEmpty(queryModel.NameVoucher))
+            {
+                query = query.Where(x => x.NameVoucher.Contains(queryModel.NameVoucher));
+            }
+            if (queryModel.DieuKien.HasValue)
+            {
+                query = query.Where(x => x.DieuKien == queryModel.DieuKien.Value);
+            }
+            if (queryModel.TypeVoucher.HasValue)
+            {
+                query = query.Where(x => x.TypeVoucher == queryModel.TypeVoucher.Value);
+            }
+            if (queryModel.Quantity.HasValue)
+            {
+                query = query.Where(x => x.Quantity == queryModel.Quantity.Value);
+            }
+            if (queryModel.MucUuDai.HasValue)
+            {
+                query = query.Where(x => x.MucUuDai == queryModel.MucUuDai.Value);
+            }
+            if (queryModel.DateStart.HasValue)
+            {
+                query = query.Where(x => x.DateStart >= queryModel.DateStart.Value);
+            }
+            if (queryModel.DateEnd.HasValue)
+            {
+                query = query.Where(x => x.DateEnd <= queryModel.DateEnd.Value);
+            }
+            if (!string.IsNullOrEmpty(queryModel.StatusVoucher))
+            {
+                query = query.Where(x => x.StatusVoucher == queryModel.StatusVoucher);
+            }
+
             return query;
         }
+
     }
 }
