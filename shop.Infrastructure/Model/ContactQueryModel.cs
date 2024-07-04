@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace shop.Infrastructure.Model
 {
-    internal class ContactQueryModel: PaginationRequest
+    public class ContactQueryModel: PaginationRequest
     {
         public string? CODE { get; set; }
         public string? FullName { get; set; }
