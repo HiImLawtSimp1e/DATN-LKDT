@@ -10,8 +10,8 @@ namespace shop.Infrastructure.Business.Discount
 {
     public interface IDiscountBusiness
     {
-        /*public Task<Pagination<VirtualItemEntity>> GetAllAsync(VirtualItemQueryModel virtualItemQueryModel);
-        public Task<List<VirtualItemEntity>> ListAllAsync(VirtualItemQueryModel virtualItemQueryModel);*/
+        public Task<Pagination<DiscountEntity>> GetAllAsync(DiscountQueryModel discountQueryModel);
+        public Task<List<DiscountEntity>> ListAllAsync(DiscountQueryModel discountQueryModel);
         public Task<DiscountEntity> SaveAsync(DiscountEntity discountEntity);
         public Task<DiscountEntity> PatchAsync(DiscountEntity discountEntity);
         public Task<List<DiscountEntity>> SaveAsync(List<DiscountEntity> discountEntity);

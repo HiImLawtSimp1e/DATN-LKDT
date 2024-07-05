@@ -9,21 +9,20 @@ using System.Threading.Tasks;
 
 namespace shop.Infrastructure.Services
 {
-    public class SaleServices : ISaleServices
+    public class SaleDetailServices : ISaleDetailServices
     {
         private AppDbContext _appDbContext;
-
-        public SaleServices(AppDbContext appDbContext)
+        public SaleDetailServices(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public SalesEntity Add(SalesEntity obj)
+
+        public SaleDetaildEntity Add(SaleDetaildEntity obj)
         {
-            var data = new SalesEntity();
+            var data = new SaleDetaildEntity();
             try
             {
-
-                _appDbContext.Sales.Add(data);
+                _appDbContext.SaleDetaild.Add(data);
                 _appDbContext.SaveChanges();
             }
             catch (Exception e)
@@ -34,12 +33,12 @@ namespace shop.Infrastructure.Services
             return data;
         }
 
-        public SalesEntity Delete(Guid id)
+        public SaleDetaildEntity Delete(Guid id)
         {
-            var data = _appDbContext.Sales.FirstOrDefault(c => c.Id == id);
+            var data = _appDbContext.SaleDetaild.FirstOrDefault(c => c.Id == id);
             try
             {
-                _appDbContext.Sales.Remove(data);
+                _appDbContext.SaleDetaild.Remove(data);
                 _appDbContext.SaveChanges();
             }
             catch (Exception e)
@@ -50,19 +49,18 @@ namespace shop.Infrastructure.Services
             return data;
         }
 
-        public SalesEntity Details(Guid id)
+        public SaleDetaildEntity Details(Guid id)
         {
-            return _appDbContext.Sales.FirstOrDefault(c => c.Id == id);
+            return _appDbContext.SaleDetaild.FirstOrDefault(c => c.Id == id);
         }
 
-        public SalesEntity Update(SalesEntity obj)
+        public SaleDetaildEntity Update(SaleDetaildEntity obj)
         {
-
-            var data = _appDbContext.Sales.FirstOrDefault(c => c.Id == obj.Id);
+            var data = _appDbContext.SaleDetaild.FirstOrDefault(c => c.Id == obj.Id);
             try
             {
 
-                _appDbContext.Sales.Update(data);
+                _appDbContext.SaleDetaild.Update(data);
                 _appDbContext.SaveChanges();
             }
             catch (Exception e)

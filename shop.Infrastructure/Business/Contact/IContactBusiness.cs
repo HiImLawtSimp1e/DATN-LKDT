@@ -11,8 +11,8 @@ namespace shop.Infrastructure.Business.Contact
 {
     public interface IContactBusiness
     {
-        /*public Task<Pagination<VirtualItemEntity>> GetAllAsync(VirtualItemQueryModel virtualItemQueryModel);
-        public Task<List<VirtualItemEntity>> ListAllAsync(VirtualItemQueryModel virtualItemQueryModel);*/
+        public Task<Pagination<ContactEntity>> GetAllAsync(ContactQueryModel contactQueryModel);
+        public Task<List<ContactEntity>> ListAllAsync(ContactQueryModel contactQueryModel);
         public Task<ContactEntity> SaveAsync(ContactEntity contactEntity);
         public Task<ContactEntity> PatchAsync(ContactEntity contactEntity);
         public Task<List<ContactEntity>> SaveAsync(List<ContactEntity> contactEntity);

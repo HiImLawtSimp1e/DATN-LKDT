@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace shop.Infrastructure.IRepositories
 {
-    public interface ISaleRepository
+    public interface ISaleDetailRepository
     {
-        Task<SalesEntity> Add(SalesEntity obj);
-        Task<SalesEntity> Update(SalesEntity obj);
-        Task<List<SalesEntity>> GetAll();
+        Task<SaleDetaildEntity> Add(SaleDetaildEntity obj);
+        Task<SaleDetaildEntity> Update(SaleDetaildEntity obj);
+        Task<List<SaleDetaildEntity>> GetAll();
         Task Delete(Guid id);
     }
 }
