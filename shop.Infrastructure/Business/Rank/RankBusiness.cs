@@ -49,24 +49,9 @@ namespace shop.Infrastructure.Business.Rank
 
         public async Task<List<RankEntity>> SaveAsync(List<RankEntity> rankEntity)
         {
-            var oldRankItems = new List<RankEntity>();
-            foreach (var item in rankEntity)
-            {
-                if (item.Id != Guid.Empty)
-                {
-                    var oldRankItem = await FindAsync(item.Id);
-                    oldRankItems.Add(oldRankItem);
-                }
-            }
+
             var result = await _rankRepository.SaveAsync(rankEntity);
-            foreach (var virtualItem in result)
-            {
-                foreach (var intercepter in _virtualItemAfterSaveIntercepter.OrderBy(x => x.Order))
-                {
-                    var oldObj = oldRankItems.FirstOrDefault(x => x.Id == virtualItem.Id);
-                    await intercepter.Intercept(oldObj, virtualItem);
-                }
-            }
+  
             return result;
         }
     }

@@ -76,16 +76,16 @@ namespace shop.Infrastructure.Repositories.Rank
                 else
                 {
                     exist.STT = e.STT;
-                    exist.Username = e.;
-                    exist.IdAccount = e.;
-                    exist.Point = e.;
-                    exist.TotalPoint = e.;
-                    exist.Ranking = e.;
-                    exist.DateRank = e.;
-                    exist.Status = e.;
-                    exist.Policies = e.;
-                    exist.Benefits = e.;
-                    exist.Days =;
+                    //exist.Username = e.;
+                    //exist.IdAccount = e.;
+                    //exist.Point = e.;
+                    //exist.TotalPoint = e.;
+                    //exist.Ranking = e.;
+                    //exist.DateRank = e.;
+                    //exist.Status = e.;
+                    //exist.Policies = e.;
+                    //exist.Benefits = e.;
+                    //exist.Days =;
 
                     _dbContext.Ranks.Update(exist);
                     updated.Add(exist);
