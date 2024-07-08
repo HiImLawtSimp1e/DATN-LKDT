@@ -49,12 +49,12 @@ namespace shop.Infrastructure.Repositories.Discount
             return result;
         }
 
-        public Task<Pagination<RankEntity>> GetAllAsync(DiscountQueryModel discountQueryModel)
+        public Task<Pagination<DiscountEntity>> GetAllAsync(DiscountQueryModel discountQueryModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<RankEntity>> ListAllAsync(DiscountQueryModel discountQueryModel)
+        public Task<List<DiscountEntity>> ListAllAsync(DiscountQueryModel discountQueryModel)
         {
             throw new NotImplementedException();
         }
