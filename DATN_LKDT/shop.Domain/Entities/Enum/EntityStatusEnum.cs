@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppData.Enum
+namespace shop.Domain.Entities.Enum
 {
-    public enum UserTypeEnum
+    public enum EntityStatusEnum
     {
-        Admin =1,
-        Staff =2,
-        Client=3
+        Deleted = 0,
+        Active = 1,
+        Passive = 2
     }
 }

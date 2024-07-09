@@ -13,9 +13,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
+builder.Services.AddScoped<IApplicationRoleService, ApplicationRoleService>();
 
 // Register the repository
 builder.Services.AddScoped<IRepository<BlogEntity>, Repository<BlogEntity>>();
+builder.Services.AddScoped<IRepository<AccountEntity>, Repository<AccountEntity>>();
+builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
+builder.Services.AddScoped<IRepository<ApplicationRole>, Repository<ApplicationRole>>();
 
 //Enable CORS
 builder.Services.AddCors(options =>

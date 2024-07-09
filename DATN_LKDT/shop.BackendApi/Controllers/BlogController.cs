@@ -67,7 +67,7 @@ namespace shop.BackendApi.Controllers
             return Ok(response);
         }
         [HttpGet("admin/{id}")]
-        public async Task<ActionResult<ApiResponse<BlogEntity>>> GetAdminBlogs(Guid id)
+        public async Task<ActionResult<ApiResponse<BlogEntity>>> GetAdminBlog(Guid id)
         {
             var response = await _service.GetSingleBlog(id);
             if (!response.IsSuccessed)
