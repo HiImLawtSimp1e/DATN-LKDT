@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using shop.Infrastructure.Business;
+using shop.Infrastructure.Business.VirtualItem;
 using Shop.WebAdmin.Models;
 using System.Diagnostics;
 
@@ -6,15 +8,14 @@ namespace Shop.WebAdmin.Controllers
 {
     public class HomeController : Controller
     {
-        private
-        private readonly ILogger<HomeController> _logger;
+        private readonly IVirtualItemBusiness _virtualItemBusiness;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IVirtualItemBusiness virtualItemBusiness)
         {
-            _logger = logger;
+            _virtualItemBusiness=virtualItemBusiness;
         }
 
-        public IActionResult Index()
+        public  IActionResult Index()
         {
             return View();
         }

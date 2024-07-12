@@ -9,7 +9,7 @@ using shop.Domain.Entities;
 
 namespace shop.Infrastructure.Business
 {
-    public interface IVirtualItemBusiness
+    public interface IVirtualItemObjRelationBusiness
     {
         public Task<Pagination<VirtualItemObjRelationEntity>> GetAllAsync(VirtualItemObjRelationQueryModel virtualItemQueryModel);
         public Task<List<VirtualItemObjRelationEntity>> ListAllAsync(VirtualItemObjRelationQueryModel virtualItemQueryModel);

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Implements\" />
+    <Folder Include="IRepositories\" />
   </ItemGroup>
 
   <ItemGroup>

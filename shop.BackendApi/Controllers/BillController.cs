@@ -1,8 +1,7 @@
-﻿using AppData.IRepositories;
-
-using AppData.Repositories;
+﻿using AppData.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using shop.Domain.Entities;
+using shop.Infrastructure.Repositories.Bill;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

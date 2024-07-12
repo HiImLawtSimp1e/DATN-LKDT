@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppData.IRepositories
+namespace shop.Infrastructure.Repositories.Blog
 {
     public interface IBlogRepository
     {

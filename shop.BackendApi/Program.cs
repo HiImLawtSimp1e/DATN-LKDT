@@ -16,7 +16,7 @@ builder.Configuration.AddConfiguration(configuration);
 
 // Thêm DbContext vào WebApplicationBuilder
 var connectionString = builder.Configuration.GetSection("ConnectionStrings:Default").Value;
-builder.Services.AddDbContextPool<AppDbContext>(x => x.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.RegisterServiceMngComponents(builder.Configuration);

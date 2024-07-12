@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using shop.Infrastructure.Database.Context;
-using AppData.IRepositories;
+using shop.Infrastructure.Repositories.Bill;
 
 namespace AppData.Repositories
 {

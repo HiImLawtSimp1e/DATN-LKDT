@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppData.IRepositories
+namespace shop.Infrastructure.Repositories.Bill
 {
     public interface IBillDetailRepository
     {
@@ -15,6 +15,6 @@ namespace AppData.IRepositories
         Task Delete(Guid id);
 
         Task<BillDetailsEntity> GetById(Guid id);
-        
+
     }
 }

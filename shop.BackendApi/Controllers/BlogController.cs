@@ -1,7 +1,7 @@
-﻿using AppData.IRepositories;
-using AppData.Repositories;
+﻿using AppData.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using shop.Domain.Entities;
+using shop.Infrastructure.Repositories.Blog;
 
 namespace AppApi.Controllers
 {

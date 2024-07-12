@@ -4,8 +4,6 @@ using shop.Infrastructure.Model;
 using shop.Infrastructure.Model.Common.Pagination;
 using shop.Infrastructure.Repositories.VirtualItem;
 using shop.Infrastructure.Utilities;
-using System;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace shop.Infrastructure.Business.VirtualItem
 {

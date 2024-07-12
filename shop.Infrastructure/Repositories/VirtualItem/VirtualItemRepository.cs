@@ -46,6 +46,7 @@ namespace shop.Infrastructure.Repositories.VirtualItem
 
         public async Task<VirtualItemEntity> FindAsync(Guid Id)
         {
+            var x = _dbContext.Database.GetConnectionString();
             var result = await _dbContext.VirtualItems.AsNoTracking().FirstOrDefaultAsync(x =>x.Id == Id&& x.Isdeleted!=false);
             if (result == null)
                 throw new ArgumentException(IVirtualItemRepository.Message_VirtualItemNotFound);
@@ -54,6 +55,7 @@ namespace shop.Infrastructure.Repositories.VirtualItem
 
         public async Task<Pagination<VirtualItemEntity>> GetAllAsync(VirtualItemQueryModel virtualItemQueryModel)
         {
+            var x = _dbContext.Database.GetDbConnection();
             IQueryable<VirtualItemEntity> query =  BuildQuery(virtualItemQueryModel);
 
             var sortExpression = string.Empty;
@@ -137,7 +139,7 @@ namespace shop.Infrastructure.Repositories.VirtualItem
         protected virtual IQueryable<VirtualItemEntity> BuildQuery( VirtualItemQueryModel queryModel)
         {
             IQueryable<VirtualItemEntity> query;
-            query= _dbContext.VirtualItems.AsNoTracking().Where(x=>x.Isdeleted==false);
+            query= _dbContext.VirtualItems.AsNoTracking().Where(x=>x.Isdeleted!=false);
 
             if (queryModel.ListTextSearch!=null)
             {
@@ -153,7 +155,7 @@ namespace shop.Infrastructure.Repositories.VirtualItem
                 var ts = queryModel.FullTextSearch;
                 query = query.Where(q => q.Name.Contains(ts) || q.Code.Contains(ts) );
             }
-            if (queryModel.Id == null)
+            if (queryModel.Id != null)
             {
                 query=query.Where(x => x.Id==queryModel.Id);
             }

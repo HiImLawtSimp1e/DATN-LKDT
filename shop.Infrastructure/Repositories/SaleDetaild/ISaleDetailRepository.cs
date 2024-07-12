@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Infrastructure.IRepositories
+namespace shop.Infrastructure.Repositories.SaleDetaild
 {
     public interface ISaleDetailRepository
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shop.Infrastructure.Business.VirtualItem
+namespace shop.Infrastructure.Business
 {
     public interface IVirtualItemBusiness
     {
