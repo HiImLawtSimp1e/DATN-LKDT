@@ -15,6 +15,6 @@ namespace shop.Domain.Entities
         public string SeoTitle { get; set; } = string.Empty;
         public string SeoDescription { get; set; } = string.Empty;
         public string SeoKeyworks { get; set; } = string.Empty;
-        public int Status { get; set; }
+        public int Status { get; set; } = 1;
     }
 }

@@ -9,7 +9,7 @@ public class BaseEntity
 
     public virtual Guid? LastModifiedByUserId { get; set; }
 
-    public virtual DateTime? LastModifiedOnDate { get; set; } = DateTime.Now;
+    public virtual DateTime LastModifiedOnDate { get; set; } = DateTime.Now;
 
-    public virtual DateTime? CreatedOnDate { get; set; } = DateTime.Now;
+    public virtual DateTime CreatedOnDate { get; set; } = DateTime.Now;
 }

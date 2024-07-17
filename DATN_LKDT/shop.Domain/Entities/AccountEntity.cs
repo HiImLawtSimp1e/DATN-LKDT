@@ -26,7 +26,7 @@ namespace shop.Domain.Entities
 
         public int? Points { get; set; }
 
-        public virtual CartEntity? Carts { get; set; }
+        public CartEntity? Cart { get; set; }
         [JsonIgnore]
         public List<Order>? Orders { get; set; }
     }
