@@ -25,6 +25,6 @@ namespace shop.Application.ViewModels.RequestDTOs
         public string PhoneNumber { get; set; } = string.Empty;
 
         public string? ImageUrl { get; set; } = string.Empty;
-        public UserTypeEnum UserTypeEnum { get; set; } = UserTypeEnum.Client;
+        public UserTypeEnum UserTypeEnum { get; set; }
     }
 }

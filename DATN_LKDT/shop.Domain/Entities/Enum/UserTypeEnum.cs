@@ -8,8 +8,8 @@ namespace AppData.Enum
 {
     public enum UserTypeEnum
     {
-        Admin =1,
-        Staff =2,
-        Client=3
+        Admin = 1,
+        Employee = 2,
+        Customer = 3
     }
 }

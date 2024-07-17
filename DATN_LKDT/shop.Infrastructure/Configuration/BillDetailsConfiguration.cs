@@ -7,12 +7,15 @@ namespace AppData.Configuration
     {
         public void Configure(EntityTypeBuilder<BillDetailsEntity> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(bd => bd.Id);
 
+            builder.HasOne(bd => bd.Bills)
+                .WithMany(b => b.BillDetails)
+                .HasForeignKey(bd => bd.BillId);
 
-            builder.HasOne(p => p.Discounts).WithMany().HasForeignKey(p => p.IdDiscount);
-
-            builder.HasOne(p => p.Bills).WithMany().HasForeignKey(p => p.IdBill);
+            builder.HasOne(bd => bd.Discounts)
+                .WithMany(d => d.BillDetails)
+                .HasForeignKey(bd => bd.DiscountId);
         }
     }
 }

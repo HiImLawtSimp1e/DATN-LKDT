@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using shop.Domain.Entities.Base;
 
 namespace shop.Domain.Entities
@@ -29,5 +30,7 @@ namespace shop.Domain.Entities
         [Required(ErrorMessage = "Ngày kết thúc là trường bắt buộc")]
         public DateTime DateEnd { get; set; }
         public string? StatusVoucher { get; set; }
+        [JsonIgnore]
+        public List<BillDetailsEntity>? BillDetails { get; set; }
     }
 }

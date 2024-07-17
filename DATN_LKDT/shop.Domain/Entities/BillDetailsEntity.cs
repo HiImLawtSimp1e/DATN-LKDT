@@ -4,8 +4,8 @@
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public Guid IdBill { get; set; }
-        public Guid? IdDiscount { get; set; }
+        public Guid BillId { get; set; }
+        public Guid? DiscountId { get; set; }
 
         public Guid? IdVirtualItem { get; set; }
 

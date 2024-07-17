@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using shop.Domain.Entities;
+using shop.Infrastructure.Initialization;
 using System.Reflection;
 
 namespace shop.Infrastructure.Database.Context;
@@ -34,10 +36,33 @@ public class AppDbContext : DbContext
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<ApplicationRole> AspNetRoles { get; set; }
     public DbSet<VirtualItemEntity> VirtualItems { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductType> ProductTypes { get; set; }
+    public DbSet<ProductVariant> ProductVariants { get; set; }
+    public DbSet<ProductAttribute> ProductAttributes { get; set; }
+    public DbSet<ProductValue> ProductValues { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<CartItem>()
+           .HasKey(ci => new { ci.CartId, ci.ProductId, ci.ProductTypeId });
+
+        builder.Entity<OrderItem>()
+            .HasKey(oi => new { oi.OrderId, oi.ProductId, oi.ProductTypeId });
+
+        builder.Entity<Order>(entity =>
+        {
+            entity.Property(o => o.State)
+                  .HasConversion<int>()
+                  .IsRequired();
+        });
+
         builder.Entity<CartEntity>().HasOne(c => c.Accounts).WithOne(p => p.Carts).HasForeignKey<CartEntity>();
 
         builder.Entity<VirtualItemEntity>().HasKey(p => p.Id);
@@ -49,6 +74,10 @@ public class AppDbContext : DbContext
         //builder.Entity<vOverView>().ToView("vOverView").HasNoKey();
         //builder.Entity<BillGanDay>().ToView("BillGanDay").HasNoKey();
         //builder.Entity<PhoneStatitics>().ToView("PhoneStatitics").HasNoKey();
+
+        Seeding.SeedingAccount(builder);
+        Seeding.SeedingData(builder);
+
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

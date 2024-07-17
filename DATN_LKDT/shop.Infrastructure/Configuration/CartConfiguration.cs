@@ -14,9 +14,9 @@ namespace AppData.Configuration
               .WithOne(a => a.Carts)
               .HasForeignKey<CartEntity>(c => c.Id);
 
-            builder.HasMany(c => c.CartDetails)
-               .WithOne(cd => cd.Carts)
-               .HasForeignKey(cd => cd.CartId);
+            builder.HasMany(c => c.CartItems)
+               .WithOne(ci => ci.Cart)
+               .HasForeignKey(ci => ci.CartId);
         }
     }
 }
