@@ -63,7 +63,7 @@ public class AppDbContext : DbContext
                   .IsRequired();
         });
 
-        builder.Entity<CartEntity>().HasOne(c => c.Accounts).WithOne(p => p.Carts).HasForeignKey<CartEntity>();
+        builder.Entity<CartEntity>().HasOne(c => c.Accounts).WithOne(p => p.Cart).HasForeignKey<CartEntity>();
 
         builder.Entity<VirtualItemEntity>().HasKey(p => p.Id);
         //builder.Entity<VW_Phone>().ToView("VW_Phone").HasNoKey();

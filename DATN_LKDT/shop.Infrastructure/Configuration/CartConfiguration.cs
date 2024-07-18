@@ -11,7 +11,7 @@ namespace AppData.Configuration
             builder.HasKey(p => p.Id);
 
             builder.HasOne(c => c.Accounts)
-              .WithOne(a => a.Carts)
+              .WithOne(a => a.Cart)
               .HasForeignKey<CartEntity>(c => c.Id);
 
             builder.HasMany(c => c.CartItems)

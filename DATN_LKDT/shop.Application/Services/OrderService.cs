@@ -241,7 +241,7 @@ namespace shop.Application.Services
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>
             {
-                Data = true,
+                ResultObject = true,
                 Message = "Đặt hàng thành công"
             };
         }
