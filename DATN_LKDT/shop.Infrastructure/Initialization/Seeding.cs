@@ -572,7 +572,7 @@ namespace shop.Infrastructure.Initialization
                   {
                       Id = Guid.NewGuid(),
                       ProductId = new Guid("07acf5bd-e13d-4667-ba8e-70be6785f655"),
-                      ImageUrl = "https://upload.wikimedia.org/wikipedia/en/d/d5/Diablo_II_Coverart.png",
+                      ImageUrl = "https://i.pinimg.com/564x/ec/3c/d4/ec3cd4cbb811deebd3db2fbbb67fd932.jpg",
                       IsMain = true,
                   }
                 );
