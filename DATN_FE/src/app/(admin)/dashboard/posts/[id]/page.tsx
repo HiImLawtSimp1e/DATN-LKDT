@@ -1,7 +1,7 @@
 import UpdatePostForm from "@/components/dashboard/post/update-post-form";
 
 const Post = async ({ id }: { id: string }) => {
-  const res = await fetch(`http://localhost:5000/api/Post/admin/${id}`, {
+  const res = await fetch(`http://localhost:5000/api/Blog/admin/${id}`, {
     method: "GET",
     next: { tags: ["postDetail"] },
   });

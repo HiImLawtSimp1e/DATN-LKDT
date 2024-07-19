@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Định nghĩa hàm addAttribute
 export const addAttribute = async (
@@ -49,6 +49,8 @@ export const addAttribute = async (
       // Nếu thành công, làm mới lại thẻ và chuyển hướng
       revalidateTag("selectProductAttribute");
       revalidateTag("productAttributeList");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -109,6 +111,8 @@ export const updateAttribute = async (
       // Nếu thành công, làm mới lại thẻ và chuyển hướng
       revalidateTag("selectProductAttribute");
       revalidateTag("productAttributeList");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -143,6 +147,8 @@ export const deleteAttribute = async (
     // Nếu phản hồi thành công, làm mới lại thẻ và chuyển hướng
     revalidateTag("selectProductAttribute");
     revalidateTag("productAttributeList");
+    revalidatePath("/");
+    revalidatePath("/product");
     return { success: true, errors: [] };
   } else {
     return { errors: [message] };

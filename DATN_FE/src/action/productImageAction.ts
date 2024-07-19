@@ -64,6 +64,8 @@ export const AddProductImage = async (
       // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
       revalidatePath(`/dashboard/products/${productId}`);
       revalidateTag("shopProductDetail");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -124,6 +126,8 @@ export const updateProductImage = async (
       revalidateTag("productDetailAdmin");
       revalidateTag("getProductImage");
       revalidateTag("shopProductDetail");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -157,6 +161,8 @@ export const deleteProductImage = async (
     // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
     revalidateTag("productDetailAdmin");
     revalidateTag("shopProductDetail");
+    revalidatePath("/");
+    revalidatePath("/product");
     return { success: true, errors: [] };
   } else {
     return { errors: [message] };

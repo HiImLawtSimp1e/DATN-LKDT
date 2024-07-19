@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import slugify from "slugify";
 
 // Định nghĩa hàm addCategory
@@ -47,6 +47,7 @@ export const addCategory = async (
       // Nếu thành công, làm mới lại đường dẫn và chuyển hướng
       revalidateTag("categoryListAdmin");
       revalidateTag("categorySelect");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -105,6 +106,7 @@ export const updateCategory = async (
       revalidateTag("categoryListAdmin");
       revalidateTag("categorySelect");
       revalidateTag("categoryDetail");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -135,6 +137,7 @@ export const deleteCategory = async (
     // Nếu thành công, làm mới lại đường dẫn và chuyển hướng
     revalidateTag("categoryListAdmin");
     revalidateTag("categorySelect");
+    revalidatePath("/product");
     return { success: true, errors: [] };
   } else {
     return { errors: [message] };

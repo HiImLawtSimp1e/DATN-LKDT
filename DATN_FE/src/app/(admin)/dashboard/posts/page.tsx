@@ -4,9 +4,9 @@ const Posts = async ({ params }: { params: { page?: number } }) => {
   const { page } = params;
   let url = "";
   if (page == null || page <= 0) {
-    url = "http://localhost:5000/api/Post/admin";
+    url = "http://localhost:5000/api/Blog/admin";
   } else {
-    url = `http://localhost:5000/api/Post/admin?page=${page}`;
+    url = `http://localhost:5000/api/Blog/admin?page=${page}`;
   }
   const res = await fetch(url, {
     method: "GET",

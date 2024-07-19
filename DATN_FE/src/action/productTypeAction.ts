@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Định nghĩa hàm thêm loại sản phẩm
 export const addType = async (
@@ -46,6 +46,8 @@ export const addType = async (
       // Nếu phản hồi thành công và success là true, cập nhật lại đường dẫn và chuyển hướng
       revalidateTag("selectProductType");
       revalidateTag("productTypeList");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -106,6 +108,8 @@ export const updateType = async (
       // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
       revalidateTag("selectProductType");
       revalidateTag("productTypeList");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -137,6 +141,8 @@ export const deleteType = async (
     // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
     revalidateTag("selectProductType");
     revalidateTag("productTypeList");
+    revalidatePath("/");
+    revalidatePath("/product");
     return { success: true, errors: [] };
   } else {
     return { errors: [message] };

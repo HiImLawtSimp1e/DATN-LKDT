@@ -2,7 +2,7 @@
 
 // Import các module và interface cần thiết
 import { validateVariant } from "@/lib/validation/validateVariant";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Định nghĩa interface VariantFormData
 interface VariantFormData {
@@ -85,6 +85,8 @@ export const addVariant = async (
       revalidateTag("productDetailAdmin");
       revalidateTag("selectProductType");
       revalidateTag("shopProductDetail");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -178,6 +180,8 @@ export const updateVariant = async (
       revalidateTag("selectProductType");
       revalidateTag("productDetailAdmin");
       revalidateTag("shopProductDetail");
+      revalidatePath("/");
+      revalidatePath("/product");
       return { success: true, errors: [] };
     } else {
       return { errors: [message] };
@@ -216,6 +220,8 @@ export const deleteVariant = async (
     revalidateTag("productDetailAdmin");
     revalidateTag("selectProductType");
     revalidateTag("shopProductDetail");
+    revalidatePath("/");
+    revalidatePath("/product");
     return { success: true, errors: [] };
   } else {
     return { errors: [message] };
