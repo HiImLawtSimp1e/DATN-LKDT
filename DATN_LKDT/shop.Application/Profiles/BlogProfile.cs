@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using shop.Application.ViewModels.RequestDTOs;
-using shop.Application.ViewModels.ResponseDTOs;
+using shop.Application.ViewModels.RequestDTOs.BlogDto;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 using System;
 using System.Collections.Generic;

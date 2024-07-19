@@ -21,7 +21,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<ProductVariant>>> GetVariant(Guid productId, [FromQuery] Guid productTypeId)
         {
             var response = await _service.GetVartiant(productId, productTypeId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -31,7 +31,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> AddVariant(Guid productId, AddProductVariantDto newVariant)
         {
             var response = await _service.AddVariant(productId, newVariant);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -41,7 +41,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateVariant(Guid productId, UpdateProductVariantDto updateVariant)
         {
             var response = await _service.UpdateVariant(productId, updateVariant);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -51,7 +51,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteVariant(Guid productId, [FromQuery] Guid productTypeId)
         {
             var response = await _service.SoftDeleteVariant(productTypeId, productId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

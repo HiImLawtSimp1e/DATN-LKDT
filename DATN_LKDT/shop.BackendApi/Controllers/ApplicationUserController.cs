@@ -30,7 +30,7 @@ namespace shop.BackendApi.Controllers
                 pageSize = 8;
             }
             var response = await _service.GetUsers(currentPage, pageSize);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -40,7 +40,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateUser(AddApplicationUserDto newUser)
         {
             var response = await _service.CreateUser(newUser);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -50,7 +50,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateUser(string id, UpdateApplicationUserDto updateUser)
         {
             var response = await _service.UpdateUser(id, updateUser);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -60,7 +60,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteUser(string id)
         {
             var response = await _service.SoftDeleteUser(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

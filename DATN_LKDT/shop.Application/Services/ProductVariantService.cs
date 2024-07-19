@@ -31,7 +31,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -42,7 +42,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy loại sản phẩm"
                 };
             }
@@ -57,7 +57,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Biến thể loại sản phẩm đã tồn tại!"
                 };
             }
@@ -72,7 +72,7 @@ namespace shop.Application.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
                 {
-                    ResultObject = true,
+                    Data = true,
                     Message = "Đã thêm biến thể loại sản phẩm!"
                 };
             }
@@ -84,13 +84,13 @@ namespace shop.Application.Services
                 variant.IsActive = true;
 
                 _context.ProductVariants.Add(variant);
-                dbProduct.LastModifiedOnDate = DateTime.Now;
+                dbProduct.ModifiedAt = DateTime.Now;
 
                 await _context.SaveChangesAsync();
 
                 return new ApiResponse<bool>
                 {
-                    ResultObject = true,
+                    Data = true,
                     Message = "Đã thêm biến thể loại sản phẩm"
                 };
             }
@@ -98,7 +98,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = $"Lỗi: {ex.Message}"
                 };
             }
@@ -114,14 +114,14 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<ProductVariant>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy biến thể"
                 };
             }
 
             return new ApiResponse<ProductVariant>
             {
-                ResultObject = variant
+                Data = variant
             };
         }
 
@@ -134,7 +134,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy biến thể"
                 };
             }
@@ -160,19 +160,19 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy biến thể sản phẩm"
                 };
             }
 
             _mapper.Map(updateVariant, dbVariant);
-            dbProduct.LastModifiedOnDate = DateTime.UtcNow;
+            dbProduct.ModifiedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Đã cập nhật biến thể sản phẩm thành công!"
             };
         }

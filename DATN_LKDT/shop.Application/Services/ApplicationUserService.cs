@@ -37,34 +37,32 @@ namespace shop.Application.Services
             await _repo.InsertAsync(user);
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Thêm thành công thông tin người dùng"
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<ApplicationUser>>>> GetUsers(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<ApplicationUser>>>> GetUsers(int currentPage, int pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.AspNetUsers.Where(b => b.Status != 0).Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.AspNetUsers.Where(b => b.Status != 0).Count() / pageResults));
 
             var users = await _context.AspNetUsers
                                .Where(b => b.Status != 0) // Filter blog that status has deleted 
-                               .Skip((currentPage - 1) * pageSize)
-                               .Take(pageSize)
+                               .Skip((currentPage - 1) * pageResults)
+                               .Take(pageResults)
                                .ToListAsync();
 
             var pagingData = new Pagination<List<ApplicationUser>>
             {
-                Content = users,
+                Result = users,
                 CurrentPage = currentPage,
-                PageSize = pageSize,
-                TotalPages = (int)pageCount
+                PageResults = pageResults,
+                Pages = (int)pageCount
             };
 
             return new ApiResponse<Pagination<List<ApplicationUser>>>
             {
-                ResultObject = pagingData,
-                IsSuccessed = true,
+                Data = pagingData
             };
         }
 
@@ -75,7 +73,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thông tin người dùng"
                 };
             }
@@ -86,8 +84,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Đã xóa thông tin người dùng"
             };
         }
@@ -99,7 +96,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thông tin người dùng"
                 };
             }
@@ -109,8 +106,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Cập nhật thông tin người dùng thành công"
             };
         }

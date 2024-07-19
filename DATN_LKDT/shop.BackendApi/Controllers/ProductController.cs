@@ -32,7 +32,7 @@ namespace shop.BackendApi.Controllers
                 pageResults = 12f;
             }
             var response = await _service.GetProductsAsync(page, pageResults);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -50,7 +50,7 @@ namespace shop.BackendApi.Controllers
                 pageResults = 10f;
             }
             var response = await _service.GetAdminProducts(page, pageResults);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -60,7 +60,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<Product>>> GetAdminProduct(Guid id)
         {
             var response = await _service.GetAdminSingleProduct(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -70,7 +70,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<CustomerProductResponseDto>>> GetProductBySlug(string slug)
         {
             var response = await _service.GetProductBySlug(slug);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -88,7 +88,7 @@ namespace shop.BackendApi.Controllers
                 pageResults = 12f;
             }
             var response = await _service.GetProductsByCategory(categorySlug, page, pageResults);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -98,7 +98,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateProduct(AddProductDto newProduct)
         {
             var response = await _service.CreateProduct(newProduct);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -108,7 +108,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProduct(Guid id, UpdateProductDto product)
         {
             var response = await _service.UpdateProduct(id, product);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -118,7 +118,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteProduct(Guid productId)
         {
             var response = await _service.SoftDeleteProduct(productId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -137,7 +137,7 @@ namespace shop.BackendApi.Controllers
                 pageResults = 12f;
             }
             var response = await _service.SearchProducts(searchText, page, pageResults);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

@@ -29,7 +29,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<ProductImage>
             {
-                ResultObject = productImage,
+                Data = productImage,
             };
         }
         public async Task<ApiResponse<bool>> CreateProductImage(AddProductImageDto newImage)
@@ -61,7 +61,7 @@ namespace shop.Application.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
                 {
-                    ResultObject = true,
+                    Data = true,
                     Message = "Tạo ảnh thành công!"
                 };
             }
@@ -80,7 +80,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy ảnh"
                 };
             }
@@ -89,7 +89,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không thể xóa ảnh chính"
                 };
             }
@@ -101,7 +101,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không thể xóa ảnh mặc định"
                 };
             }
@@ -112,7 +112,7 @@ namespace shop.Application.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
                 {
-                    ResultObject = true,
+                    Data = true,
                     Message = "Xóa ảnh thành công!"
                 };
             }
@@ -131,7 +131,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy ảnh"
                 };
             }
@@ -159,7 +159,7 @@ namespace shop.Application.Services
                     // Nếu sản phẩm này chỉ có một ảnh => từ chối sửa đổi đó
                     return new ApiResponse<bool>
                     {
-                        IsSuccessed = false,
+                        Success = false,
                         Message = "Không thể ngưng hoạt động ảnh mặc định"
                     };
                 }
@@ -188,7 +188,7 @@ namespace shop.Application.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = true,
+                    Success = true,
                     Message = "Cập nhật ảnh thành công!"
                 };
             }

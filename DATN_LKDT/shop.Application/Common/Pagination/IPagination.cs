@@ -10,9 +10,9 @@ namespace AppBusiness.Model.Pagination
     {
         int CurrentPage { get; set; }
 
-        int TotalPages { get; set; }
+        int Pages { get; set; }
 
-        int PageSize { get; set; }
+        int PageResults { get; set; }
 
         int NumberOfRecords { get; set; }
 

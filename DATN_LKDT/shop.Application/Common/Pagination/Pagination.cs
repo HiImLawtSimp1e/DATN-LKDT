@@ -10,47 +10,47 @@ namespace AppBusiness.Model.Pagination
     {
         public int CurrentPage { get; set; }
 
-        public int TotalPages { get; set; }
+        public int Pages { get; set; }
 
-        public int PageSize { get; set; }
+        public int PageResults { get; set; }
 
         public int NumberOfRecords { get; set; }
 
         public int TotalRecords { get; set; }
 
-        public T? Content { get; set; }
+        public T? Result { get; set; }
 
         public Pagination()
         {
-            PageSize = 20;
+            PageResults = 20;
             CurrentPage = 1;
         }
 
-        public Pagination(int currentPage, int pageSize)
+        public Pagination(int currentPage, int pageResults)
         {
             CurrentPage = currentPage;
-            PageSize = pageSize;
+            PageResults = pageResults;
         }
 
-        public Pagination(int totalRecords, int currentPage, int pageSize)
+        public Pagination(int totalRecords, int currentPage, int pageResults)
         {
             TotalRecords = totalRecords;
             CurrentPage = currentPage;
-            PageSize = pageSize;
+            PageResults = pageResults;
             NumberOfRecords = totalRecords;
-            double a = (double)TotalRecords / (double)pageSize;
-            TotalPages = (int)Math.Ceiling(a);
+            double a = (double)TotalRecords / (double)pageResults;
+            Pages = (int)Math.Ceiling(a);
         }
 
-        public Pagination(T content, int totalRecords, int currentPage, int pageSize)
+        public Pagination(T result, int totalRecords, int currentPage, int pageResults)
         {
-            Content = content;
+            Result = result;
             TotalRecords = totalRecords;
             CurrentPage = currentPage;
-            PageSize = pageSize;
+            PageResults = pageResults;
             NumberOfRecords = totalRecords;
-            double a = (double)TotalRecords / (double)pageSize;
-            TotalPages = (int)Math.Ceiling(a);
+            double a = (double)TotalRecords / (double)pageResults;
+            Pages = (int)Math.Ceiling(a);
         }
     }
 }

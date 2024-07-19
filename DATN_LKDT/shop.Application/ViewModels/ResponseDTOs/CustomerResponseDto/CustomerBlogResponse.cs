@@ -18,6 +18,6 @@ namespace shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto
         public string SeoTitle { get; set; } = string.Empty;
         public string SeoDescription { get; set; } = string.Empty;
         public string SeoKeyworks { get; set; } = string.Empty;
-        public DateTime CreatedOnDate { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

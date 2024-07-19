@@ -31,7 +31,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -42,7 +42,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thuộc tính sản phẩm"
                 };
             }
@@ -57,7 +57,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Giá trị thuộc tính sản phẩm đã tồn tại!"
                 };
             }
@@ -71,7 +71,7 @@ namespace shop.Application.Services
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
                 {
-                    ResultObject = true,
+                    Data = true,
                     Message = "Đã tạo giá trị thuộc tính sản phẩm thành công!"
                 };
             }
@@ -83,13 +83,13 @@ namespace shop.Application.Services
                 attributeValue.IsActive = true;
 
                 _context.ProductValues.Add(attributeValue);
-                dbProduct.LastModifiedOnDate = DateTime.Now;
+                dbProduct.ModifiedAt = DateTime.Now;
 
                 await _context.SaveChangesAsync();
 
                 return new ApiResponse<bool>
                 {
-                    ResultObject = true,
+                    Data = true,
                     Message = "Đã tạo giá trị thuộc tính sản phẩm thành công!"
                 };
             }
@@ -97,7 +97,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = $"Lỗi: {ex.Message}"
                 };
             }
@@ -113,14 +113,14 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<ProductValue>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy giá trị thuộc tính"
                 };
             }
 
             return new ApiResponse<ProductValue>
             {
-                ResultObject = attributeValue
+                Data = attributeValue
             };
         }
 
@@ -133,7 +133,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy giá trị thuộc tính"
                 };
             }
@@ -159,19 +159,19 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy giá trị thuộc tính"
                 };
             }
 
             _mapper.Map(updateAttributeValue, dbAttributeValue);
-            dbProduct.LastModifiedOnDate = DateTime.UtcNow;
+            dbProduct.ModifiedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Đã cập nhật giá trị thuộc tính thành công!"
             };
         }

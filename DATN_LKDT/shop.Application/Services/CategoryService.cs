@@ -46,22 +46,22 @@ namespace shop.Application.Services
 
             var categories = await _context.Categories
                   .Where(c => !c.Deleted)
-                  .OrderByDescending(p => p.LastModifiedOnDate)
+                  .OrderByDescending(p => p.ModifiedAt)
                   .Skip((page - 1) * (int)pageResults)
                   .Take((int)pageResults)
                   .ToListAsync();
 
             var pagingData = new Pagination<List<Category>>
             {
-                Content = categories,
+                Result = categories,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<Category>>>
             {
-                ResultObject = pagingData,
+                Data = pagingData,
             };
         }
 
@@ -73,7 +73,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<Category>
             {
-                ResultObject = category
+                Data = category
             };
         }
 
@@ -87,7 +87,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<List<CustomerCategoryResponseDto>>
             {
-                ResultObject = result
+                Data = result
             };
         }
 
@@ -101,7 +101,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<List<CategorySelectResponseDto>>
             {
-                ResultObject = result
+                Data = result
             };
         }
 
@@ -115,7 +115,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy danh mục"
                 };
             }
@@ -138,13 +138,13 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy danh mục"
                 };
             }
 
             _mapper.Map(updateCategory, dbCategory);
-            dbCategory.LastModifiedOnDate = DateTime.Now;
+            dbCategory.ModifiedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

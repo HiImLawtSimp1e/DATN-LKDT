@@ -27,7 +27,7 @@ namespace shop.BackendApi.Controllers
                 page = 1;
             }
             var response = await _service.GetAdminOrders(page);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -37,7 +37,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<OrderItemDto>>>> GetAdminOrderItems(Guid orderId)
         {
             var response = await _service.GetAdminOrderItems(orderId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -47,7 +47,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<OrderDetailCustomerDto>>> GetAdminOrderCustomerInfo(Guid orderId)
         {
             var response = await _service.GetAdminOrderCustomerInfo(orderId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -57,7 +57,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<int>>> GetOrderState(Guid orderId)
         {
             var response = await _service.GetOrderState(orderId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -69,7 +69,7 @@ namespace shop.BackendApi.Controllers
         {
             var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
             var response = await _service.PlaceOrder(mockAccountId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -79,7 +79,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateOrderState(Guid orderId, OrderState state)
         {
             var response = await _service.UpdateOrderState(orderId, state);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

@@ -30,7 +30,7 @@ namespace shop.BackendApi.Controllers
                 pageSize = 8;
             }
             var response = await _service.GetAdminAccounts(currentPage, pageSize);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -40,7 +40,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<AccountEntity>>> GetAdminAccount(Guid id)
         {
             var response = await _service.GetAdminSingleAccount(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -50,7 +50,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateAccount(AddAccountDto newAccount)
         {
             var response = await _service.CreateAccount(newAccount);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -60,7 +60,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateAccount(Guid id, UpdateAccountDto updateAccount)
         {
             var response = await _service.UpdateAccount(id, updateAccount);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -70,7 +70,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteAccount(Guid id)
         {
             var response = await _service.SoftDeleteAccount(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

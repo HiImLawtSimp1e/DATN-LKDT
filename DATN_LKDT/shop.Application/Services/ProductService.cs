@@ -60,7 +60,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Thêm mới sản phẩm thành công"
             };
 
@@ -77,19 +77,19 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
 
             _mapper.Map(updateProduct, dbProduct);
-            dbProduct.LastModifiedOnDate = DateTime.Now;
+            dbProduct.ModifiedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Cập nhật sản phẩm thành công!"
             };
         }
@@ -105,7 +105,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -125,7 +125,7 @@ namespace shop.Application.Services
 
             var products = await _context.Products
                   .Where(p => !p.Deleted)
-                  .OrderByDescending(p => p.LastModifiedOnDate)
+                  .OrderByDescending(p => p.ModifiedAt)
                   .Skip((page - 1) * (int)pageResults)
                   .Take((int)pageResults)
                   .Include(p => p.ProductVariants.Where(pv => !pv.Deleted))
@@ -134,15 +134,15 @@ namespace shop.Application.Services
 
             var pagingData = new Pagination<List<Product>>
             {
-                Content = products,
+                Result = products,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<Product>>>
             {
-                ResultObject = pagingData
+                Data = pagingData
             };
 
         }
@@ -159,7 +159,7 @@ namespace shop.Application.Services
                  .FirstOrDefaultAsync(p => p.Id == id);
             return new ApiResponse<Product>
             {
-                ResultObject = product
+                Data = product
             };
         }
 
@@ -176,7 +176,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<CustomerProductResponseDto>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -185,7 +185,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<CustomerProductResponseDto>
             {
-                ResultObject = result
+                Data = result
             };
         }
 
@@ -195,7 +195,7 @@ namespace shop.Application.Services
 
             var products = await _context.Products
                   .Where(p => !p.Deleted && p.IsActive)
-                  .OrderByDescending(p => p.LastModifiedOnDate)
+                  .OrderByDescending(p => p.CreatedAt)
                   .Skip((page - 1) * (int)pageResults)
                   .Take((int)pageResults)
                   .Include(p => p.ProductVariants.Where(pv => !pv.Deleted && pv.IsActive))
@@ -206,15 +206,15 @@ namespace shop.Application.Services
 
             var pagingData = new Pagination<List<CustomerProductResponseDto>>
             {
-                Content = result,
+                Result = result,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<CustomerProductResponseDto>>>
             {
-                ResultObject = pagingData
+                Data = pagingData
             };
         }
 
@@ -225,7 +225,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<Pagination<List<CustomerProductResponseDto>>>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy danh mục sản phẩm"
                 };
             }
@@ -234,7 +234,7 @@ namespace shop.Application.Services
 
             var products = await _context.Products
                   .Where(p => !p.Deleted && p.IsActive && p.CategoryId == category.Id)
-                  .OrderByDescending(p => p.LastModifiedOnDate)
+                  .OrderByDescending(p => p.CreatedAt)
                   .Skip((page - 1) * (int)pageResults)
                   .Take((int)pageResults)
                   .Include(p => p.ProductVariants.Where(pv => !pv.Deleted && pv.IsActive))
@@ -245,15 +245,15 @@ namespace shop.Application.Services
 
             var pagingData = new Pagination<List<CustomerProductResponseDto>>
             {
-                Content = result,
+                Result = result,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<CustomerProductResponseDto>>>
             {
-                ResultObject = pagingData,
+                Data = pagingData,
             };
         }
 
@@ -286,7 +286,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<List<string>>
             {
-                ResultObject = result
+                Data = result
             };
         }
 
@@ -308,7 +308,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<Pagination<List<CustomerProductResponseDto>>>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -317,15 +317,15 @@ namespace shop.Application.Services
 
             var pagingData = new Pagination<List<CustomerProductResponseDto>>
             {
-                Content = result,
+                Result = result,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<CustomerProductResponseDto>>>
             {
-                ResultObject = pagingData,
+                Data = pagingData,
             };
         }
 

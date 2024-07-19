@@ -35,34 +35,32 @@ namespace shop.Application.Services
             await _repo.InsertAsync(blog);
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Tạo blog thành công"
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => !b.Deleted).Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => !b.Deleted).Count() / pageResults));
 
             var blogs = await _context.Blogs
                                .Where(b => !b.Deleted) // Filter blog that status has deleted 
-                               .OrderByDescending(b => b.LastModifiedByUserId)
-                               .Skip((currentPage - 1) * pageSize)
-                               .Take(pageSize)
+                               .OrderByDescending(b => b.ModifiedAt)
+                               .Skip((currentPage - 1) * pageResults)
+                               .Take(pageResults)
                                .ToListAsync();
             var pagingData = new Pagination<List<BlogEntity>>
             {
-                Content = blogs,
+                Result = blogs,
                 CurrentPage = currentPage,
-                PageSize = pageSize,
-                TotalPages = (int)pageCount
+                PageResults = pageResults,
+                Pages = (int)pageCount
             };
 
             return new ApiResponse<Pagination<List<BlogEntity>>>
             {
-                ResultObject = pagingData,
-                IsSuccessed = true,
+                Data = pagingData
             };
 
         }
@@ -74,42 +72,40 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<BlogEntity>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy blog"
                 };
             }
             return new ApiResponse<BlogEntity>
             {
-                ResultObject = blog,
-                IsSuccessed = true,
+                Data = blog
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.IsActive && !b.Deleted).Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.IsActive && !b.Deleted).Count() / pageResults));
 
             var blogs = await _context.Blogs
                                .Where(b => b.IsActive && !b.Deleted) // Filter blog that status has deleted & status is unactive
-                               .OrderByDescending(b => b.LastModifiedByUserId)
-                               .Skip((currentPage - 1) * pageSize)
-                               .Take(pageSize)
+                               .OrderByDescending(b => b.CreatedAt)
+                               .Skip((currentPage - 1) * pageResults)
+                               .Take(pageResults)
                                .ToListAsync();
 
             var result = _mapper.Map<List<CustomerBlogResponse>>(blogs);
 
             var pagingData = new Pagination<List<CustomerBlogResponse>>
             {
-                Content = result,
+                Result = result,
                 CurrentPage = currentPage,
-                PageSize = pageSize,
-                TotalPages = (int)pageCount
+                PageResults = pageResults,
+                Pages = (int)pageCount
             };
 
             return new ApiResponse<Pagination<List<CustomerBlogResponse>>>
             {
-                ResultObject = pagingData,
-                IsSuccessed = true,
+                Data = pagingData
             };
         }
 
@@ -121,14 +117,13 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<CustomerBlogResponse>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy blog"
                 };
             }
             return new ApiResponse<CustomerBlogResponse>
             {
-                ResultObject = result,
-                IsSuccessed = true,
+                Data = result
             };
         }
 
@@ -139,7 +134,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy blog"
                 };
             }
@@ -150,8 +145,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Xóa blog thành công"
             };
         }
@@ -163,20 +157,19 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy blog"
                 };
             }
 
             _mapper.Map(updateBlog, dbBlog);
-            dbBlog.LastModifiedOnDate = DateTime.Now;
+            dbBlog.ModifiedAt = DateTime.Now;
 
             await _repo.UpdateAsync(dbBlog);
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Update blog thành công"
             };
         }

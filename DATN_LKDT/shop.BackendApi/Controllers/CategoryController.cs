@@ -23,7 +23,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<Pagination<List<CustomerCategoryResponseDto>>>>> GetCategoriesAsync()
         {
             var response = await _service.GetCategoriesAsync();
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -37,7 +37,7 @@ namespace shop.BackendApi.Controllers
                 page = 1;
             }
             var response = await _service.GetAdminCategories(page);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -47,7 +47,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<Category>>> GetAdminCategory(Guid id)
         {
             var response = await _service.GetAdminCategory(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -57,7 +57,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<Category>>>> GetCategoriesSelect()
         {
             var response = await _service.GetCategoriesSelect();
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -67,7 +67,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateCategory(AddCategoryDto newCategory)
         {
             var response = await _service.CreateCategory(newCategory);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -78,7 +78,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateCategory(Guid id, UpdateCategoryDto category)
         {
             var response = await _service.UpdateCategory(id, category);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -89,7 +89,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteCategories(Guid categoryId)
         {
             var response = await _service.SoftDeleteCategory(categoryId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

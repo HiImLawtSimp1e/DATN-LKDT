@@ -44,7 +44,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thuộc tính"
                 };
             }
@@ -64,7 +64,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thuộc tính"
                 };
             }
@@ -77,7 +77,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không thể xóa thuộc tính vì nó có các giá trị sản phẩm liên quan."
                 };
             }
@@ -87,7 +87,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Xóa thuộc tính thành công"
             };
         }
@@ -98,21 +98,21 @@ namespace shop.Application.Services
             var pageCount = Math.Ceiling(_context.ProductAttributes.Where(p => !p.Deleted).Count() / pageResults);
 
             var attributes = await _context.ProductAttributes
-                                             .OrderByDescending(p => p.LastModifiedOnDate)
+                                             .OrderByDescending(p => p.ModifiedAt)
                                              .Skip((page - 1) * (int)pageResults)
                                              .Take((int)pageResults)
                                              .ToListAsync();
             var pagingData = new Pagination<List<ProductAttribute>>
             {
-                Content = attributes,
+                Result = attributes,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<ProductAttribute>>>
             {
-                ResultObject = pagingData,
+                Data = pagingData,
             };
         }
 
@@ -124,14 +124,14 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<ProductAttribute>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thuộc tính"
                 };
             }
 
             return new ApiResponse<ProductAttribute>
             {
-                ResultObject = attribute,
+                Data = attribute,
             };
         }
 
@@ -147,7 +147,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<List<ProductAttribute>>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -165,7 +165,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<List<ProductAttribute>>
             {
-                ResultObject = missingAttribute
+                Data = missingAttribute
             };
         }
     }

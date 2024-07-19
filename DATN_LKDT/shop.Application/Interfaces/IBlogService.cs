@@ -1,6 +1,6 @@
 ﻿using AppBusiness.Model.Pagination;
 using shop.Application.Common;
-using shop.Application.ViewModels.RequestDTOs;
+using shop.Application.ViewModels.RequestDTOs.BlogDto;
 using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 using System;

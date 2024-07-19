@@ -21,7 +21,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<ProductImage>>> GetProductImage(Guid id)
         {
             var res = await _service.GetProductImage(id);
-            if (!res.IsSuccessed)
+            if (!res.Success)
             {
                 return BadRequest(res);
             }
@@ -31,7 +31,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateProductImage(AddProductImageDto newImage)
         {
             var res = await _service.CreateProductImage(newImage);
-            if (!res.IsSuccessed)
+            if (!res.Success)
             {
                 return BadRequest(res);
             }
@@ -41,7 +41,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProductImage(Guid id, UpdateProductImageDto updateImage)
         {
             var res = await _service.UpdateProductImage(id, updateImage);
-            if (!res.IsSuccessed)
+            if (!res.Success)
             {
                 return BadRequest(res);
             }
@@ -51,7 +51,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductImage(Guid id)
         {
             var res = await _service.DeleteProductImage(id);
-            if (!res.IsSuccessed)
+            if (!res.Success)
             {
                 return BadRequest(res);
             }

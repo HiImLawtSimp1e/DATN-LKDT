@@ -4,20 +4,20 @@ public class ApiSuccessResponse<T> : ApiResponse<T>
 {
     public ApiSuccessResponse(string message)
     {
-        IsSuccessed = true;
+        Success = true;
         Message = message;
     }
 
-    public ApiSuccessResponse(T resultObject)
+    public ApiSuccessResponse(T data)
     {
-        IsSuccessed = true;
-        ResultObject = resultObject;
+        Success = true;
+        Data = data;
     }
 
-    public ApiSuccessResponse(string message, T resultObject)
+    public ApiSuccessResponse(string message, T data)
     {
-        IsSuccessed = true;
+        Success = true;
         Message = message;
-        ResultObject = resultObject;
+        Data = data;
     }
 }

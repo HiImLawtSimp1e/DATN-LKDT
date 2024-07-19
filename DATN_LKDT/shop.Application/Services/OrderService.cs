@@ -30,22 +30,22 @@ namespace shop.Application.Services
             var pageCount = Math.Ceiling(_context.Orders.Count() / pageResults);
 
             var orders = await _context.Orders
-                                   .OrderByDescending(p => p.LastModifiedOnDate)
+                                   .OrderByDescending(p => p.ModifiedAt)
                                    .Skip((page - 1) * (int)pageResults)
                                    .Take((int)pageResults)
                                    .ToListAsync();
 
             var pagingData = new Pagination<List<Order>>
             {
-                Content = orders,
+                Result = orders,
                 CurrentPage = page,
-                PageSize = (int)pageResults,
-                TotalPages = (int)pageCount
+                PageResults = (int)pageResults,
+                Pages = (int)pageCount
             };
 
             return new ApiResponse<Pagination<List<Order>>>
             {
-                ResultObject = pagingData
+                Data = pagingData
             };
         }
         public async Task<ApiResponse<List<OrderItemDto>>> GetAdminOrderItems(Guid orderId)
@@ -56,7 +56,7 @@ namespace shop.Application.Services
 
             var result = new ApiResponse<List<OrderItemDto>>
             {
-                ResultObject = new List<OrderItemDto>()
+                Data = new List<OrderItemDto>()
             };
 
             foreach (var item in items)
@@ -92,7 +92,7 @@ namespace shop.Application.Services
                     Quantity = item.Quantity
                 };
 
-                result.ResultObject.Add(cartProduct);
+                result.Data.Add(cartProduct);
             }
 
             return result;
@@ -104,7 +104,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<OrderDetailCustomerDto>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy đơn hàng"
                 };
             }
@@ -115,7 +115,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<OrderDetailCustomerDto>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy thông tin người dùng"
                 };
             }
@@ -130,12 +130,12 @@ namespace shop.Application.Services
                 Address = GetCustomerAddress(address),
                 Phone = customer.PhoneNumber,
                 InvoiceCode = order.InvoiceCode,
-                OrderCreatedAt = order.CreatedOnDate
+                OrderCreatedAt = order.CreatedAt
             };
 
             return new ApiResponse<OrderDetailCustomerDto>
             {
-                ResultObject = orderCustomerInfo
+                Data = orderCustomerInfo
             };
         }
 
@@ -145,7 +145,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Invalid state"
                 };
             }
@@ -155,7 +155,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy đơn hàng"
                 };
             }
@@ -163,7 +163,7 @@ namespace shop.Application.Services
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Cập nhật thành công trạng thái đơn hàng"
             };
         }
@@ -174,13 +174,13 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<int>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Not found order"
                 };
             }
             return new ApiResponse<int>
             {
-                ResultObject = (int)order.State
+                Data = (int)order.State
             };
         }
 
@@ -194,17 +194,17 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Bạn chưa đăng nhập"
                 };
             }
 
-            var cartItem = (await _cartService.GetCartItems(accountId)).ResultObject;
+            var cartItem = (await _cartService.GetCartItems(accountId)).Data;
             if (cartItem == null || cartItem.Count == 0)
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Giỏ hàng trống"
                 };
             }
@@ -241,7 +241,7 @@ namespace shop.Application.Services
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Đặt hàng thành công"
             };
         }

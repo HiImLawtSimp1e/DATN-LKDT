@@ -30,7 +30,7 @@ namespace shop.BackendApi.Controllers
                 pageSize = 8;
             }
             var response = await _service.GetRoles(currentPage, pageSize);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -40,7 +40,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateRole(AddApplicationRoleDto newRole)
         {
             var response = await _service.CreateRole(newRole);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -50,7 +50,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateRole(string id, UpdateApplicationRoleDto updateRole)
         {
             var response = await _service.UpdateRole(id, updateRole);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -60,7 +60,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> DeleteRole(string id)
         {
             var response = await _service.DeleteRole(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

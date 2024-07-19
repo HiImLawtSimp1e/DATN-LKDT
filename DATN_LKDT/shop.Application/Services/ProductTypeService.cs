@@ -36,7 +36,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                IsSuccessed = true,
+                Success = true,
                 Message = "Loại sản phẩm đã được tạo!"
             };
         }
@@ -49,19 +49,19 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy loại sản phẩm."
                 };
             }
 
             _mapper.Map(updateProductType, dbProductType);
-            dbProductType.LastModifiedOnDate = DateTime.Now;
+            dbProductType.ModifiedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
             {
-                IsSuccessed = true,
+                Success = true,
                 Message = "Loại sản phẩm đã được cập nhật!"
             };
         }
@@ -75,7 +75,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy loại sản phẩm."
                 };
             }
@@ -88,7 +88,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không thể xóa loại sản phẩm vì có sản phẩm liên quan."
                 };
             }
@@ -98,7 +98,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                IsSuccessed = true,
+                Success = true,
                 Message = "Đã xóa loại sản phẩm!"
             };
         }
@@ -109,22 +109,22 @@ namespace shop.Application.Services
             var pageCount = Math.Ceiling(_context.ProductTypes.Where(p => !p.Deleted).Count() / pageResults);
 
             var productTypes = await _context.ProductTypes
-                                             .OrderByDescending(p => p.LastModifiedOnDate)
+                                             .OrderByDescending(p => p.ModifiedAt)
                                              .Skip((page - 1) * (int)pageResults)
                                              .Take((int)pageResults)
                                              .ToListAsync();
 
             var pagingData = new Pagination<List<ProductType>>
             {
-                Content = productTypes,
+                Result = productTypes,
                 CurrentPage = page,
-                TotalPages = (int)pageCount,
-                PageSize = (int)pageResults
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<ProductType>>>
             {
-                ResultObject = pagingData,
+                Data = pagingData,
             };
         }
 
@@ -136,14 +136,14 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<ProductType>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy loại sản phẩm"
                 };
             }
 
             return new ApiResponse<ProductType>
             {
-                ResultObject = productType,
+                Data = productType,
             };
         }
 
@@ -159,7 +159,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<List<ProductType>>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm"
                 };
             }
@@ -177,7 +177,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<List<ProductType>>
             {
-                ResultObject = missingProductTypes
+                Data = missingProductTypes
             };
         }
 
@@ -188,7 +188,7 @@ namespace shop.Application.Services
                                  .ToListAsync();
             return new ApiResponse<List<ProductType>>
             {
-                ResultObject = types
+                Data = types
             };
         }
     }

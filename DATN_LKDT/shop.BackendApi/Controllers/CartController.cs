@@ -22,7 +22,7 @@ namespace shop.BackendApi.Controllers
         {
             var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
             var response = await _service.GetCartItems(mockAccountId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -33,7 +33,7 @@ namespace shop.BackendApi.Controllers
         {
             var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
             var response = await _service.AddToCart(mockAccountId, item);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -44,7 +44,7 @@ namespace shop.BackendApi.Controllers
         {
             var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
             var response = await _service.StoreCartItems(mockAccountId, items);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -55,7 +55,7 @@ namespace shop.BackendApi.Controllers
         {
             var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
             var response = await _service.UpdateQuantity(mockAccountId, item);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -66,7 +66,7 @@ namespace shop.BackendApi.Controllers
         {
             var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
             var response = await _service.RemoveFromCart(mockAccountId, productId, productTypeId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

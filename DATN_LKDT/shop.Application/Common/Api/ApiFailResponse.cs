@@ -6,13 +6,13 @@ public class ApiFailResponse<T> : ApiResponse<T>
 
     public ApiFailResponse(string message)
     {
-        IsSuccessed = false;
+        Success = false;
         Message = message;
     }
 
     public ApiFailResponse(string message, string[] validationErrors)
     {
-        IsSuccessed = false;
+        Success = false;
         Message = message;
         ValidationErrors = validationErrors;
     }

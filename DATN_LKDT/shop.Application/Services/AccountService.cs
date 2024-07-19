@@ -36,8 +36,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    ResultObject = false,
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Tài khoản đã tồn tại"
                 };
             }
@@ -48,34 +47,32 @@ namespace shop.Application.Services
             await _repo.InsertAsync(account);
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Tạo tài khoản thành công"
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<AccountEntity>>>> GetAdminAccounts(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<AccountEntity>>>> GetAdminAccounts(int currentPage, int pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.Accounts.Where(b => b.Status != 0).Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.Accounts.Where(b => b.Status != 0).Count() / pageResults));
 
             var accounts = await _context.Accounts
                                .Where(b => b.Status != 0) // Filter blog that status has deleted 
-                               .Skip((currentPage - 1) * pageSize)
-                               .Take(pageSize)
+                               .Skip((currentPage - 1) * pageResults)
+                               .Take(pageResults)
                                .ToListAsync();
 
             var pagingData = new Pagination<List<AccountEntity>>
             {
-                Content = accounts,
+                Result = accounts,
                 CurrentPage = currentPage,
-                PageSize = pageSize,
-                TotalPages = (int)pageCount
+                PageResults = pageResults,
+                Pages = (int)pageCount
             };
 
             return new ApiResponse<Pagination<List<AccountEntity>>>
             {
-                ResultObject = pagingData,
-                IsSuccessed = true,
+                Data = pagingData
             };
         }
 
@@ -86,14 +83,13 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<AccountEntity>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Tài khoản không tồn tại"
                 };
             }
             return new ApiResponse<AccountEntity>
             {
-                ResultObject = account,
-                IsSuccessed = true,
+                Data = account
             };
         }
 
@@ -104,7 +100,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Tài khoản không tồn tại"
                 };
             }
@@ -115,8 +111,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Đã xóa tài khoản"
             };
         }
@@ -128,19 +123,18 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Tài khoản không tồn tại"
                 };
             }
 
             _mapper.Map(updateAccount, dbAccount);
-            dbAccount.LastModifiedOnDate = DateTime.Now;
+            dbAccount.ModifiedAt = DateTime.Now;
             await _repo.UpdateAsync(dbAccount);
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Cập nhật thông tin tài khoản thành công"
             };
         }

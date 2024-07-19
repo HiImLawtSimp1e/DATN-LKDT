@@ -26,7 +26,7 @@ namespace shop.BackendApi.Controllers
                 page = 1;
             }
             var response = await _service.GetProductTypes(page);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -36,7 +36,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<ProductType>>>> GetProductType(Guid id)
         {
             var response = await _service.GetProductType(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -46,7 +46,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> AddProductType(AddUpdateProductTypeDto productType)
         {
             var response = await _service.CreateProductType(productType);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -56,7 +56,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProductType(Guid id, AddUpdateProductTypeDto productType)
         {
             var response = await _service.UpdateProductType(id, productType);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -66,7 +66,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductType(Guid id)
         {
             var response = await _service.DeleteProductType(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -76,7 +76,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<ProductType>>>> GetSelectProductTypesByProduct(Guid productId)
         {
             var response = await _service.GetProductTypesSelectByProduct(productId);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -86,7 +86,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<ProductType>>>> GetSelectProductTypes(Guid productId)
         {
             var response = await _service.GetProductTypesSelect();
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

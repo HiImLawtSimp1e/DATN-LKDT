@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using shop.Application.Common;
 using shop.Application.Interfaces;
-using shop.Application.ViewModels.RequestDTOs;
+using shop.Application.ViewModels.RequestDTOs.BlogDto;
 using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 
@@ -32,7 +32,7 @@ namespace shop.BackendApi.Controllers
                 pageSize = 8;
             }
             var response = await _service.GetBlogsAsync(currentPage, pageSize);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -42,7 +42,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<CustomerBlogResponse>>> GetSingleBlogAsync(Guid id)
         {
             var response = await _service.GetSingleBlog(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -60,7 +60,7 @@ namespace shop.BackendApi.Controllers
                 pageSize = 8;
             }
             var response = await _service.GetAdminBlogs(currentPage, pageSize);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -70,7 +70,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<BlogEntity>>> GetAdminBlog(Guid id)
         {
             var response = await _service.GetSingleBlog(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -80,7 +80,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> CreateBlog(AddBlogDto newBlog)
         {
             var response = await _service.CreateBlog(newBlog);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -90,7 +90,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> UpdateBlog(Guid id,UpdateBlogDto updateBlog)
         {
             var response = await _service.UpdateBlog(id, updateBlog);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }
@@ -100,7 +100,7 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteBlog(Guid id)
         {
             var response = await _service.SoftDeleteBlog(id);
-            if (!response.IsSuccessed)
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

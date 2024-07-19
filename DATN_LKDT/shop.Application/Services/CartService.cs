@@ -33,7 +33,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Bạn chưa đăng nhập"
                 };
             }
@@ -58,7 +58,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Sản phẩm đã thêm vào giỏ hàng"
             };
         }
@@ -71,7 +71,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Bạn chưa đăng nhập"
                 };
             }
@@ -82,7 +82,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy giỏ hàng"
                 };
             }
@@ -94,7 +94,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm trong giỏ hàng"
                 };
             }
@@ -103,7 +103,7 @@ namespace shop.Application.Services
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Đã bỏ sản phẩm ra khỏi giỏ hàng"
             };
         }
@@ -116,7 +116,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Bạn chưa đăng nhập"
                 };
             }
@@ -130,7 +130,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy sản phẩm trong giỏ hàng"
                 };
             }
@@ -140,7 +140,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Đã cập nhật số lượng sản phẩm trong giỏ hàng"
             };
         }
@@ -153,14 +153,14 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<List<CustomerCartItemDto>>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Bạn chưa đăng nhập"
                 };
             }
 
             var result = new ApiResponse<List<CustomerCartItemDto>>
             {
-                ResultObject = new List<CustomerCartItemDto>()
+                Data = new List<CustomerCartItemDto>()
             };
 
             var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.IdAccount == accountId);
@@ -212,7 +212,7 @@ namespace shop.Application.Services
                     Quantity = item.Quantity
                 };
 
-                result.ResultObject.Add(cartProduct);
+                result.Data.Add(cartProduct);
             }
 
             return result;
@@ -226,7 +226,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Bạn chưa đăng nhập"
                 };
             }
@@ -263,7 +263,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
+                Data = true,
                 Message = "Giỏ hàng đã được cập nhật"
             };
         }

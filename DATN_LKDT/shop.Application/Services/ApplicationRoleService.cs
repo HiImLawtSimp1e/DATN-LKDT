@@ -34,33 +34,31 @@ namespace shop.Application.Services
             await _repo.InsertAsync(role);
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Success = true,
                 Message = "Thêm thành công chức vụ"
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<ApplicationRole>>>> GetRoles(int currentPage, int pageSize)
+        public async Task<ApiResponse<Pagination<List<ApplicationRole>>>> GetRoles(int currentPage, int pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.AspNetRoles.Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.AspNetRoles.Count() / pageResults));
 
             var roles = await _context.AspNetRoles
-                               .Skip((currentPage - 1) * pageSize)
-                               .Take(pageSize)
+                               .Skip((currentPage - 1) * pageResults)
+                               .Take(pageResults)
                                .ToListAsync();
 
             var pagingData = new Pagination<List<ApplicationRole>>
             {
-                Content = roles,
+                Result = roles,
                 CurrentPage = currentPage,
-                PageSize = pageSize,
-                TotalPages = (int)pageCount
+                PageResults = pageResults,
+                Pages = (int)pageCount
             };
 
             return new ApiResponse<Pagination<List<ApplicationRole>>>
             {
-                ResultObject = pagingData,
-                IsSuccessed = true,
+                Data = pagingData
             };
         }
 
@@ -71,7 +69,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy chức vụ"
                 };
             }
@@ -80,8 +78,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Đã xóa chức vụ"
             };
         }
@@ -93,7 +90,7 @@ namespace shop.Application.Services
             {
                 return new ApiResponse<bool>
                 {
-                    IsSuccessed = false,
+                    Success = false,
                     Message = "Không tìm thấy chức vụ"
                 };
             }
@@ -103,8 +100,7 @@ namespace shop.Application.Services
 
             return new ApiResponse<bool>
             {
-                ResultObject = true,
-                IsSuccessed = true,
+                Data = true,
                 Message = "Cập nhật chức vụ thành công"
             };
         }
