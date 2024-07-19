@@ -12,11 +12,10 @@ Bạn cần cài đặt .NET 6.0 SDK runtime & Node.js 18.0 [*tại đây*](http
     git clone https://github.com/tonnbph26190/DATN_LKDT.git
     ```  
 1.  **Step 2.**
-    * Chạy backend bằng IIS (port 5000)
     ```sh
     cd ./DATN_LKDT
     ```
-    * Change connection string to your database in `shop.Infrastructure/appsettings.json` & `shop.BackendApi/appsettings.json`
+    * Thay đổi connection string tại `shop.Infrastructure/appsettings.json` & `shop.BackendApi/appsettings.json`
     ```sh
      "ConnectionStrings": {
     "DefaultConnection": "server=localhost\\sqlexpress;database=shop_db;trusted_connection=true"
@@ -30,31 +29,35 @@ Bạn cần cài đặt .NET 6.0 SDK runtime & Node.js 18.0 [*tại đây*](http
     ```
     update-database
     ```
-    * Run hosting backend with IIS
+    * Run hosting backend with IIS(port 5000)
     ```
     http://localhost:5000
     ```
 1.  **Step 3.**
-    * Chạy frontend(port 3000)
      ```sh
     cd ./DATN_FE
     ```
-    * Install the project dependencies with:
+    * Cài node_module packages cho frontend app:
      ```sh
     npm i
     ```
-    * Add your cloud name as an environment variable inside `.env.local`:
+    * Chạy  frontend(port 3000):
+    ```
+    npm run dev
+    ```
+    * Shop page
+    ```
+    http://localhost:3000
+    ```
+    * Admin dashboard page
+    ```
+    http://localhost:3000/dashboard
+    ```
+    * Biến môi trường đã được config sẵn tại `.env.local`:
 
     ```
     NEXT_PUBLIC_TINYMCE_API_KEY=<Your TinyMCE Key>
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="<Your Cloudinary's Cloud Name>"
     CLOUDINARY_API_KEY="<Your Cloudniary API Key>"
     CLOUDINARY_API_SECRET="<Your Cloundinary API Secret>"
-    ```
-    * Start the development server frontend with:
-    ```
-    npm run dev
-    ```
-    ```
-    http://localhost:3000
     ```
