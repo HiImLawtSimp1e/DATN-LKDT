@@ -9,9 +9,10 @@ const NavIcons = () => {
   const { cartItems, counter, totalAmount, getCart } = useCartStore();
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     getCart();
-  }, [cartItems]);
+  }, []);
 
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -20,6 +21,7 @@ const NavIcons = () => {
     setIsCartOpen(false);
     setIsProfileOpen((prev) => !prev);
   };
+
   const handleCart = () => {
     setIsProfileOpen(false);
     setIsCartOpen((prev) => !prev);
@@ -73,10 +75,14 @@ const NavIcons = () => {
       {isProfileOpen && (
         <div
           ref={profileRef}
-          className="absolute p-4 rounded-md top-12 left-0 bg-white text-sm shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20"
+          className="absolute rounded-md p-4 top-12 left-0 bg-white text-sm shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20"
         >
-          <Link href="/profile">Hồ sơ</Link>
-          <div className="mt-2 cursor-pointer">Đăng xuất</div>
+          <Link className="inline-block min-w-20 " href="/profile">
+            Hồ sơ
+          </Link>
+          <div className="mt-2 inline-block min-w-20 cursor-pointer ">
+            Đăng xuất
+          </div>
         </div>
       )}
     </div>

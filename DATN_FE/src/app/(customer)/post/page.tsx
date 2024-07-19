@@ -9,9 +9,9 @@ interface IProps {
 const Posts = async ({ page }: IProps) => {
   let url = "";
   if (page == null) {
-    url = `http://localhost:5000/api/Post`;
+    url = `http://localhost:5000/api/Blog`;
   } else {
-    url = `http://localhost:5000/api/Post?page=${page}`;
+    url = `http://localhost:5000/api/Blog?page=${page}`;
   }
   const res = await fetch(url, {
     method: "GET",

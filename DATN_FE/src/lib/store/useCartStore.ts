@@ -17,6 +17,7 @@ export const useCartStore = create<CartState>((set) => ({
     try {
       const res = await fetch("http://localhost:5000/api/Cart", {
         method: "GET",
+        cache: "no-store",
       });
 
       const responseData: ApiResponse<ICartItem[]> = await res.json();

@@ -66,7 +66,7 @@ export const addPost = async (
   };
 
   try {
-    const res = await fetch("http://localhost:5000/api/Post/admin", {
+    const res = await fetch("http://localhost:5000/api/Blog/admin", {
       method: "POST",
       body: JSON.stringify(postData),
       headers: { "Content-Type": "application/json" },
@@ -152,7 +152,7 @@ export const updatePost = async (
   };
 
   try {
-    const res = await fetch(`http://localhost:5000/api/Post/admin/${id}`, {
+    const res = await fetch(`http://localhost:5000/api/Blog/admin/${id}`, {
       method: "PUT",
       body: JSON.stringify(postData),
       headers: { "Content-Type": "application/json" },
@@ -204,7 +204,7 @@ export const deletePost = async (
 ): Promise<FormState | undefined> => {
   const id = formData.get("id") as number | null;
 
-  const res = await fetch(`http://localhost:5000/api/Post/admin/${id}`, {
+  const res = await fetch(`http://localhost:5000/api/Blog/admin/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });

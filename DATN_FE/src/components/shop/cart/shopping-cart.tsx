@@ -2,8 +2,11 @@
 
 import { formatPrice } from "@/lib/format/format";
 import ShoppingCartItem from "./shopping-cart-item";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { placeOrder } from "@/action/orderAction";
+import { useRouter } from "next/navigation";
+import { useCustomActionState } from "@/lib/custom/customHook";
+import { toast } from "react-toastify";
 
 interface IProps {
   cartItems: ICartItem[];
@@ -15,6 +18,35 @@ const ShoppingCart = ({ cartItems }: IProps) => {
       accumulator + currentValue.price * currentValue.quantity,
     0
   );
+
+  // for action
+  const router = useRouter();
+
+  const initialState: FormState = { errors: [] };
+  const [formState, formAction] = useCustomActionState<FormState>(
+    placeOrder,
+    initialState
+  );
+
+  const [toastDisplayed, setToastDisplayed] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    formAction(formData);
+    setToastDisplayed(false); // Reset toastDisplayed when submitting
+  };
+
+  useEffect(() => {
+    if (formState.errors.length > 0 && !toastDisplayed) {
+      toast.error(formState.errors[0]);
+      setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
+    }
+    if (formState.success) {
+      toast.success("Đặt hàng thành công");
+      router.push("/");
+    }
+  }, [formState, toastDisplayed]);
 
   return (
     <div className="h-screen bg-gray-100 pt-20">
@@ -47,7 +79,7 @@ const ShoppingCart = ({ cartItems }: IProps) => {
                   <p className="text-sm text-gray-700">Đã bao gồm VAT</p>
                 </div>
               </div>
-              <form action={placeOrder}>
+              <form onSubmit={handleSubmit}>
                 <button
                   type="submit"
                   className="mt-6 w-full rounded-md bg-blue-500 text-2xl py-4 font-medium text-blue-50 md:text-lg md:py-2 hover:bg-blue-600"

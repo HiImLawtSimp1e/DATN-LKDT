@@ -1,7 +1,7 @@
 import ShopPostDetail from "@/components/shop/post-detail/post-detail";
 
 const Post = async ({ postSlug }: { postSlug: string }) => {
-  const res = await fetch(`http://localhost:5000/api/Post/${postSlug}`, {
+  const res = await fetch(`http://localhost:5000/api/Blog/${postSlug}`, {
     method: "GET",
     next: { tags: ["shopPostDetail"] },
   });
