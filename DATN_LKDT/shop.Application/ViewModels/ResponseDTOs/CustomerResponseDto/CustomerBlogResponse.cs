@@ -1,11 +1,14 @@
-﻿using shop.Domain.Entities.Base;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace shop.Domain.Entities
+namespace shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto
 {
-    public class BlogEntity : BaseEntity
+    public class CustomerBlogResponse
     {
-        public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Slug { get; set; } = string.Empty;
         public string Image { get; set; } = string.Empty;
@@ -15,7 +18,6 @@ namespace shop.Domain.Entities
         public string SeoTitle { get; set; } = string.Empty;
         public string SeoDescription { get; set; } = string.Empty;
         public string SeoKeyworks { get; set; } = string.Empty;
-        public bool IsActive { get; set; } = true;
-        public bool Deleted { get; set; } = false;
+        public DateTime CreatedOnDate { get; set; }
     }
 }

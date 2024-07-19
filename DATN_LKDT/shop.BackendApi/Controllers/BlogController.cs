@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs;
-using shop.Application.ViewModels.ResponseDTOs;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 
 namespace shop.BackendApi.Controllers

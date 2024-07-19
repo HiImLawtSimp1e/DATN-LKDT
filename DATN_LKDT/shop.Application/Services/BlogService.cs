@@ -4,8 +4,8 @@ using MicroBase.Entity.Repositories;
 using Microsoft.EntityFrameworkCore;
 using shop.Application.Common;
 using shop.Application.Interfaces;
-using shop.Application.ViewModels.RequestDTOs;
-using shop.Application.ViewModels.ResponseDTOs;
+using shop.Application.ViewModels.RequestDTOs.BlogDto;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 using shop.Infrastructure.Database.Context;
 using System;
@@ -31,7 +31,6 @@ namespace shop.Application.Services
         public async Task<ApiResponse<bool>> CreateBlog(AddBlogDto newBlog)
         {
             var blog = _mapper.Map<BlogEntity>(newBlog);
-            blog.Status = 1;
 
             await _repo.InsertAsync(blog);
             return new ApiResponse<bool>
@@ -44,10 +43,10 @@ namespace shop.Application.Services
 
         public async Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageSize)
         {
-            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.Status != 0).Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => !b.Deleted).Count() / pageSize));
 
             var blogs = await _context.Blogs
-                               .Where(b => b.Status != 0) // Filter blog that status has deleted 
+                               .Where(b => !b.Deleted) // Filter blog that status has deleted 
                                .OrderByDescending(b => b.LastModifiedByUserId)
                                .Skip((currentPage - 1) * pageSize)
                                .Take(pageSize)
@@ -88,10 +87,10 @@ namespace shop.Application.Services
 
         public async Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageSize)
         {
-            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.Status != 0 && b.Status != 2).Count() / pageSize));
+            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.IsActive && !b.Deleted).Count() / pageSize));
 
             var blogs = await _context.Blogs
-                               .Where(b => b.Status != 0 && b.Status != 2) // Filter blog that status has deleted & status is unactive
+                               .Where(b => b.IsActive && !b.Deleted) // Filter blog that status has deleted & status is unactive
                                .OrderByDescending(b => b.LastModifiedByUserId)
                                .Skip((currentPage - 1) * pageSize)
                                .Take(pageSize)
@@ -145,7 +144,7 @@ namespace shop.Application.Services
                 };
             }
 
-            dbBlog.Status = 0;
+            dbBlog.Deleted = true;
 
             await _repo.UpdateAsync(dbBlog);
 
