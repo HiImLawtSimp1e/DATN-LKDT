@@ -16,7 +16,7 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageSize);
         Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageSize);
         Task<ApiResponse<BlogEntity>> GetAdminSingleBlog(Guid id);
-        Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(Guid id);
+        Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(string slug);
         Task<ApiResponse<bool>> CreateBlog(AddBlogDto newBlog);
         Task<ApiResponse<bool>> UpdateBlog(Guid blogId, UpdateBlogDto updateBlog);
         Task<ApiResponse<bool>> SoftDeleteBlog(Guid blogId);

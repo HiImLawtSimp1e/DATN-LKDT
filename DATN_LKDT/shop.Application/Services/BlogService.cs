@@ -109,9 +109,9 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(Guid id)
+        public async Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(string slug)
         {
-            var blog = await _repo.GetByIdAsync(id);
+            var blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Slug == slug);
             var result = _mapper.Map<CustomerBlogResponse>(blog);
             if (blog == null)
             {

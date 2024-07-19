@@ -9,10 +9,6 @@ namespace AppData.Configuration
         public void Configure(EntityTypeBuilder<AccountEntity> builder)
         {
             builder.HasKey(p => p.Id);
-
-            builder.HasOne(a => a.Cart)
-            .WithOne(c => c.Accounts)
-            .HasForeignKey<CartEntity>(c => c.Id);
         }
     }
 }

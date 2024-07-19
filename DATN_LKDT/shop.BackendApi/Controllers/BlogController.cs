@@ -38,10 +38,10 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<CustomerBlogResponse>>> GetSingleBlogAsync(Guid id)
+        [HttpGet("{slug}")]
+        public async Task<ActionResult<ApiResponse<CustomerBlogResponse>>> GetSingleBlogAsync(string slug)
         {
-            var response = await _service.GetSingleBlog(id);
+            var response = await _service.GetSingleBlog(slug);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -69,7 +69,7 @@ namespace shop.BackendApi.Controllers
         [HttpGet("admin/{id}")]
         public async Task<ActionResult<ApiResponse<BlogEntity>>> GetAdminBlog(Guid id)
         {
-            var response = await _service.GetSingleBlog(id);
+            var response = await _service.GetAdminSingleBlog(id);
             if (!response.Success)
             {
                 return BadRequest(response);

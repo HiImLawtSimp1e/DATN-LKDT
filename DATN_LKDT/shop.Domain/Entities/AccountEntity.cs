@@ -25,6 +25,7 @@ namespace shop.Domain.Entities
         public int Status { get; set; }
 
         public int? Points { get; set; }
+        [JsonIgnore]
 
         public CartEntity? Cart { get; set; }
         [JsonIgnore]

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using shop.Domain.Entities;
 using shop.Infrastructure.Initialization;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace shop.Infrastructure.Database.Context;
 public class AppDbContext : DbContext
@@ -63,8 +64,6 @@ public class AppDbContext : DbContext
                   .HasConversion<int>()
                   .IsRequired();
         });
-
-        builder.Entity<CartEntity>().HasOne(c => c.Accounts).WithOne(p => p.Cart).HasForeignKey<CartEntity>();
 
         builder.Entity<VirtualItemEntity>().HasKey(p => p.Id);
         //builder.Entity<VW_Phone>().ToView("VW_Phone").HasNoKey();

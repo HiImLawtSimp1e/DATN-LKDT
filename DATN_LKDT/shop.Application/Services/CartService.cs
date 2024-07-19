@@ -38,7 +38,7 @@ namespace shop.Application.Services
                 };
             }
 
-            var dbCart = await GetCustomerCart(account.Id);
+            var dbCart = await GetCustomerCart(account);
 
             var sameItem = await _context.CartItems
                                            .FirstOrDefaultAsync(ci => ci.ProductId == newItem.ProductId && ci.ProductTypeId == newItem.ProductTypeId && ci.CartId == dbCart.Id);
@@ -121,7 +121,7 @@ namespace shop.Application.Services
                 };
             }
 
-            var dbCart = await GetCustomerCart(account.Id);
+            var dbCart = await GetCustomerCart(account);
 
             var dbItem = await _context.CartItems
                                             .FirstOrDefaultAsync(ci => ci.ProductId == updateItem.ProductId && ci.ProductTypeId == updateItem.ProductTypeId && ci.CartId == dbCart.Id);
@@ -234,7 +234,7 @@ namespace shop.Application.Services
             // Map DTOs to Entity
             var cartItems = _mapper.Map<List<CartItem>>(items);
 
-            var dbCart = await GetCustomerCart(account.Id);
+            var dbCart = await GetCustomerCart(account);
 
             if (cartItems != null)
             {
@@ -268,12 +268,13 @@ namespace shop.Application.Services
             };
         }
 
-        private async Task<CartEntity> CreateCustomerCart(Guid accountId)
+        private async Task<CartEntity> CreateCustomerCart(AccountEntity account)
         {
             var newCart = new CartEntity
             {
                 Id = Guid.NewGuid(),
-                IdAccount = accountId,
+                IdAccount = account.Id,
+                UserName = account.Username,
                 CartItems = new List<CartItem>()
             };
 
@@ -282,14 +283,14 @@ namespace shop.Application.Services
             return newCart;
         }
 
-        private async Task<CartEntity> GetCustomerCart(Guid accountId)
+        private async Task<CartEntity> GetCustomerCart(AccountEntity account)
         {
-            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.IdAccount == accountId);
+            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.IdAccount == account.Id);
 
             if (dbCart == null)
             {
                 // If customer cart doesn't exist, create new cart
-                dbCart = await CreateCustomerCart(accountId);
+                dbCart = await CreateCustomerCart(account);
             }
 
             return dbCart;
