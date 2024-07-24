@@ -18,19 +18,24 @@ namespace shop.Application.Common.Validation
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var currentValue = (int?)value;
+            var currentValue = value as int?;
+
+            if (currentValue == null || currentValue == 0)
+            {
+                return ValidationResult.Success;
+            }
 
             var property = validationContext.ObjectType.GetProperty(_comparisonProperty);
             if (property == null)
             {
-                return new ValidationResult($"Unknown property: {_comparisonProperty}");
+                return new ValidationResult($"Thuộc tính không xác định: {_comparisonProperty}");
             }
 
             var comparisonValue = (int?)property.GetValue(validationContext.ObjectInstance);
 
-            if (currentValue.HasValue && comparisonValue.HasValue && currentValue < comparisonValue)
+            if (comparisonValue.HasValue && currentValue < comparisonValue)
             {
-                return new ValidationResult($"{validationContext.DisplayName} must be greater than or equal to {_comparisonProperty}.");
+                return new ValidationResult($"Giá gốc (nếu có) phải lớn hơn hoặc bằng giá bán.");
             }
 
             return ValidationResult.Success;

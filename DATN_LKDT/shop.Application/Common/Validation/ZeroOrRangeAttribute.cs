@@ -25,7 +25,7 @@ namespace shop.Application.Common.Validation
                 return ValidationResult.Success;
             }
 
-            int intValue = (int)value;
+            int? intValue = value as int?;
 
             if (intValue == 0 || (intValue >= _minValue && intValue <= _maxValue))
             {
