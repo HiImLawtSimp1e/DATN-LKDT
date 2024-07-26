@@ -76,7 +76,7 @@ namespace shop.Application.Services
                 };
             }
 
-            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.IdAccount == accountId);
+            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == accountId);
 
             if (dbCart == null)
             {
@@ -163,7 +163,7 @@ namespace shop.Application.Services
                 Data = new List<CustomerCartItemDto>()
             };
 
-            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.IdAccount == accountId);
+            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == accountId);
 
             if (dbCart == null)
             {
@@ -273,19 +273,21 @@ namespace shop.Application.Services
             var newCart = new CartEntity
             {
                 Id = Guid.NewGuid(),
-                IdAccount = account.Id,
+                AccountId = account.Id,
                 UserName = account.Username,
                 CartItems = new List<CartItem>()
             };
 
             _context.Carts.Add(newCart);
+            account.Cart = newCart;
+
             await _context.SaveChangesAsync();
             return newCart;
         }
 
         private async Task<CartEntity> GetCustomerCart(AccountEntity account)
         {
-            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.IdAccount == account.Id);
+            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == account.Id);
 
             if (dbCart == null)
             {

@@ -68,7 +68,7 @@ namespace shop.Application.Services
                 if (product == null)
                 {
                     continue;
-                }
+                } 
 
                 var productVariant = await _context.ProductVariants
                     .Where(v => v.ProductId == item.ProductId
@@ -199,8 +199,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == accountId);
+
             var cartItem = (await _cartService.GetCartItems(accountId)).Data;
-            if (cartItem == null || cartItem.Count == 0)
+
+            if (cart == null || cartItem == null || cartItem.Count == 0)
             {
                 return new ApiResponse<bool>
                 {
@@ -236,7 +239,7 @@ namespace shop.Application.Services
             };
 
             _context.Orders.Add(order);
-            _context.CartItems.RemoveRange(_context.CartItems.Where(ci => ci.CartId == customer.Cart.Id));
+            _context.CartItems.RemoveRange(_context.CartItems.Where(ci => ci.CartId == cart.Id)); 
 
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>

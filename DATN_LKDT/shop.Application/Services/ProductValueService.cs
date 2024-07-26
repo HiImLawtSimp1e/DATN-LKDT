@@ -66,6 +66,7 @@ namespace shop.Application.Services
             if (existingAttributeValue != null && existingAttributeValue.Deleted)
             {
                 existingAttributeValue.Deleted = false;
+                existingAttributeValue.IsActive = true;
                 existingAttributeValue.Value = newAttributeValue.Value;
 
                 await _context.SaveChangesAsync();

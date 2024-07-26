@@ -66,6 +66,7 @@ namespace shop.Application.Services
             if (existingVariant != null && existingVariant.Deleted)
             {
                 existingVariant.Deleted = false;
+                existingVariant.IsActive = true;
                 existingVariant.Price = newVariant.Price;
                 existingVariant.OriginalPrice = newVariant.OriginalPrice;
 
