@@ -4,8 +4,8 @@ export const validateAddProduct = (
   seoTitle: string,
   seoDescription: string,
   seoKeyworks: string,
-  price?: number | null,
-  originalPrice?: number | null
+  price: number | null,
+  originalPrice: number | null
 ): [string[], boolean] => {
   const errors: string[] = [];
 
@@ -35,27 +35,39 @@ export const validateAddProduct = (
 
   // Validate price
   if (price === null || price === undefined) {
-    errors.push("Giá sản phẩm là bắt buộc.");
+    errors.push("Giá bán là bắt buộc.");
   } else if (price < 1000) {
-    errors.push("Giá sản phẩm phải là số nguyên và lớn hơn hoặc bằng 1000.");
+    errors.push("Giá bán phải là số nguyên và lớn hơn hoặc bằng 1000.");
   }
 
   // Validate original price
-  if (originalPrice === null || originalPrice === undefined) {
-    errors.push("Giá gốc là bắt buộc.");
-  } else if (originalPrice < 1000) {
-    errors.push("Giá gốc phải là số nguyên và lớn hơn hoặc bằng 1000.");
+  if (
+    originalPrice !== undefined &&
+    originalPrice != null &&
+    originalPrice < 0
+  ) {
+    errors.push("Giá gốc phải là số nguyên dương");
+  }
+  if (
+    originalPrice !== null &&
+    originalPrice !== undefined &&
+    originalPrice !== 0
+  ) {
+    if (originalPrice < 1000) {
+      errors.push("Giá gốc phải lớn hơn hoặc bằng 1000");
+    }
   }
 
   // Validate that original price is greater than or equal to price
   if (
     originalPrice !== null &&
-    price !== null &&
     originalPrice !== undefined &&
-    price !== undefined &&
-    originalPrice < price
+    price !== null &&
+    price !== undefined
   ) {
-    errors.push("Giá gốc phải lớn hơn hoặc bằng giá sản phẩm.");
+    if (originalPrice !== 0 && originalPrice < price) {
+      errors.push("Giá gốc phải lớn hơn hoặc bằng giá bán");
+    }
   }
 
   return [errors, errors.length === 0];

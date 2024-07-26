@@ -65,7 +65,7 @@ const AddVariantForm = ({ productId, typeSelect }: IProps) => {
       <input type="hidden" name="productId" value={productId} />
       <InputField
         type="number"
-        label="Giá"
+        label="Giá bán"
         id="price"
         name="price"
         value={formData.price.toString()}
@@ -81,7 +81,6 @@ const AddVariantForm = ({ productId, typeSelect }: IProps) => {
         value={formData.originalPrice.toString()}
         onChange={handleChange}
         min-value={0}
-        required
       />
       <label className="block mb-2 text-sm font-medium">Loại sản phẩm</label>
       <select

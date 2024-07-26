@@ -73,7 +73,7 @@ const UpdateVariantForm = ({ variant }: IProps) => {
       <input type="hidden" name="productTypeId" value={variant.productTypeId} />
       <InputField
         type="number"
-        label="Giá"
+        label="Giá bán"
         id="price"
         name="price"
         value={formData.price.toString()}
@@ -89,7 +89,6 @@ const UpdateVariantForm = ({ variant }: IProps) => {
         value={formData.originalPrice.toString()}
         onChange={handleChange}
         min-value={0}
-        required
       />
       <InputField
         type="number"

@@ -12,22 +12,40 @@ export const validateVariant = (
   }
 
   // Validate price
-  if (price === null) {
-    errors.push("Giá sản phẩm là bắt buộc.");
+  if (price === null || price === undefined) {
+    errors.push("Giá bán là bắt buộc.");
   } else if (price < 1000) {
-    errors.push("Giá sản phẩm phải là số nguyên và lớn hơn hoặc bằng 1000.");
+    errors.push("Giá bán phải là số nguyên và lớn hơn hoặc bằng 1000.");
   }
 
   // Validate original price
-  if (originalPrice === null) {
-    errors.push("Giá gốc là bắt buộc.");
-  } else if (originalPrice < 1000) {
-    errors.push("Giá gốc phải là số nguyên và lớn hơn hoặc bằng 1000.");
+  if (
+    originalPrice !== undefined &&
+    originalPrice != null &&
+    originalPrice < 0
+  ) {
+    errors.push("Giá gốc phải là số nguyên dương");
+  }
+  if (
+    originalPrice !== null &&
+    originalPrice !== undefined &&
+    originalPrice !== 0
+  ) {
+    if (originalPrice < 1000) {
+      errors.push("Giá gốc phải lớn hơn hoặc bằng 1000");
+    }
   }
 
   // Validate that original price is greater than or equal to price
-  if (originalPrice !== null && price !== null && originalPrice < price) {
-    errors.push("Giá gốc phải lớn hơn hoặc bằng giá sản phẩm.");
+  if (
+    originalPrice !== null &&
+    originalPrice !== undefined &&
+    price !== null &&
+    price !== undefined
+  ) {
+    if (originalPrice !== 0 && originalPrice < price) {
+      errors.push("Giá gốc phải lớn hơn hoặc bằng giá bán");
+    }
   }
 
   // Validate quantity

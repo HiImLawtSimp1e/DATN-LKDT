@@ -24,7 +24,7 @@ export const addVariant = async (
   const price = formData.get("price") ? Number(formData.get("price")) : null;
   const originalPrice = formData.get("originalPrice")
     ? Number(formData.get("originalPrice"))
-    : null;
+    : 0;
 
   // Validate các trường trích xuất
   const [errors, isValid] = validateVariant(
@@ -109,7 +109,7 @@ export const updateVariant = async (
   const price = formData.get("price") ? Number(formData.get("price")) : null;
   const originalPrice = formData.get("originalPrice")
     ? Number(formData.get("originalPrice"))
-    : null;
+    : 0;
   const quantity = formData.get("quantity")
     ? Number(formData.get("quantity"))
     : null;
