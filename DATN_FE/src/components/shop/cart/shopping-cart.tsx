@@ -7,19 +7,22 @@ import { placeOrder } from "@/action/orderAction";
 import { useRouter } from "next/navigation";
 import { useCustomActionState } from "@/lib/custom/customHook";
 import { toast } from "react-toastify";
+import { useCartStore } from "@/lib/store/useCartStore";
 
 interface IProps {
   cartItems: ICartItem[];
 }
 
 const ShoppingCart = ({ cartItems }: IProps) => {
+  const { clearCart } = useCartStore();
+
   const totalAmount = cartItems.reduce(
     (accumulator, currentValue) =>
       accumulator + currentValue.price * currentValue.quantity,
     0
   );
 
-  // for action
+  // for place order action
   const router = useRouter();
 
   const initialState: FormState = { errors: [] };
@@ -44,6 +47,7 @@ const ShoppingCart = ({ cartItems }: IProps) => {
     }
     if (formState.success) {
       toast.success("Đặt hàng thành công");
+      clearCart();
       router.push("/");
     }
   }, [formState, toastDisplayed]);

@@ -2,6 +2,7 @@
 
 import { updateQuantity } from "@/action/cartAction";
 import { useCustomActionState } from "@/lib/custom/customHook";
+import { useCartStore } from "@/lib/store/useCartStore";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -11,6 +12,9 @@ interface IProps {
 }
 
 const ShoppingCartItemQlt = ({ cartItem }: IProps) => {
+  const { getCart } = useCartStore();
+
+  //for update quantity action
   const router = useRouter();
 
   const initialState: FormState = { errors: [] };
@@ -34,7 +38,7 @@ const ShoppingCartItemQlt = ({ cartItem }: IProps) => {
       setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
     }
     if (formState.success) {
-      window.location.reload();
+      getCart();
     }
   }, [formState, toastDisplayed]);
   return (
