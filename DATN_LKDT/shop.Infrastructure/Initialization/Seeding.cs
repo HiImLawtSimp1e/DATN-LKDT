@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace shop.Infrastructure.Initialization
 {
@@ -580,38 +581,38 @@ namespace shop.Infrastructure.Initialization
                   new BlogEntity
                   {
                       Id = Guid.NewGuid(),
-                      Title = "Cách trồng rau sạch tại nhà",
-                      Slug = "cach-trong-rau-sach-tai-nha",
-                      Image = "https://i.pinimg.com/564x/c1/e1/5a/c1e15a598e8781a59fffe859ddf66595.jpg",
-                      Description = "Hướng dẫn chi tiết cách trồng rau sạch tại nhà cho người mới bắt đầu.",
-                      Content = "<p>Trồng rau sạch tại nhà đang trở thành xu hướng. Bạn có thể tự tay trồng rau sạch để đảm bảo an toàn thực phẩm cho gia đình mình. <strong>Hãy bắt đầu với những bước đơn giản sau:</strong></p><ol><li>Chọn loại rau phù hợp.</li><li>Chuẩn bị đất và chậu trồng.</li><li>Gieo hạt và chăm sóc cây con.</li><li>Thu hoạch và sử dụng.</li></ol><p>Chúc bạn thành công!</p>",
-                      SeoTitle = "Cách trồng rau sạch tại nhà - Hướng dẫn chi tiết",
-                      SeoDescription = "Hướng dẫn chi tiết cách trồng rau sạch tại nhà cho người mới bắt đầu.",
-                      SeoKeyworks = "trồng rau sạch, rau sạch tại nhà, hướng dẫn trồng rau"
-                  },
+                      Title = "Hướng dẫn chọn mua linh kiện điện tử cho người mới bắt đầu",
+                      Slug = "huong-dan-chon-mua-linh-kien-dien-tu-cho-nguoi-moi-bat-dau",
+                      Image = "https://i.pinimg.com/564x/35/27/9d/35279d8e4578af98dc16bf7cb1d633ee.jpg",
+                      Description = "Bài viết này sẽ giúp bạn hiểu rõ hơn về cách chọn mua linh kiện điện tử phù hợp cho các dự án của mình.",
+                      Content = "<p>Chọn mua linh kiện điện tử có thể là một thử thách đối với người mới bắt đầu. Dưới đây là một số mẹo giúp bạn:</p><ol><li>Xác định nhu cầu sử dụng.</li><li>Nghiên cứu các loại linh kiện phổ biến.</li><li>Mua sắm từ các nhà cung cấp uy tín.</li><li>Kiểm tra chất lượng và bảo hành sản phẩm.</li><li>Tham khảo ý kiến từ cộng đồng và chuyên gia.</li></ol><p>Hy vọng bạn sẽ chọn được những linh kiện phù hợp cho dự án của mình!</p>",
+                      SeoTitle = "Hướng dẫn chọn mua linh kiện điện tử - Mẹo cho người mới bắt đầu",
+                      SeoDescription = "Hướng dẫn chi tiết cách chọn mua linh kiện điện tử phù hợp cho người mới bắt đầu.",
+                      SeoKeyworks = "chọn mua linh kiện điện tử, hướng dẫn chọn linh kiện, linh kiện điện tử"
+                  }, 
                   new BlogEntity
                   {
                       Id = Guid.NewGuid(),
-                      Title = "10 món ăn ngon từ thịt gà",
-                      Slug = "10-mon-an-ngon-tu-thit-ga",
-                      Image = "https://i.pinimg.com/564x/f6/5d/23/f65d23606ba71e48cc7f6c0b52f44b29.jpg",
-                      Description = "Khám phá 10 món ăn ngon từ thịt gà mà bạn không thể bỏ qua.",
-                      Content = "<p>Thịt gà là nguyên liệu dễ chế biến và rất phổ biến trong bữa ăn hàng ngày. Dưới đây là <strong>10 món ăn ngon từ thịt gà</strong> bạn có thể thử:</p><ul><li>Gà nướng mật ong.</li><li>Gà chiên xù.</li><li>Gà xào sả ớt.</li><li>Canh gà nấu nấm.</li><li>Gà luộc chấm muối tiêu.</li><li>Gỏi gà xé phay.</li><li>Cơm gà Hải Nam.</li><li>Gà kho gừng.</li><li>Gà hấp lá chanh.</li><li>Gà rang muối.</li></ul><p>Hãy thử và cảm nhận hương vị đặc biệt của từng món ăn!</p>",
-                      SeoTitle = "10 món ăn ngon từ thịt gà - Bí quyết nấu ăn",
-                      SeoDescription = "Khám phá 10 món ăn ngon từ thịt gà mà bạn không thể bỏ qua.",
-                      SeoKeyworks = "món ăn từ thịt gà, nấu ăn, bí quyết nấu ăn"
-                  },
+                      Title = "10 ứng dụng phổ biến của PLC trong công nghiệp",
+                      Slug = "10-ung-dung-pho-bien-cua-plc-trong-cong-nghiep",
+                      Image = "https://i.pinimg.com/736x/7d/e0/8c/7de08ce31b70785e7e299f25146b4a28.jpg",
+                      Description = "Khám phá 10 ứng dụng phổ biến của PLC trong các hệ thống công nghiệp hiện đại.",
+                      Content = "<p>PLC (Programmable Logic Controller) là một thiết bị không thể thiếu trong tự động hóa công nghiệp. Dưới đây là 10 ứng dụng phổ biến của PLC:</p><ul><li>Điều khiển băng tải.</li><li>Quản lý hệ thống đèn giao thông.</li><li>Điều khiển máy móc sản xuất.</li><li>Giám sát và điều khiển hệ thống bơm.</li><li>Quản lý hệ thống điện năng.</li><li>Điều khiển hệ thống HVAC.</li><li>Điều khiển dây chuyền đóng gói.</li><li>Quản lý hệ thống nước thải.</li><li>Điều khiển hệ thống tưới tiêu tự động.</li><li>Giám sát và điều khiển các hệ thống an ninh.</li></ul><p>PLC giúp nâng cao hiệu quả và độ chính xác trong các quy trình công nghiệp.</p>",
+                      SeoTitle = "10 ứng dụng phổ biến của PLC trong công nghiệp - Tự động hóa công nghiệp",
+                      SeoDescription = "Khám phá 10 ứng dụng phổ biến của PLC trong các hệ thống công nghiệp hiện đại.",
+                      SeoKeyworks = "PLC, ứng dụng PLC, tự động hóa công nghiệp"
+                  }, 
                   new BlogEntity
                   {
                       Id = Guid.NewGuid(),
-                      Title = "Lợi ích của việc đọc sách mỗi ngày",
-                      Slug = "loi-ich-cua-viec-doc-sach-moi-ngay",
-                      Image = "https://i.pinimg.com/564x/66/dc/ca/66dcca5a43bc51a2d669fa4782618c12.jpg",
-                      Description = "Tìm hiểu những lợi ích tuyệt vời của việc đọc sách mỗi ngày.",
-                      Content = "<p>Đọc sách mỗi ngày mang lại nhiều lợi ích cho sức khỏe tinh thần và kiến thức của bạn. <strong>Dưới đây là một số lợi ích:</strong></p><ul><li>Cải thiện khả năng tập trung.</li><li>Mở rộng vốn từ vựng.</li><li>Giảm căng thẳng và lo âu.</li><li>Tăng cường khả năng phân tích và suy luận.</li><li>Cải thiện trí nhớ.</li></ul><p>Hãy dành ít nhất 30 phút mỗi ngày để đọc sách và cảm nhận sự thay đổi tích cực!</p>",
-                      SeoTitle = "Lợi ích của việc đọc sách mỗi ngày - Sức khỏe tinh thần",
-                      SeoDescription = "Tìm hiểu những lợi ích tuyệt vời của việc đọc sách mỗi ngày.",
-                      SeoKeyworks = "đọc sách, lợi ích của đọc sách, sức khỏe tinh thần"
+                      Title = "Lợi ích của việc sử dụng linh kiện điện tử chất lượng cao",
+                      Slug = "loi-ich-cua-viec-su-dung-linh-kien-dien-tu-chat-luong-cao",
+                      Image = "https://i.pinimg.com/736x/37/2c/56/372c56593de74d024efb29427ef2e449.jpg",
+                      Description = "Tìm hiểu những lợi ích khi sử dụng linh kiện điện tử chất lượng cao cho các dự án của bạn.",
+                      Content = "<p>Sử dụng linh kiện điện tử chất lượng cao mang lại nhiều lợi ích cho các dự án của bạn. Dưới đây là một số lợi ích:</p><ul><li>Độ bền và tuổi thọ cao.</li><li>Hiệu suất hoạt động tốt hơn.</li><li>Giảm thiểu rủi ro hỏng hóc.</li><li>Tối ưu hóa chi phí bảo trì.</li><li>Đảm bảo an toàn cho người sử dụng.</li></ul><p>Hãy luôn chọn mua linh kiện điện tử từ những nhà cung cấp uy tín để đảm bảo chất lượng.</p>",
+                      SeoTitle = "Lợi ích của việc sử dụng linh kiện điện tử chất lượng cao - Đảm bảo hiệu suất và an toàn",
+                      SeoDescription = "Tìm hiểu những lợi ích khi sử dụng linh kiện điện tử chất lượng cao cho các dự án của bạn.",
+                      SeoKeyworks = "linh kiện điện tử chất lượng cao, lợi ích của linh kiện chất lượng, hiệu suất linh kiện điện tử"
                   }
                 );
         }
