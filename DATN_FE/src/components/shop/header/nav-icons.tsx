@@ -75,12 +75,21 @@ const NavIcons = () => {
       {isProfileOpen && (
         <div
           ref={profileRef}
-          className="absolute rounded-md p-4 top-12 left-0 bg-white text-sm shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20"
+          className="p-4 absolute flex flex-col gap-4 text-md rounded-md top-12 right-0 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20"
         >
-          <Link className="inline-block min-w-20 " href="/profile">
+          <Link
+            className="inline-block min-w-40 hover:opacity-60"
+            href="/profile"
+          >
             Hồ sơ
           </Link>
-          <div className="mt-2 inline-block min-w-20 cursor-pointer ">
+          <Link
+            className="inline-block min-w-40 hover:opacity-60"
+            href="/order-history"
+          >
+            Đơn hàng của tôi
+          </Link>
+          <div className="inline-block min-w-40 hover:opacity-60 cursor-pointer ">
             Đăng xuất
           </div>
         </div>
