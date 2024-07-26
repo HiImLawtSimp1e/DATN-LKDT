@@ -12,7 +12,7 @@ const Footer = () => {
             <div className="text-2xl tracking-wide">NEXT SHOP</div>
           </Link>
           <p>Số 1, Trịnh Văn Bô, Phương Canh, Nam Từ Liêm, Hà Nội</p>
-          <span className="font-semibold">support@thienhoang.com.vn</span>
+          <span className="font-semibold">hungnguyenquang@fpt.edu</span>
           <span className="font-semibold">0243 558 9666</span>
           <div className="flex gap-6">
             <Image src="/facebook.png" alt="" width={16} height={16} />
@@ -27,10 +27,10 @@ const Footer = () => {
           <div className="flex flex-col justify-between">
             <h1 className="font-medium text-lg">VỀ CÔNG TY CHÚNG TÔI</h1>
             <div className="flex flex-col gap-6">
+              <Link href="">Trang chủ</Link>
+              <Link href="/product">Sản phẩm</Link>
+              <Link href="/post">Tin tức</Link>
               <Link href="">Giới thiệu</Link>
-              <Link href="">Tin tức</Link>
-              <Link href="">Năng lực - Kinh nghiệm</Link>
-              <Link href="">Tuyển dụng</Link>
               <Link href="">Liên hệ</Link>
             </div>
           </div>
@@ -68,15 +68,15 @@ const Footer = () => {
       {/* BOTTOM */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 mt-16">
         <div className="">
-          © 2019 by Thienhoang.com.vn. All Rights Reserved.
+          © 2024 by Fpoly SD-18 Summer. All Rights Reserved.
         </div>
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="">
-            <span className="text-gray-500 mr-4">Language</span>
+            <span className="text-gray-500 mr-4">Ngôn ngữ</span>
             <span className="font-medium">Việt Nam | Tiếng Việt</span>
           </div>
           <div className="">
-            <span className="text-gray-500 mr-4">Currency</span>
+            <span className="text-gray-500 mr-4">Tiền tệ</span>
             <span className="font-medium">VND</span>
           </div>
         </div>
