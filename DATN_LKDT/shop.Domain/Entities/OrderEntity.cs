@@ -16,6 +16,10 @@ namespace shop.Domain.Entities
         public string InvoiceCode { get; set; } = string.Empty;
         public int TotalPrice { get; set; }
         public OrderState State { get; set; } = OrderState.Pending;
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
         public List<OrderItem>? OrderItems { get; set; }
         [JsonIgnore]
         public AccountEntity? Account { get; set; }

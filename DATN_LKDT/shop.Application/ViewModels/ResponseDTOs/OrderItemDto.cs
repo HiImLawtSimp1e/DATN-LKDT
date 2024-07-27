@@ -13,6 +13,7 @@ namespace shop.Application.ViewModels.ResponseDTOs
         public string ProductTitle { get; set; } = string.Empty;
         public string ProductTypeName { get; set; } = string.Empty;
         public int Price { get; set; }
+        public int OriginalPrice { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public int Quantity { get; set; } = 1;
     }

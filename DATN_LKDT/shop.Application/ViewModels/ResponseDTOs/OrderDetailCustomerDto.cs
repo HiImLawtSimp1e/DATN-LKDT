@@ -13,7 +13,7 @@ namespace shop.Application.ViewModels.ResponseDTOs
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public string InvoiceCode { get; set; }
+        public string InvoiceCode { get; set; } = string.Empty;
         public DateTime OrderCreatedAt { get; set; }
     }
 }
