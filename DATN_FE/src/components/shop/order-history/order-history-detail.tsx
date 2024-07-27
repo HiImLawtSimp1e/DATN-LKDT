@@ -63,10 +63,20 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                   </div>
                   <div className="flex justify-between space-x-8 items-start w-full">
                     <p className="text-base xl:text-lg leading-6">
-                      {formatPrice(item.price)}
+                      {item.originalPrice > item.price ? (
+                        <>
+                          {formatPrice(item.price)}
+                          <span className="text-red-300 line-through">
+                            {" "}
+                            {formatPrice(item.originalPrice)}
+                          </span>
+                        </>
+                      ) : (
+                        formatPrice(item.price)
+                      )}
                     </p>
-                    <p className="text-base xl:text-lg leading-6 text-gray-800">
-                      {item.quantity}
+                    <p className="text-base xl:text-lg leading-6 text-gray-400">
+                      x{item.quantity}
                     </p>
                     <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
                       {formatPrice(item.price * item.quantity)}

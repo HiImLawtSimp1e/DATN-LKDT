@@ -28,9 +28,9 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">#</th>
             <th className="px-4 py-2">Mã hóa đơn</th>
             <th className="px-4 py-2">Trạng thái</th>
-            <th className="px-4 py-2">Tổng tiền</th>
             <th className="px-4 py-2">Ngày tạo</th>
             <th className="px-4 py-2">Ngày sửa</th>
+            <th className="px-4 py-2">Tổng tiền</th>
             <th className="px-4 py-2"></th>
           </tr>
         </thead>
@@ -45,9 +45,9 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
                   context={mapOrderState(order.state)}
                 />
               </td>
-              <td className="px-4 py-2">{formatPrice(order.totalPrice)}</td>
               <td className="px-4 py-2">{formatDate(order.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(order.modifiedAt)}</td>
+              <td className="px-4 py-2">{formatPrice(order.totalPrice)}</td>
               <td className="px-4 py-2">
                 <Link href={`/dashboard/orders/${order.id}`}>
                   <button className="m-1 px-5 py-2 bg-teal-500 text-white rounded">

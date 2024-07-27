@@ -2,6 +2,7 @@ interface IOrder {
   id: string;
   invoiceCode: string;
   totalPrice: number;
+  originalPrice: number;
   state: number;
   createdAt: string;
   modifiedAt: string;
@@ -13,6 +14,7 @@ interface IOrderItem {
   productTitle: string;
   productTypeName: string;
   price: number;
+  originalPrice: number;
   imageUrl: string;
   quantity: number;
 }

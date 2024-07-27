@@ -20,8 +20,9 @@ const OrderDetail = ({ orderItems }: IProps) => {
               <th className="px-4 py-2">#</th>
               <th className="px-4 py-2">Sản phẩm</th>
               <th className="px-4 py-2">Loại sản phẩm</th>
+              <th className="px-4 py-2">Giá gốc</th>
+              <th className="px-4 py-2">Giá bán</th>
               <th className="px-4 py-2">Số lượng</th>
-              <th className="px-4 py-2">Đơn giá</th>
               <th className="px-4 py-2">Tổng tiền</th>
             </tr>
           </thead>
@@ -34,7 +35,11 @@ const OrderDetail = ({ orderItems }: IProps) => {
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{item.productTitle}</td>
                 <td className="px-4 py-2">{item.productTypeName}</td>
-                <td className="px-4 py-2">{item.quantity}</td>
+                <td className="px-4 py-2">
+                  {item.originalPrice > item.price
+                    ? formatPrice(item.originalPrice)
+                    : formatPrice(item.price)}
+                </td>
                 <td className="px-4 py-2">{formatPrice(item.price)}</td>
                 <td className="px-4 py-2">
                   {formatPrice(item.price * item.quantity)}
