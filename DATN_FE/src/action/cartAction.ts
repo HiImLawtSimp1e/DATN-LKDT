@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
+import { cookies as nextCookies } from "next/headers";
 
 interface CartItemFormData {
   productId: string;
@@ -21,17 +21,24 @@ export const addCartItem = async (
 
   const cartItemData: CartItemFormData = { productId, productTypeId, quantity };
 
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   const res = await fetch(`http://localhost:5000/api/Cart`, {
     method: "POST",
     body: JSON.stringify(cartItemData),
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
   const responseData: ApiResponse<string> = await res.json();
-  // console.log(responseData);
+  //   console.log(responseData);
   const { success, message } = responseData;
 
   if (success) {
-    // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
+    // If response is success, revalidate and redirect.
     revalidateTag("shoppingCart");
     return { success: true, errors: [] };
   } else {
@@ -51,17 +58,24 @@ export const updateQuantity = async (
 
   const cartItemData: CartItemFormData = { productId, productTypeId, quantity };
 
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   const res = await fetch(`http://localhost:5000/api/Cart`, {
     method: "PUT",
     body: JSON.stringify(cartItemData),
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
   const responseData: ApiResponse<string> = await res.json();
   //   console.log(responseData);
   const { success, message } = responseData;
 
   if (success) {
-    // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
+    // If response is success, revalidate and redirect.
     revalidatePath("/cart");
     return { success: true, errors: [] };
   } else {
@@ -76,11 +90,18 @@ export const removeCartItem = async (
   const productId = formData.get("productId") as string;
   const productTypeId = formData.get("productTypeId") as string;
 
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   const res = await fetch(
     `http://localhost:5000/api/Cart/${productId}?productTypeId=${productTypeId}`,
     {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
 
@@ -89,7 +110,7 @@ export const removeCartItem = async (
   const { success, message } = responseData;
 
   if (success) {
-    // Nếu phản hồi thành công, cập nhật lại đường dẫn và chuyển hướng
+    // If response is success, revalidate and redirect.
     revalidateTag("shoppingCart");
     return { success: true, errors: [] };
   } else {

@@ -9,14 +9,15 @@ const Slides = () => {
 };
 
 const Products = async () => {
-  const res = await fetch(`http://localhost:5000/api/Product`, {
+  const res = await fetch("http://localhost:5000/api/Product", {
     method: "GET",
+    next: { tags: ["shopProductList"] },
   });
 
   const responseData: ApiResponse<PagingParams<IProduct[]>> = await res.json();
   const { data, success, message } = responseData;
   // console.log(responseData);
-  const { result, pages, currentPage } = data;
+  const { result, pages, currentPage, pageResults } = data;
 
   return <HomeShopProductList products={result} />;
 };

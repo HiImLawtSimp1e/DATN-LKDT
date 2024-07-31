@@ -1,14 +1,17 @@
-import LoginForm from "@/components/auth/login-form";
+import CustomerLoginForm from "@/components/auth/customer-login-form";
 import Loading from "@/components/shop/loading";
 import { Suspense } from "react";
 
-const LoginPage = () => {
+const LoginPage = ({
+  searchParams,
+}: {
+  searchParams: { redirectUrl?: string };
+}) => {
+  const { redirectUrl } = searchParams;
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center">
-      <Suspense fallback={<Loading />}>
-        <LoginForm />
-      </Suspense>
-    </div>
+    <Suspense fallback={<Loading />}>
+      <CustomerLoginForm redirectUrl={redirectUrl || null} />
+    </Suspense>
   );
 };
 export default LoginPage;

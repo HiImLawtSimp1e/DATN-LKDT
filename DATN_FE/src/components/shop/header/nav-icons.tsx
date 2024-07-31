@@ -4,15 +4,19 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import CartModal from "./cart-modal";
 import { useCartStore } from "@/lib/store/useCartStore";
+import { usePathname } from "next/navigation";
+import {
+  getAuthPublic,
+  setLogoutPublic,
+} from "@/service/auth-service/auth-service";
 
 const NavIcons = () => {
   const { cartItems, counter, totalAmount, getCart } = useCartStore();
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    getCart();
-  }, []);
+  const authToken = getAuthPublic();
 
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -21,7 +25,6 @@ const NavIcons = () => {
     setIsCartOpen(false);
     setIsProfileOpen((prev) => !prev);
   };
-
   const handleCart = () => {
     setIsProfileOpen(false);
     setIsCartOpen((prev) => !prev);
@@ -39,7 +42,17 @@ const NavIcons = () => {
     }
   };
 
+  const handleLogout = () => {
+    setLogoutPublic();
+    if (typeof window !== "undefined") {
+      window.location.reload();
+    }
+  };
+
   useEffect(() => {
+    if (authToken) {
+      getCart();
+    }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -77,21 +90,46 @@ const NavIcons = () => {
           ref={profileRef}
           className="p-4 absolute flex flex-col gap-4 text-md rounded-md top-12 right-0 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20"
         >
-          <Link
-            className="inline-block min-w-40 hover:opacity-60"
-            href="/profile"
-          >
-            Hồ sơ
-          </Link>
-          <Link
-            className="inline-block min-w-40 hover:opacity-60"
-            href="/order-history"
-          >
-            Đơn hàng của tôi
-          </Link>
-          <div className="inline-block min-w-40 hover:opacity-60 cursor-pointer ">
-            Đăng xuất
-          </div>
+          {authToken ? (
+            <>
+              <Link
+                className="inline-block min-w-40 hover:opacity-60"
+                href="/profile"
+              >
+                Hồ sơ
+              </Link>
+              <Link
+                className="inline-block min-w-40 hover:opacity-60"
+                href="/order-history"
+              >
+                Đơn hàng của tôi
+              </Link>
+              <div
+                onClick={handleLogout}
+                className="inline-block min-w-40 hover:opacity-60 cursor-pointer"
+              >
+                Đăng xuất
+              </div>
+            </>
+          ) : (
+            <>
+              <Link
+                className="inline-block min-w-40 hover:opacity-60"
+                href={{
+                  pathname: "/login",
+                  query: { redirectUrl: encodeURIComponent(pathname) },
+                }}
+              >
+                Đăng nhập
+              </Link>
+              <Link
+                className="inline-block min-w-40 hover:opacity-60"
+                href="/register"
+              >
+                Đăng ký
+              </Link>
+            </>
+          )}
         </div>
       )}
     </div>
