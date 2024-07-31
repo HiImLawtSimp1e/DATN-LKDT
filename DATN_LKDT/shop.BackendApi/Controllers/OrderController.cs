@@ -19,6 +19,20 @@ namespace shop.BackendApi.Controllers
         {
             _service = service;
         }
+        [HttpGet()]
+        public async Task<ActionResult<ApiResponse<Pagination<List<Order>>>>> GetCustomerOrders([FromQuery] int page)
+        {
+            if (page == null || page <= 0)
+            {
+                page = 1;
+            }
+            var response = await _service.GetCustomerOrders(page);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
         [HttpGet("admin")]
         public async Task<ActionResult<ApiResponse<Pagination<List<Order>>>>> GetAdminOrders([FromQuery] int page)
         {
@@ -33,20 +47,20 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [HttpGet("admin/{orderId}")]
-        public async Task<ActionResult<ApiResponse<List<OrderItemDto>>>> GetAdminOrderItems(Guid orderId)
+        [HttpGet("{orderId}")]
+        public async Task<ActionResult<ApiResponse<List<OrderItemDto>>>> GetOrderItems(Guid orderId)
         {
-            var response = await _service.GetAdminOrderItems(orderId);
+            var response = await _service.GetOrderItems(orderId);
             if (!response.Success)
             {
                 return BadRequest(response);
             }
             return Ok(response);
         }
-        [HttpGet("admin/customer/{orderId}")]
-        public async Task<ActionResult<ApiResponse<OrderDetailCustomerDto>>> GetAdminOrderCustomerInfo(Guid orderId)
+        [HttpGet("customer/{orderId}")]
+        public async Task<ActionResult<ApiResponse<OrderDetailCustomerDto>>> GetOrderCustomerInfo(Guid orderId)
         {
-            var response = await _service.GetAdminOrderCustomerInfo(orderId);
+            var response = await _service.GetOrderCustomerInfo(orderId);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -67,8 +81,7 @@ namespace shop.BackendApi.Controllers
         [HttpPost("place-order")]
         public async Task<ActionResult<ApiResponse<bool>>> PlaceOrder()
         {
-            var mockAccountId = new Guid("2B25A754-A50E-4468-942C-D65C0BC2C86F");
-            var response = await _service.PlaceOrder(mockAccountId);
+            var response = await _service.PlaceOrder();
             if (!response.Success)
             {
                 return BadRequest(response);

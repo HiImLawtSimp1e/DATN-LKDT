@@ -5,9 +5,9 @@ namespace shop.Domain.Entities.Base;
 [NotMapped]
 public class BaseEntity
 {
-    public virtual Guid? CreatedByUserId { get; set; }
+    public virtual string CreatedBy { get; set; } = string.Empty;
 
-    public virtual Guid? LastModifiedByUserId { get; set; }
+    public virtual string ModifiedBy { get; set; } = string.Empty;
 
     public virtual DateTime ModifiedAt { get; set; } = DateTime.Now;
 

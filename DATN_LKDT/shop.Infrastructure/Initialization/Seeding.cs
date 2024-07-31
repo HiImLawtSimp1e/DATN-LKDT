@@ -4,6 +4,7 @@ using shop.Domain.Entities;
 using shop.Infrastructure.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,33 @@ namespace shop.Infrastructure.Initialization
             CryptographyHelper.CreatePasswordHash("123456", out byte[] passwordHash2, out byte[] passwordSalt2);
             CryptographyHelper.CreatePasswordHash("123456", out byte[] passwordHash3, out byte[] passwordSalt3);
 
+            modelBuilder.Entity<RoleEntity>().HasData(
+                     new RoleEntity
+                     {
+                         Id = new Guid("80a02536-2e92-466f-914f-8f1c61d01fd5"),
+                         RoleName = "Admin"
+                     },
+                     new RoleEntity
+                     {
+                         Id = new Guid("9ebee0d5-323a-4052-af12-827a9e856639"),
+                         RoleName = "Customer"
+                     },
+                     new RoleEntity
+                     {
+                         Id = new Guid("5b3a05b0-c011-4593-abd1-cb2e486f8e43"),
+                         RoleName = "Employee"
+                     }
+             );
+
             modelBuilder.Entity<AccountEntity>().HasData(
+                   
                    new AccountEntity
                    {
                        Id = Guid.NewGuid(),
                        Username = "admin@example.com",
                        PasswordHash = passwordHash1,
                        PasswordSalt = passwordSalt1,
-                       Role = UserTypeEnum.Admin
+                       RoleId = new Guid("80a02536-2e92-466f-914f-8f1c61d01fd5")
                    },
                    new AccountEntity
                    {
@@ -34,7 +54,7 @@ namespace shop.Infrastructure.Initialization
                        Username = "customer@example.com",
                        PasswordHash = passwordHash2,
                        PasswordSalt = passwordSalt2,
-                       Role = UserTypeEnum.Customer,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639"),
                        Name = "John Doe",
                        Email = "johndoe@example.com",
                        PhoneNumber = "0123456789",
@@ -45,7 +65,7 @@ namespace shop.Infrastructure.Initialization
                        Username = "employee@example.com",
                        PasswordHash = passwordHash3,
                        PasswordSalt = passwordSalt3,
-                       Role = UserTypeEnum.Employee,
+                       RoleId = new Guid("5b3a05b0-c011-4593-abd1-cb2e486f8e43")
                    }
                  );
 
@@ -54,11 +74,9 @@ namespace shop.Infrastructure.Initialization
                    {
                        Id = Guid.NewGuid(),
                        IdAccount = new Guid("2b25a754-a50e-4468-942c-d65c0bc2c86f"),
-                       Country = "Vietnam",
                        City = "Hanoi",
                        District = "Cau Giay",
                        HomeAddress = "123 Main Street",
-                       Status = 1
                    }
                  );
         }

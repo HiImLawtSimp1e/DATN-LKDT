@@ -13,10 +13,11 @@ namespace shop.Application.Interfaces
 {
     public interface IOrderService
     {
-        public Task<ApiResponse<bool>> PlaceOrder(Guid accountId);
+        public Task<ApiResponse<bool>> PlaceOrder();
         public Task<ApiResponse<Pagination<List<Order>>>> GetAdminOrders(int page);
-        public Task<ApiResponse<List<OrderItemDto>>> GetAdminOrderItems(Guid orderId);
-        public Task<ApiResponse<OrderDetailCustomerDto>> GetAdminOrderCustomerInfo(Guid orderId);
+        public Task<ApiResponse<Pagination<List<Order>>>> GetCustomerOrders(int page);
+        public Task<ApiResponse<List<OrderItemDto>>> GetOrderItems(Guid orderId);
+        public Task<ApiResponse<OrderDetailCustomerDto>> GetOrderCustomerInfo(Guid orderId);
         public Task<ApiResponse<bool>> UpdateOrderState(Guid orderId, OrderState state);
         public Task<ApiResponse<int>> GetOrderState(Guid orderId);
     }

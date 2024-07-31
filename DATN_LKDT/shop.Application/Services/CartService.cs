@@ -19,14 +19,18 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public CartService(AppDbContext context, IMapper mapper)
+        public CartService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
-        public async Task<ApiResponse<bool>> AddToCart(Guid accountId, StoreCartItemDto newItem)
+        public async Task<ApiResponse<bool>> AddToCart(StoreCartItemDto newItem)
         {
+            var accountId = _authService.GetUserId();
+
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
 
             if(account == null)
@@ -63,8 +67,10 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> RemoveFromCart(Guid accountId, Guid productId, Guid productTypeId)
+        public async Task<ApiResponse<bool>> RemoveFromCart(Guid productId, Guid productTypeId)
         {
+            var accountId = _authService.GetUserId();
+
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
 
             if (account == null)
@@ -108,8 +114,10 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> UpdateQuantity(Guid accountId, StoreCartItemDto updateItem)
+        public async Task<ApiResponse<bool>> UpdateQuantity(StoreCartItemDto updateItem)
         {
+            var accountId = _authService.GetUserId();
+
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
 
             if (account == null)
@@ -145,8 +153,10 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItems(Guid accountId)
+        public async Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItems()
         {
+            var accountId = _authService.GetUserId();
+
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
 
             if (account == null)
@@ -218,8 +228,10 @@ namespace shop.Application.Services
             return result;
         }
 
-        public async Task<ApiResponse<bool>> StoreCartItems(Guid accountId, List<StoreCartItemDto> items)
+        public async Task<ApiResponse<bool>> StoreCartItems(List<StoreCartItemDto> items)
         {
+            var accountId = _authService.GetUserId();
+
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
 
             if (account == null)

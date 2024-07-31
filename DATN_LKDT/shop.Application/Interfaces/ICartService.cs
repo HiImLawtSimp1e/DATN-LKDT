@@ -11,10 +11,10 @@ namespace shop.Application.Interfaces
 {
     public interface ICartService
     {
-        Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItems(Guid accountId);
-        Task<ApiResponse<bool>> StoreCartItems(Guid accountId, List<StoreCartItemDto> items);
-        Task<ApiResponse<bool>> AddToCart(Guid accountId, StoreCartItemDto newItem);
-        Task<ApiResponse<bool>> UpdateQuantity(Guid accountId, StoreCartItemDto updateItem);
-        Task<ApiResponse<bool>> RemoveFromCart(Guid accountId, Guid productId, Guid productTypeId);
+        Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItems();
+        Task<ApiResponse<bool>> StoreCartItems(List<StoreCartItemDto> items);
+        Task<ApiResponse<bool>> AddToCart(StoreCartItemDto newItem);
+        Task<ApiResponse<bool>> UpdateQuantity(StoreCartItemDto updateItem);
+        Task<ApiResponse<bool>> RemoveFromCart(Guid productId, Guid productTypeId);
     }
 }

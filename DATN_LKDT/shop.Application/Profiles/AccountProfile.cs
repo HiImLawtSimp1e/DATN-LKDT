@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using shop.Application.ViewModels.RequestDTOs;
+using shop.Application.ViewModels.RequestDTOs.AccountDto;
 using shop.Application.ViewModels.ResponseDTOs;
+using shop.Application.ViewModels.ResponseDTOs.AccountResponseDto;
 using shop.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ namespace shop.Application.Profiles
             //Mapping DTOs to Entity
             CreateMap<AddAccountDto, AccountEntity>();
             CreateMap<UpdateAccountDto, AccountEntity>();
+            //Mapping Account Entity to DTO
+            CreateMap<AccountEntity, AccountDetailResponseDto>();
+            CreateMap<AccountEntity, AccountListResponseDto>();
         }
     }
 }

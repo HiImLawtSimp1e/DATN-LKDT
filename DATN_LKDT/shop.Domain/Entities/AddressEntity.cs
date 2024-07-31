@@ -6,15 +6,15 @@
 
         public Guid IdAccount { get; set; }
 
-        public string? Country { get; set; }
 
-        public string? City { get; set; }
+        public string City { get; set; } = string.Empty;
 
-        public string? District { get; set; }
+        public string District { get; set; } = string.Empty;
 
-        public string? HomeAddress { get; set; }
+        public string HomeAddress { get; set; } = string.Empty;
 
-        public int Status { get; set; }
+        public bool IsActive = true;
+        public bool Delete = false;
 
         public virtual AccountEntity Accounts { get; set; }
     }

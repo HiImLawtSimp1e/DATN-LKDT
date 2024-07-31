@@ -18,11 +18,13 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly ICartService _cartService;
+        private readonly IAuthService _authService;
 
-        public OrderService(AppDbContext context, ICartService cartService)
+        public OrderService(AppDbContext context, ICartService cartService, IAuthService authService)
         {
             _context = context;
             _cartService = cartService;
+            _authService = authService;
         }
         public async Task<ApiResponse<Pagination<List<Order>>>> GetAdminOrders(int page)
         {
@@ -48,7 +50,46 @@ namespace shop.Application.Services
                 Data = pagingData
             };
         }
-        public async Task<ApiResponse<List<OrderItemDto>>> GetAdminOrderItems(Guid orderId)
+
+        public async Task<ApiResponse<Pagination<List<Order>>>> GetCustomerOrders(int page)
+        {
+            var accountId = _authService.GetUserId();
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
+
+            if (account == null)
+            {
+                return new ApiResponse<Pagination<List<Order>>>
+                {
+                    Success = false,
+                    Message = "You need to log in"
+                };
+            }
+
+            var pageResults = 10f;
+            var pageCount = Math.Ceiling(_context.Orders.Count() / pageResults);
+
+            var orders = await _context.Orders
+                                   .Where(o => o.AccountId == account.Id)
+                                   .OrderByDescending(o => o.CreatedAt)
+                                   .Skip((page - 1) * (int)pageResults)
+                                   .Take((int)pageResults)
+                                   .ToListAsync();
+
+            var pagingData = new Pagination<List<Order>>
+            {
+                Result = orders,
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return new ApiResponse<Pagination<List<Order>>>
+            {
+                Data = pagingData
+            };
+        }
+
+        public async Task<ApiResponse<List<OrderItemDto>>> GetOrderItems(Guid orderId)
         {
             var items = await _context.OrderItems
                                     .Where(oi => oi.OrderId == orderId)
@@ -87,7 +128,7 @@ namespace shop.Application.Services
 
             return result;
         }
-        public async Task<ApiResponse<OrderDetailCustomerDto>> GetAdminOrderCustomerInfo(Guid orderId)
+        public async Task<ApiResponse<OrderDetailCustomerDto>> GetOrderCustomerInfo(Guid orderId)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
             if (order == null)
@@ -172,8 +213,10 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> PlaceOrder(Guid accountId)
+        public async Task<ApiResponse<bool>> PlaceOrder()
         {
+            var accountId = _authService.GetUserId();
+
             var customer = await _context.Accounts
                                        .Include(c => c.Cart)
                                        .FirstOrDefaultAsync(c => c.Id == accountId);
@@ -189,9 +232,9 @@ namespace shop.Application.Services
 
             var cart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == accountId);
 
-            var cartItem = (await _cartService.GetCartItems(accountId)).Data;
+            var cartItem = (await _cartService.GetCartItems()).Data;
 
-            if (cart == null || cartItem == null || cartItem.Count == 0)
+            if (cart == null || cartItem == null || cartItem.Count() == 0)
             {
                 return new ApiResponse<bool>
                 {
@@ -256,7 +299,7 @@ namespace shop.Application.Services
             var result = "";
             if(address != null)
             {
-                result = $"{address.HomeAddress}, {address.District}, {address.City}, {address.Country}";
+                result = $"{address.HomeAddress}, {address.District}, {address.City} ";
             }
             return result;
         }

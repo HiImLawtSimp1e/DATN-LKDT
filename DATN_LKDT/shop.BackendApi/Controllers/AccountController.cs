@@ -1,10 +1,13 @@
 ﻿using AppBusiness.Model.Pagination;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using shop.Application.Common;
 using shop.Application.Interfaces;
-using shop.Application.ViewModels.RequestDTOs;
+using shop.Application.ViewModels.RequestDTOs.AccountDto;
+using shop.Application.ViewModels.ResponseDTOs.AccountResponseDto;
 using shop.Domain.Entities;
+using System.Data;
 
 namespace shop.BackendApi.Controllers
 {
@@ -19,17 +22,17 @@ namespace shop.BackendApi.Controllers
             _service = service;
         }
         [HttpGet("admin")]
-        public async Task<ActionResult<ApiResponse<Pagination<List<AccountEntity>>>>> GetAdminAccounts([FromQuery] int currentPage, [FromQuery] int pageSize)
+        public async Task<ActionResult<ApiResponse<Pagination<List<AccountListResponseDto>>>>> GetAdminAccounts([FromQuery] int currentPage, [FromQuery] double pageResults)
         {
             if (currentPage == null || currentPage <= 0)
             {
                 currentPage = 1;
             }
-            if (pageSize == null || pageSize <= 0)
+            if (pageResults == null || pageResults <= 0)
             {
-                pageSize = 8;
+                pageResults = 8f;
             }
-            var response = await _service.GetAdminAccounts(currentPage, pageSize);
+            var response = await _service.GetAdminAccounts(currentPage, pageResults);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -37,7 +40,7 @@ namespace shop.BackendApi.Controllers
             return Ok(response);
         }
         [HttpGet("admin/{id}")]
-        public async Task<ActionResult<ApiResponse<AccountEntity>>> GetAdminAccount(Guid id)
+        public async Task<ActionResult<ApiResponse<AccountDetailResponseDto>>> GetAdminSingleAccount(Guid id)
         {
             var response = await _service.GetAdminSingleAccount(id);
             if (!response.Success)
@@ -45,6 +48,16 @@ namespace shop.BackendApi.Controllers
                 return BadRequest(response);
             }
             return Ok(response);
+        }
+        [HttpGet("admin/role")]
+        public async Task<ActionResult<ApiResponse<List<RoleEntity>>>> GetAdminRoles()
+        {
+            var res = await _service.GetAdminRoles();
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
         }
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> CreateAccount(AddAccountDto newAccount)
