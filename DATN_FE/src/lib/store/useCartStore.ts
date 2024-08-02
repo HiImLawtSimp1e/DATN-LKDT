@@ -5,6 +5,7 @@ type CartState = {
   cartItems: ICartItem[];
   isLoading: boolean;
   counter: number;
+  discountValue: number;
   totalAmount: number;
   getCart: () => void;
   clearCart: () => void;
@@ -14,6 +15,7 @@ export const useCartStore = create<CartState>((set) => ({
   cartItems: [],
   isLoading: false,
   counter: 0,
+  discountValue: 0,
   totalAmount: 0,
   getCart: async () => {
     const authToken = getAuthPublic();
@@ -57,6 +59,7 @@ export const useCartStore = create<CartState>((set) => ({
       set({
         cartItems: data,
         counter: data.length || 0,
+        discountValue: 0,
         totalAmount: total,
       });
     } catch (err) {

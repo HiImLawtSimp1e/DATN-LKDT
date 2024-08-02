@@ -217,6 +217,7 @@ namespace shop.Application.Services
                     ProductTitle = product.Title,
                     ImageUrl = product.ImageUrl,
                     Price = productVariant.Price,
+                    OriginalPrice = productVariant.OriginalPrice,
                     ProductTypeId = productVariant.ProductTypeId,
                     ProductTypeName = productVariant.ProductType.Name,
                     Quantity = item.Quantity
