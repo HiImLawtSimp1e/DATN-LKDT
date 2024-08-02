@@ -633,6 +633,34 @@ namespace shop.Infrastructure.Initialization
                       SeoKeyworks = "linh kiện điện tử chất lượng cao, lợi ích của linh kiện chất lượng, hiệu suất linh kiện điện tử"
                   }
                 );
+            modelBuilder.Entity<DiscountEntity>().HasData(
+                 new DiscountEntity
+                 {
+                     Id = Guid.NewGuid(),
+                     Code = "SUMMER24",
+                     VoucherName = "Summer 24% Discount",
+                     IsDiscountPercent = true,
+                     DiscountValue = 24.00,
+                     MinOrderCondition = 200000,
+                     MaxDiscountValue = 80000,
+                     Quantity = 1000,
+                     StartDate = DateTime.Now,
+                     EndDate = DateTime.Now.AddDays(30),
+                 },
+                  new DiscountEntity
+                  {
+                      Id = Guid.NewGuid(),
+                      Code = "SUMMER20000",
+                      VoucherName = "Summer 20000VND Discount",
+                      IsDiscountPercent = false,
+                      DiscountValue = 20000,
+                      MinOrderCondition = 100000,
+                      MaxDiscountValue = 0,
+                      Quantity = 1000,
+                      StartDate = DateTime.Now,
+                      EndDate = DateTime.Now.AddDays(30),
+                  }
+               );
         }
 
     }

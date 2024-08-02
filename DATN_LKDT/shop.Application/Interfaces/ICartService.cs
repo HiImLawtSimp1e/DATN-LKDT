@@ -16,5 +16,6 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<bool>> AddToCart(StoreCartItemDto newItem);
         Task<ApiResponse<bool>> UpdateQuantity(StoreCartItemDto updateItem);
         Task<ApiResponse<bool>> RemoveFromCart(Guid productId, Guid productTypeId);
+        Task<int> GetCartTotalAmountAsync();
     }
 }

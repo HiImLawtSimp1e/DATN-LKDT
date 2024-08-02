@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using shop.Application.ViewModels.RequestDTOs;
 using shop.Application.ViewModels.RequestDTOs.DiscountDto;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace shop.Application.Profiles
             //Mapping DTOs to Entity
             CreateMap<AddDiscountDto, DiscountEntity>();
             CreateMap<UpdateDiscountDto, DiscountEntity>();
+            //Mapping Entity to DTOs
+            CreateMap<DiscountEntity, CustomerVoucherResponseDto>();
         }
     }
 }

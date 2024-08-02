@@ -10,7 +10,7 @@ namespace shop.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Customer")]
     public class CartController : ControllerBase
     {
         private readonly ICartService _service;

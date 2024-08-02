@@ -1,8 +1,10 @@
 ﻿using AppBusiness.Model.Pagination;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.ResponseDTOs;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Domain.Entities;
 using shop.Domain.Entities.Enum;
 using shop.Infrastructure.Database.Context;
@@ -17,12 +19,14 @@ namespace shop.Application.Services
     public class OrderService : IOrderService
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
         private readonly ICartService _cartService;
         private readonly IAuthService _authService;
 
-        public OrderService(AppDbContext context, ICartService cartService, IAuthService authService)
+        public OrderService(AppDbContext context,IMapper mapper , ICartService cartService, IAuthService authService)
         {
             _context = context;
+            _mapper = mapper;
             _cartService = cartService;
             _authService = authService;
         }
@@ -128,7 +132,7 @@ namespace shop.Application.Services
 
             return result;
         }
-        public async Task<ApiResponse<OrderDetailCustomerDto>> GetOrderCustomerInfo(Guid orderId)
+        public async Task<ApiResponse<OrderDetailCustomerDto>> GetOrderDetailInfo(Guid orderId)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
             if (order == null)
@@ -159,6 +163,7 @@ namespace shop.Application.Services
                 Address = order.Address,
                 Phone = order.Phone,
                 InvoiceCode = order.InvoiceCode,
+                DiscountValue = order.DiscountValue,
                 OrderCreatedAt = order.CreatedAt
             };
 
@@ -213,7 +218,7 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> PlaceOrder()
+        public async Task<ApiResponse<bool>> PlaceOrder(Guid? voucherId)
         {
             var accountId = _authService.GetUserId();
 
@@ -283,6 +288,27 @@ namespace shop.Application.Services
                 Phone = customer.PhoneNumber,
             };
 
+            if (voucherId != null)
+            {
+                //Kiểm tra xem voucher còn hoạt động, đã hết hạn hoặc hết số lượng hay chưa
+                var voucher = await _context.Discounts
+                                         .Where(v => v.IsActive == true && DateTime.Now > v.StartDate && DateTime.Now < v.EndDate && v.Quantity > 0)
+                                         .FirstOrDefaultAsync(v => v.Id == voucherId);
+                if (voucher != null)
+                {
+                    // MinOrderCondition = 0 nghĩa là voucher không có giá trị giảm giá tối đa => pass
+                    // "Giá trị đơn hàng" lớn hơn "giá trị giảm giá tối đa" => pass
+
+                    if (voucher.MinOrderCondition <= 0 || totalAmount > voucher.MinOrderCondition)
+                    {
+                        var discountValue = CaculateDiscountValue(voucher, totalAmount);
+                        order.DiscountValue = discountValue;
+                        order.DiscountId = voucher.Id;
+                        voucher.Quantity -= 1;
+                    }
+                }
+            }
+
             _context.Orders.Add(order);
             _context.CartItems.RemoveRange(_context.CartItems.Where(ci => ci.CartId == cart.Id)); 
 
@@ -292,6 +318,61 @@ namespace shop.Application.Services
                 Data = true,
                 Message = "Đặt hàng thành công"
             };
+        }
+
+        public async Task<ApiResponse<CustomerVoucherResponseDto>> ApplyVoucher(string discountCode)
+        {
+            var totalAmount = await _cartService.GetCartTotalAmountAsync();
+            if (totalAmount == 0)
+            {
+                return new ApiResponse<CustomerVoucherResponseDto>
+                {
+                    Success = false,
+                    Message = "Giỏ hàng trống"
+                };
+            }
+
+            //Kiểm tra xem voucher còn hoạt động, đã hết hạn hoặc hết số lượng hay chưa
+            var voucher = await _context.Discounts
+                                           .Where(v => v.IsActive == true && DateTime.Now > v.StartDate && DateTime.Now < v.EndDate && v.Quantity > 0)
+                                           .FirstOrDefaultAsync(v => v.Code == discountCode);
+            if (voucher == null)
+            {
+                return new ApiResponse<CustomerVoucherResponseDto>
+                {
+                    Success = false,
+                    Message = "Mã voucher không đúng hoặc đã hết hạn sử dụng"
+                };
+            }
+            else if (IsVoucherUsed(voucher.Id))
+            {
+                return new ApiResponse<CustomerVoucherResponseDto>
+                {
+                    Success = false,
+                    Message = "Mã voucher đã được bạn sử dụng"
+                };
+            }
+            else
+            {
+
+                // MinOrderCondition = 0 nghĩa là voucher không có giá trị giảm giá tối đa => pass
+                // "Giá trị đơn hàng" lớn hơn "giá trị giảm giá tối đa" => pass
+                if (voucher.MinOrderCondition > 0 && totalAmount < voucher.MinOrderCondition)
+                {
+                    return new ApiResponse<CustomerVoucherResponseDto>
+                    {
+                        Success = false,
+                        Message = string.Format("Voucher chỉ áp dụng cho đơn hàng có giá trị từ {0}đ", voucher.MinOrderCondition)
+                    };
+                }
+
+                var result = _mapper.Map<CustomerVoucherResponseDto>(voucher);
+
+                return new ApiResponse<CustomerVoucherResponseDto>
+                {
+                    Data = result
+                };
+            }
         }
 
         private string GetCustomerAddress(AddressEntity address)
@@ -307,6 +388,43 @@ namespace shop.Application.Services
         private string GenerateInvoiceCode()
         {
             return $"INV-{DateTime.Now:yyyyMMddHHmmssfff}-{new Random().Next(1000, 9999)}";
+        }
+
+        //Logical: Each account is allowed to use one voucher code only once
+        private bool IsVoucherUsed(Guid voucherId)
+        {
+            var accountId = _authService.GetUserId();
+            var customer = _context.Accounts.FirstOrDefault(c => c.Id == accountId);
+            if (customer == null)
+            {
+                return true;
+            }
+            var isUsedVoucher = _context.Orders.FirstOrDefault(o => o.AccountId == customer.Id && o.DiscountId == voucherId);
+            return isUsedVoucher != null;
+        }
+
+        private int CaculateDiscountValue(DiscountEntity voucher, int totalAmount)
+        {
+            int result = 0;
+            if (voucher.IsDiscountPercent)
+            {
+                var discountValue = (int)(totalAmount * (voucher.DiscountValue / 100));
+
+                // MaxDiscountValue = 0 meaning max discount value doesn't exist
+                if (voucher.MaxDiscountValue > 0)
+                {
+                    result = (discountValue > voucher.MaxDiscountValue) ? voucher.MaxDiscountValue : discountValue;
+                }
+                else
+                {
+                    result = discountValue;
+                }
+            }
+            else
+            {
+                result = (int)voucher.DiscountValue;
+            }
+            return result;
         }
     }
 }
