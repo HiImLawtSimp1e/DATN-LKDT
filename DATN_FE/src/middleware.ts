@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (isAccess !== "Employee" && isAccess !== "Admin") {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/login/admin", request.url));
     }
 
     return NextResponse.next();
@@ -44,6 +44,26 @@ export async function middleware(request: NextRequest) {
 
     return NextResponse.next();
   }
+  if (
+    request.nextUrl.pathname.startsWith("/product") ||
+    request.nextUrl.pathname.startsWith("/category")
+  ) {
+    const loginUrl = new URL("/login", request.url);
+    const redirectUrl = encodeURIComponent(request.nextUrl.pathname);
+    loginUrl.searchParams.set("redirectUrl", redirectUrl);
+    const token = request.cookies.get("authToken");
+    if (!token) {
+      return NextResponse.next();
+    }
+
+    const isAccess = await verifyToken(token.value);
+
+    if (isAccess !== "Customer") {
+      return NextResponse.redirect(loginUrl);
+    }
+
+    return NextResponse.next();
+  }
 }
 
 async function verifyToken(token: string) {
@@ -59,7 +79,7 @@ async function verifyToken(token: string) {
     );
 
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
 
     if (!data.success) {
       return null;

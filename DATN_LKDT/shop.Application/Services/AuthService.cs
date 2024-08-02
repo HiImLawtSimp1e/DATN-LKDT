@@ -89,6 +89,14 @@ namespace shop.Application.Services
                     Message = "Mật khẩu không chính xác"
                 };
             }
+            else if (account.Role.RoleName != "Customer")
+            {
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Bạn không có quyền truy cập"
+                };
+            }
             else
             {
                 var token = CreateToken(account);
