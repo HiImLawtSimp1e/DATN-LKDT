@@ -14,6 +14,7 @@ import {
   MdOutlinePostAdd,
   MdDvr,
   MdArticle,
+  MdAirplaneTicket
 } from "react-icons/md";
 import MenuLink from "./menu-link";
 import { ReactNode } from "react";
@@ -63,6 +64,11 @@ const Sidebar = () => {
           title: "Đơn hàng",
           path: "/dashboard/orders",
           icon: <MdArticle />,
+        },
+        {
+          title: "Voucher",
+          path: "/dashboard/vouchers",
+          icon: <MdAirplaneTicket />,
         },
         {
           title: "Tài khoản",

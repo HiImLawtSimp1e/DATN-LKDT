@@ -10,11 +10,11 @@ interface IProps {
   currentPage: number;
 }
 const cssTagField: string[] = [
-  "bg-yellow-300",
-  "bg-blue-500",
-  "bg-green-500",
+  "bg-yellow-900",
+  "bg-blue-900",
   "bg-green-900",
-  "bg-red-700",
+  "bg-green-900",
+  "bg-red-900",
 ];
 
 const OrderList = ({ orders, pages, currentPage }: IProps) => {
@@ -47,7 +47,9 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
               </td>
               <td className="px-4 py-2">{formatDate(order.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(order.modifiedAt)}</td>
-              <td className="px-4 py-2">{formatPrice(order.totalPrice)}</td>
+              <td className="px-4 py-2">
+                {formatPrice(order.totalPrice - order.discountValue)}
+              </td>
               <td className="px-4 py-2">
                 <Link href={`/dashboard/orders/${order.id}`}>
                   <button className="m-1 px-5 py-2 bg-teal-500 text-white rounded">

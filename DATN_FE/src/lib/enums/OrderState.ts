@@ -9,15 +9,15 @@ export enum OrderState {
 export const mapOrderState = (state: number): string => {
   switch (state) {
     case OrderState.Pending:
-      return "Pending";
+      return "Đang chờ";
     case OrderState.Processing:
-      return "Processing";
+      return "Đang xử lý";
     case OrderState.Shipped:
-      return "Shipped";
+      return "Đang vận chuyển";
     case OrderState.Delivered:
-      return "Delivered";
+      return "Thành công";
     case OrderState.Cancelled:
-      return "Cancelled";
+      return "Hủy bỏ";
     default:
       throw new Error(`Unknown state: ${state}`);
   }

@@ -3,30 +3,23 @@ import Image from "next/image";
 
 interface IProps {
   orderItems: IOrderItem[];
-  orderCustomer: IOrderCustomer;
+  orderDetail: IOrderDetail;
 }
 
-const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
+const OrderHistoryDetail = ({ orderItems, orderDetail }: IProps) => {
   const totalAmount = orderItems.reduce(
     (accumulator, currentValue) =>
       accumulator + currentValue.price * currentValue.quantity,
     0
   );
-  const cssTagField: string[] = [
-    "bg-yellow-300",
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-green-900",
-    "bg-red-700",
-  ];
   return (
     <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <div className="flex justify-start item-start space-y-2 flex-col">
         <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
-          Đơn hàng {orderCustomer.invoiceCode}
+          Đơn hàng {orderDetail.invoiceCode}
         </h1>
         <p className="text-base font-medium leading-6 text-gray-600">
-          {formatDate(orderCustomer.orderCreatedAt)}
+          {formatDate(orderDetail.orderCreatedAt)}
         </p>
       </div>
       <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
@@ -50,7 +43,7 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                 </div>
                 <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full pb-8 space-y-4 md:space-y-0">
                   <div className="w-full flex flex-col justify-start items-start space-y-8">
-                    <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
+                    <h3 className="text-xl xl:text-xl font-semibold leading-6 text-gray-800">
                       {item.productTitle}
                     </h3>
                     <div className="flex justify-start items-start flex-col space-y-2">
@@ -97,7 +90,7 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                 Họ và tên
               </p>
               <p className="text-sm leading-5 text-gray-600">
-                {orderCustomer.fullName}
+                {orderDetail.fullName}
               </p>
             </div>
             <div className="flex justify-start items-start flex-col space-y-2">
@@ -105,7 +98,7 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                 Số điện thoại
               </p>
               <p className="text-sm leading-5 text-gray-600">
-                {orderCustomer.phone}
+                {orderDetail.phone}
               </p>
             </div>
             <div className="flex justify-start items-start flex-col space-y-2">
@@ -113,7 +106,7 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                 Email
               </p>
               <p className="text-sm  leading-5 text-gray-600">
-                {orderCustomer.email}
+                {orderDetail.email}
               </p>
             </div>
             <div className="flex justify-start items-start flex-col space-y-2">
@@ -121,7 +114,7 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                 Địa chỉ
               </p>
               <p className="text-sm  leading-5 text-gray-600">
-                {orderCustomer.address}
+                {orderDetail.address}
               </p>
             </div>
           </div>
@@ -137,12 +130,16 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                     {formatPrice(totalAmount)}
                   </p>
                 </div>
-                <div className="flex justify-between items-center w-full">
-                  <p className="text-base leading-4 text-gray-800">Voucher</p>
-                  <p className="text-base leading-4 text-gray-600">
-                    -{formatPrice(totalAmount / 2)} (50%)
-                  </p>
-                </div>
+                {orderDetail.discountValue > 0 && (
+                  <div className="flex justify-between items-center w-full">
+                    <p className="text-base leading-4 text-gray-800">
+                      Giảm giá
+                    </p>
+                    <p className="text-base leading-4 text-gray-600">
+                      -{formatPrice(orderDetail.discountValue)}
+                    </p>
+                  </div>
+                )}
                 <div className="flex justify-between items-center w-full">
                   <p className="text-base leading-4 text-gray-800">
                     Phí vận chuyển
@@ -157,7 +154,7 @@ const OrderHistoryDetail = ({ orderItems, orderCustomer }: IProps) => {
                   Thành tiền
                 </p>
                 <p className="text-base font-semibold leading-4 text-gray-600">
-                  {formatPrice(totalAmount / 2 + 30000)}
+                  {formatPrice(totalAmount - orderDetail.discountValue + 30000)}
                 </p>
               </div>
             </div>

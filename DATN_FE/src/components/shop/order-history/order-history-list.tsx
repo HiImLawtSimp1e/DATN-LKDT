@@ -10,11 +10,11 @@ interface IProps {
   currentPage: number;
 }
 const cssTagField: string[] = [
-  "bg-yellow-300",
-  "bg-blue-500",
-  "bg-green-500",
+  "bg-yellow-900",
+  "bg-blue-900",
   "bg-green-900",
-  "bg-red-700",
+  "bg-green-900",
+  "bg-red-900",
 ];
 
 const OrderHistoryList = ({ orders, pages, currentPage }: IProps) => {
@@ -29,6 +29,7 @@ const OrderHistoryList = ({ orders, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">Mã hóa đơn</th>
             <th className="px-4 py-2">Trạng thái</th>
             <th className="px-4 py-2">Ngày đặt hàng</th>
+            <th className="px-4 py-2">Giảm giá</th>
             <th className="px-4 py-2">Tổng tiền</th>
             <th className="px-4 py-2"></th>
           </tr>
@@ -41,14 +42,17 @@ const OrderHistoryList = ({ orders, pages, currentPage }: IProps) => {
             >
               <td className="px-4 py-2">{startIndex + index + 1}</td>
               <td className="px-4 py-2">{order.invoiceCode}</td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 text-white">
                 <TagFiled
                   cssClass={cssTagField[order.state]}
                   context={mapOrderState(order.state)}
                 />
               </td>
               <td className="px-4 py-2">{formatDate(order.createdAt)}</td>
-              <td className="px-4 py-2">{formatPrice(order.totalPrice)}</td>
+              <td className="px-4 py-2">{formatPrice(order.discountValue)}</td>
+              <td className="px-4 py-2">
+                {formatPrice(order.totalPrice - order.discountValue)}
+              </td>
               <td className="px-4 py-2">
                 <Link href={`/order-history/${order.id}`}>
                   <button className="m-1 px-5 py-2 bg-lime-600 text-white rounded">
