@@ -1,11 +1,11 @@
 interface IUser {
   id: string;
-  accountName: string;
+  username: string;
   isActive: boolean;
   role: IRole;
-  fullName?: string;
+  name?: string;
   email?: string;
-  phone?: string;
+  phoneNumber?: string;
   address?: string;
   createdAt?: string;
   modifiedAt?: string;

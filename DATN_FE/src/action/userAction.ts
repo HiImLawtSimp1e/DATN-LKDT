@@ -5,21 +5,22 @@ import {
   validateUpdateUser,
 } from "@/lib/validation/validateUser";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { cookies as nextCookies } from "next/headers";
 
 interface AddUserFormData {
-  accountName: string;
+  username: string;
   password: string;
-  fullName: string;
+  name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   address: string;
   roleId: string;
 }
 
 interface UpdateUserFormData {
-  fullName: string;
+  name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   address: string;
   isActive?: boolean | null;
 }
@@ -28,20 +29,20 @@ export const createUser = async (
   prevState: FormState,
   formData: FormData
 ): Promise<FormState | undefined> => {
-  const accountName = formData.get("accountName") as string;
+  const username = formData.get("username") as string;
   const password = formData.get("password") as string;
-  const fullName = formData.get("fullName") as string;
+  const name = formData.get("name") as string;
   const email = formData.get("email") as string;
-  const phone = formData.get("phone") as string;
+  const phoneNumber = formData.get("phoneNumber") as string;
   const address = formData.get("address") as string;
   const roleId = formData.get("roleId") as string;
 
   const [errors, isValid] = validateAddUser(
-    accountName,
+    username,
     password,
-    fullName,
+    name,
     email,
-    phone,
+    phoneNumber,
     address
   );
 
@@ -50,20 +51,27 @@ export const createUser = async (
   }
 
   const userData: AddUserFormData = {
-    accountName,
+    username,
     password,
-    fullName,
+    name,
     email,
-    phone,
+    phoneNumber,
     address,
     roleId,
   };
+
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
 
   try {
     const res = await fetch("http://localhost:5000/api/Account/admin", {
       method: "POST",
       body: JSON.stringify(userData),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!res.ok) {
@@ -101,31 +109,43 @@ export const updateUser = async (
   formData: FormData
 ): Promise<FormState | undefined> => {
   const id = formData.get("id") as string;
-  const fullName = formData.get("fullName") as string;
+  const name = formData.get("name") as string;
   const email = formData.get("email") as string;
-  const phone = formData.get("phone") as string;
+  const phoneNumber = formData.get("phoneNumber") as string;
   const address = formData.get("address") as string;
   const isActive = formData.get("isActive") === "true";
 
-  const [errors, isValid] = validateUpdateUser(fullName, email, phone, address);
+  const [errors, isValid] = validateUpdateUser(
+    name,
+    email,
+    phoneNumber,
+    address
+  );
 
   if (!isValid) {
     return { errors };
   }
 
   const userData: UpdateUserFormData = {
-    fullName,
+    name,
     email,
-    phone,
+    phoneNumber,
     address,
     isActive,
   };
+
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
 
   try {
     const res = await fetch(`http://localhost:5000/api/Account/admin/${id}`, {
       method: "PUT",
       body: JSON.stringify(userData),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!res.ok) {
@@ -165,9 +185,16 @@ export const deleteUser = async (
 ): Promise<FormState | undefined> => {
   const id = formData.get("id") as string;
 
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   const res = await fetch(`http://localhost:5000/api/Account/admin/${id}`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   const responseData: ApiResponse<string> = await res.json();

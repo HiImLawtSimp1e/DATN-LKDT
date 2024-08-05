@@ -7,8 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Register - Next Shop",
-  description: "Register - Next Shop",
+  title: "FStore - Đăng ký",
+  description: "FStore - Đăng ký",
 };
 
 export default function RootLayout({

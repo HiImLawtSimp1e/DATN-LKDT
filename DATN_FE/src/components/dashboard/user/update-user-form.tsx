@@ -62,7 +62,7 @@ const UpdateUserForm = ({ user }: IProps) => {
         Tên tài khoản
       </label>
       <input
-        value={formData.accountName}
+        value={formData.username}
         className="text-sm rounded-lg w-full p-2.5 bg-gray-600 placeholder-gray-400 text-white"
         readOnly
       />
@@ -70,7 +70,15 @@ const UpdateUserForm = ({ user }: IProps) => {
         Vai trò
       </label>
       <input
-        value={formData.role.roleName}
+        value={
+          user.role.roleName === "Customer"
+            ? "Khách hàng"
+            : user.role.roleName === "Employee"
+            ? "Nhân viên"
+            : user.role.roleName === "Admin"
+            ? "Admin"
+            : ""
+        }
         className="text-sm rounded-lg w-full p-2.5 bg-gray-600 placeholder-gray-400 text-white"
         readOnly
       />
@@ -85,17 +93,17 @@ const UpdateUserForm = ({ user }: IProps) => {
       />
       <InputField
         label="Họ và tên"
-        id="fullName"
-        name="fullName"
-        value={formData.fullName?.toString() || ""}
+        id="name"
+        name="name"
+        value={formData.name?.toString() || ""}
         onChange={handleChange}
         required
       />
       <InputField
         label="Số điện thoại"
-        id="phone"
-        name="phone"
-        value={formData.phone?.toString() || ""}
+        id="phoneNumber"
+        name="phoneNumber"
+        value={formData.phoneNumber?.toString() || ""}
         onChange={handleChange}
         required
       />

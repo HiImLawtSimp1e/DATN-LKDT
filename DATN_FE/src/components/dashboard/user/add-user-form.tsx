@@ -21,11 +21,11 @@ const AddUserForm = ({ roleSelect }: IProps) => {
   );
 
   const [formData, setFormData] = useState({
-    accountName: "",
+    username: "",
     password: "",
-    fullName: "",
+    name: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     address: "",
     roleId: "",
   });
@@ -66,9 +66,9 @@ const AddUserForm = ({ roleSelect }: IProps) => {
     <form onSubmit={handleSubmit} className="px-4 w-full">
       <InputField
         label="Tên đăng nhập"
-        id="accountName"
-        name="accountName"
-        value={formData.accountName}
+        id="username"
+        name="username"
+        value={formData.username}
         onChange={handleChange}
         required
       />
@@ -92,17 +92,17 @@ const AddUserForm = ({ roleSelect }: IProps) => {
       />
       <InputField
         label="Họ và tên"
-        id="fullName"
-        name="fullName"
-        value={formData.fullName}
+        id="name"
+        name="name"
+        value={formData.name}
         onChange={handleChange}
         required
       />
       <InputField
         label="Số điện thoại"
-        id="phone"
-        name="phone"
-        value={formData.phone}
+        id="phoneNumber"
+        name="phoneNumber"
+        value={formData.phoneNumber}
         onChange={handleChange}
         required
       />
@@ -125,7 +125,13 @@ const AddUserForm = ({ roleSelect }: IProps) => {
       >
         {roleSelect?.map((role: IRole, index) => (
           <option key={index} value={role.id}>
-            {role.roleName}
+            {role.roleName === "Customer"
+              ? "Khách hàng"
+              : role.roleName === "Employee"
+              ? "Nhân viên"
+              : role.roleName === "Admin"
+              ? "Admin"
+              : ""}
           </option>
         ))}
       </select>

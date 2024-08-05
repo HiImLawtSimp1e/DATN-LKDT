@@ -18,7 +18,7 @@ const Menu = () => {
         onClick={() => setOpen((prev) => !prev)}
       />
       {open && (
-        <div className="absolute bg-white text-zinc-800 left-0 top-20 w-full z-10">
+        <div className="absolute bg-white text-zinc-800 left-0 top-30 w-full z-10">
           <div className="flex mb-4 flex-col items-center justify-center gap-8 text-xl z-10">
             <Link href="/">Trang chủ</Link>
             <Link href="/shop">Sản phẩm</Link>

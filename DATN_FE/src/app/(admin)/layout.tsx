@@ -1,11 +1,16 @@
+import type { Metadata } from "next";
 import { ReactNode } from "react";
 import Sidebar from "@/components/dashboard/sidebar";
-import Navbar from "@/components/dashboard/navbar";
 import Footer from "@/components/dashboard/footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../globals.css";
 import "./dashboard.css";
+
+export const metadata: Metadata = {
+  title: "FStore - Trang quản trị",
+  description: "FStore - Trang quản trị",
+};
 
 interface RootLayoutProps {
   children: ReactNode;

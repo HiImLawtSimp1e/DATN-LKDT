@@ -9,6 +9,8 @@ import {
   getAuthPublic,
   setLogoutPublic,
 } from "@/service/auth-service/auth-service";
+import ProfileSvg from "@/components/ui/svg/profileSvg";
+import CartSvg from "@/components/ui/svg/cartSvg";
 
 const NavIcons = () => {
   const { cartItems, counter, totalAmount, getCart } = useCartStore();
@@ -61,16 +63,11 @@ const NavIcons = () => {
 
   return (
     <div className="flex items-center gap-4 xl:gap-6 relative">
-      <Image
-        src="/profile.png"
-        alt=""
-        width={22}
-        height={22}
-        className="cursor-pointer"
-        onClick={handleProfile}
-      />
+      <div className="cursor-pointer" onClick={handleProfile}>
+        <ProfileSvg />
+      </div>
       <div className="relative cursor-pointer" onClick={handleCart}>
-        <Image src="/cart.png" alt="" width={22} height={22} />
+        <CartSvg />
         {counter >= 1 && (
           <div className="absolute -top-4 -right-4 w-6 h-6 bg-rose-400 rounded-full text-white text-sm flex items-center justify-center">
             {counter}

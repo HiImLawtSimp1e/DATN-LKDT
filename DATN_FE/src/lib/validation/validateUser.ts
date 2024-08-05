@@ -1,23 +1,18 @@
 export const validateAddUser = (
-  accountName: string,
+  username: string,
   password: string,
-  fullName: string,
+  name: string,
   email: string,
-  phone: string,
+  phoneNumber: string,
   address: string
 ): [string[], boolean] => {
   let errors: string[] = [];
 
   // Kiểm tra tên tài khoản
-  const accountNameError = validateRequired(accountName, "Tên tài khoản");
-  if (accountNameError) errors.push(accountNameError);
+  const usernameError = validateRequired(username, "Tên tài khoản");
+  if (usernameError) errors.push(usernameError);
   else {
-    const accountNameError = validateLength(
-      accountName,
-      "Tên tài khoản",
-      6,
-      100
-    );
+    const accountNameError = validateLength(username, "Tên tài khoản", 6, 100);
     if (accountNameError) errors.push(accountNameError);
   }
 
@@ -30,10 +25,10 @@ export const validateAddUser = (
   }
 
   // Kiểm tra họ và tên đầy đủ
-  const fullNameRequiredError = validateRequired(fullName, "Họ và tên");
+  const fullNameRequiredError = validateRequired(name, "Họ và tên");
   if (fullNameRequiredError) errors.push(fullNameRequiredError);
   else {
-    const fullNameLengthError = validateLength(fullName, "Họ và tên", 6, 50);
+    const fullNameLengthError = validateLength(name, "Họ và tên", 6, 50);
     if (fullNameLengthError) errors.push(fullNameLengthError);
   }
 
@@ -46,10 +41,10 @@ export const validateAddUser = (
   }
 
   // Kiểm tra số điện thoại
-  const phoneRequiredError = validateRequired(phone, "Số điện thoại");
+  const phoneRequiredError = validateRequired(phoneNumber, "Số điện thoại");
   if (phoneRequiredError) errors.push(phoneRequiredError);
   else {
-    const phoneError = validatePhone(phone);
+    const phoneError = validatePhone(phoneNumber);
     if (phoneError) errors.push(phoneError);
   }
 
@@ -65,16 +60,16 @@ export const validateAddUser = (
 };
 
 export const validateUpdateUser = (
-  fullName: string,
+  name: string,
   email: string,
-  phone: string,
+  phoneNumber: string,
   address: string
 ): [string[], boolean] => {
   let errors: string[] = [];
 
   // Kiểm tra họ và tên đầy đủ (tùy chọn)
-  if (fullName.trim().length > 0) {
-    const fullNameLengthError = validateLength(fullName, "Họ và tên", 6, 50);
+  if (name.trim().length > 0) {
+    const fullNameLengthError = validateLength(name, "Họ và tên", 6, 50);
     if (fullNameLengthError) errors.push(fullNameLengthError);
   }
 
@@ -87,10 +82,10 @@ export const validateUpdateUser = (
   }
 
   // Kiểm tra số điện thoại
-  const phoneRequiredError = validateRequired(phone, "Số điện thoại");
+  const phoneRequiredError = validateRequired(phoneNumber, "Số điện thoại");
   if (phoneRequiredError) errors.push(phoneRequiredError);
   else {
-    const phoneError = validatePhone(phone);
+    const phoneError = validatePhone(phoneNumber);
     if (phoneError) errors.push(phoneError);
   }
 

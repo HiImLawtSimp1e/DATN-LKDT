@@ -47,7 +47,7 @@ const UserList = ({ users, pages, currentPage }: IProps) => {
 
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
-      toast.error("Xóa người dùng thất bại!");
+      toast.error(formState.errors[0]);
       setToastDisplayed(true); // Đặt toastDisplayed là true để tránh hiển thị nhiều toast
     }
     if (formState.success) {
@@ -83,28 +83,25 @@ const UserList = ({ users, pages, currentPage }: IProps) => {
           {users.map((user: IUser, index) => (
             <tr key={user.id} className="border-b border-gray-700">
               <td className="px-4 py-2">{startIndex + index + 1}</td>
-              <td className="px-4 py-2">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={"/noavatar.png"}
-                    alt=""
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                  />
-                  {user.accountName}
-                </div>
-              </td>
+              <td className="px-4 py-2">{user.username}</td>
               <td className="px-4 py-2">
                 <TagFiled
                   cssClass={
                     user.role.roleName === "Admin"
                       ? "bg-slate-700"
-                      : user.role.roleName === "Khách hàng"
+                      : user.role.roleName === "Customer"
                       ? "bg-blue-700"
                       : "bg-violet-700"
                   }
-                  context={user.role.roleName}
+                  context={
+                    user.role.roleName === "Customer"
+                      ? "Khách hàng"
+                      : user.role.roleName === "Employee"
+                      ? "Nhân viên"
+                      : user.role.roleName === "Admin"
+                      ? "Admin"
+                      : ""
+                  }
                 />
               </td>
               <td className="px-4 py-2">
@@ -128,7 +125,14 @@ const UserList = ({ users, pages, currentPage }: IProps) => {
                   </Link>
                   <form onSubmit={handleSubmit}>
                     <input type="hidden" name="id" value={user.id} />
-                    <button className="m-1 px-5 py-2 bg-red-500 text-white rounded">
+                    <button
+                      className={`m-1 px-5 py-2 bg-red-500 text-white rounded ${
+                        user.role.roleName === "Admin"
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
+                      disabled={user.role.roleName === "Admin"}
+                    >
                       Xóa
                     </button>
                   </form>
