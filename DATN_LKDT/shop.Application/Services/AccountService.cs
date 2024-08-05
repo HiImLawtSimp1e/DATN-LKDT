@@ -37,7 +37,8 @@ namespace shop.Application.Services
             var pageCount = Math.Ceiling(_context.Products.Where(p => !p.Deleted && p.IsActive).Count() / pageResults);
             var accounts = await _context.Accounts
                   .Where(a => !a.Deleted)
-                  .OrderByDescending(a => a.ModifiedAt)
+                  .OrderByDescending(a => a.Role.RoleName == "Admin")
+                  .ThenByDescending(a => a.ModifiedAt)
                   .Skip((page - 1) * (int)pageResults)
                   .Take((int)pageResults)
                   .Include(a => a.Role)
@@ -70,7 +71,7 @@ namespace shop.Application.Services
                 return new ApiResponse<AccountDetailResponseDto>
                 {
                     Success = false,
-                    Message = "Cannot find account"
+                    Message = "Không tìm thấy tài khoản"
                 };
             }
 
@@ -148,6 +149,7 @@ namespace shop.Application.Services
         {
             var account = await _context.Accounts
                                      .Where(a => !a.Deleted)
+                                     .Include(a => a.Role)
                                      .FirstOrDefaultAsync(a => a.Id == accountId);
             if (account == null)
             {
@@ -157,6 +159,16 @@ namespace shop.Application.Services
                     Message = "Không tìm thấy tài khoản"
                 };
             }
+
+            if (account.Role.RoleName == "Admin")
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không thể xóa tài khoản admin"
+                };
+            }
+
             account.Deleted = true;
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>

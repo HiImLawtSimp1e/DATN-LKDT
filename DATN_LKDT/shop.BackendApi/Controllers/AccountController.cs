@@ -1,7 +1,7 @@
 ﻿using AppBusiness.Model.Pagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.AccountDto;
@@ -13,6 +13,7 @@ namespace shop.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _service;

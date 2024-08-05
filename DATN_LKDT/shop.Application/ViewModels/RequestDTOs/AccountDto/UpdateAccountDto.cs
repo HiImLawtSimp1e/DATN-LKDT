@@ -10,6 +10,7 @@ namespace shop.Application.ViewModels.RequestDTOs.AccountDto
 {
     public class UpdateAccountDto
     {
+        [Required(ErrorMessage = "Bạn chưa nhập họ và tên"), StringLength(50, MinimumLength = 6, ErrorMessage = "Họ và tên phải dài hơn 6 ký tự & ngắn hơn 100 ký tự")]
         public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage = "Bạn chưa nhập Email"), EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string Email { get; set; } = string.Empty;
