@@ -9,7 +9,7 @@ namespace shop.Domain.Entities
 
         public string Username { get; set; }
 
-        public string IdAccount { get; set; }
+        public Guid AccountId { get; set; }
 
         public int? Point { get; set; }
         public int? TotalPoint { get; set; }

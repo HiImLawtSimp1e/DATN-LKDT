@@ -15,12 +15,22 @@ namespace shop.Application.Profiles
     {
         public AccountProfile() 
         {
-            //Mapping DTOs to Entity
-            CreateMap<AddAccountDto, AccountEntity>();
-            CreateMap<UpdateAccountDto, AccountEntity>();
-            //Mapping Account Entity to DTO
-            CreateMap<AccountEntity, AccountDetailResponseDto>();
+            // Mapping list Account to DTO
             CreateMap<AccountEntity, AccountListResponseDto>();
+
+            //Mapping Account Entity to DTO
+            CreateMap<AccountEntity, AccountDetailResponseDto>()
+              .ForMember(dest => dest.Name, opt => opt.Ignore())
+              .ForMember(dest => dest.Email, opt => opt.Ignore())
+              .ForMember(dest => dest.PhoneNumber, opt => opt.Ignore())
+              .ForMember(dest => dest.Address, opt => opt.Ignore());
+
+            // Mapping Address Entity to DTO
+            CreateMap<AddressEntity, AccountDetailResponseDto>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Username, opt => opt.Ignore())
+                .ForMember(dest => dest.IsActive, opt => opt.Ignore())
+                .ForMember(dest => dest.Role, opt => opt.Ignore());
         }
     }
 }

@@ -12,6 +12,6 @@ namespace shop.Domain.Entities
 
         public Guid? VirtualItemId { get; set; }
 
-        public Guid IdAccount { get; set; }
+        public Guid AccountId { get; set; }
     }
 }

@@ -89,6 +89,14 @@ namespace shop.Application.Services
                     Message = "Mật khẩu không chính xác"
                 };
             }
+            else if (!account.IsActive)
+            {
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Tài khoản đã bị khóa"
+                };
+            }
             else if (account.Role.RoleName != "Customer")
             {
                 return new ApiResponse<string>
@@ -128,6 +136,14 @@ namespace shop.Application.Services
                 {
                     Success = false,
                     Message = "Mật khẩu không chính xác"
+                };
+            }
+            else if (!account.IsActive)
+            {
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Tài khoản đã bị khóa"
                 };
             }
             else if (account.Role.RoleName != "Admin" && account.Role.RoleName != "Employee")
@@ -173,15 +189,22 @@ namespace shop.Application.Services
                     };
                 }
 
-                var account = new AccountEntity
+                var address = new AddressEntity
                 {
-                    Username = registerDTO.Username,
                     Name = registerDTO.Name,
                     Email = registerDTO.Email,
                     PhoneNumber = registerDTO.PhoneNumber,
+                    Address = registerDTO.Address
+                };
+
+                var account = new AccountEntity
+                {
+                    Username = registerDTO.Username,
+                    Addresses = new List<AddressEntity>(),
                     RoleId = role.Id,
                     Role = role
                 };
+                account.Addresses.Add(address);
 
                 var password = registerDTO.Password;
                 //hash password

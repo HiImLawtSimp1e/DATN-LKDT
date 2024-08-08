@@ -12,7 +12,6 @@ namespace shop.Domain.Entities
     public class Order : BaseEntity
     {
         public Guid Id { get; set; }
-        public Guid AccountId { get; set; }
         public string InvoiceCode { get; set; } = string.Empty;
         public int TotalPrice { get; set; } = 0;
         public OrderState State { get; set; } = OrderState.Pending;
@@ -22,8 +21,9 @@ namespace shop.Domain.Entities
         public string Address { get; set; } = string.Empty;
         public int DiscountValue { get; set; } = 0;
         public Guid? DiscountId { get; set; }
-        public List<OrderItem>? OrderItems { get; set; }
+        public Guid AccountId { get; set; }
         [JsonIgnore]
         public AccountEntity? Account { get; set; }
+        public List<OrderItem>? OrderItems { get; set; }
     }
 }

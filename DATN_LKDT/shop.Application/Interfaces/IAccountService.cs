@@ -15,10 +15,10 @@ namespace shop.Application.Interfaces
     public interface IAccountService
     {
         Task<ApiResponse<Pagination<List<AccountListResponseDto>>>> GetAdminAccounts(int page, double pageResults);
-        Task<ApiResponse<AccountDetailResponseDto>> GetAdminSingleAccount(Guid id);
+        Task<ApiResponse<AccountDetailResponseDto>> GetAdminSingleAccount(Guid accountId);
         Task<ApiResponse<List<RoleEntity>>> GetAdminRoles();
         Task<ApiResponse<bool>> CreateAccount(AddAccountDto newAccount);
-        Task<ApiResponse<bool>> UpdateAccount(Guid accountId, UpdateAccountDto updateAccount);
+        Task<ApiResponse<bool>> UpdateAccount(Guid accountId, UpdateAccountDto updateInfoAccount);
         Task<ApiResponse<bool>> SoftDeleteAccount(Guid accountId);
     }
 }

@@ -21,5 +21,7 @@ namespace shop.Application.ViewModels.AuthDTOs
         public string Email { get; set; } = string.Empty;
         [Required(ErrorMessage = "Bạn chưa nhập số điện thoại"), RegularExpression(@"^(\+?\d{1,3})?0?\d{9}$", ErrorMessage = "Số điện thoại không hợp lệ")]
         public string PhoneNumber { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Bạn chưa nhập địa chỉ"), StringLength(250, MinimumLength = 6, ErrorMessage = "Địa chỉ không được dài hơn 250 ký tự & ngắn hơn 6 ký tự")]
+        public string Address { get; set; } = string.Empty;
     }
 }

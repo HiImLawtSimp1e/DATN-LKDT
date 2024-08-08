@@ -248,7 +248,18 @@ namespace shop.Application.Services
                 };
             }
 
-            var address = await _context.Address.FirstOrDefaultAsync(a => a.IdAccount == customer.Id);
+            var address = await _context.Address
+                                      .Where(a => a.IsMain)      
+                                      .FirstOrDefaultAsync(a => a.AccountId == customer.Id);
+
+            if (address == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy địa chỉ khách hàng"
+                };
+            }
 
             int totalAmount = 0;
 
@@ -282,10 +293,10 @@ namespace shop.Application.Services
                 InvoiceCode = GenerateInvoiceCode(),
                 TotalPrice = totalAmount,
                 OrderItems = orderItems,
-                FullName = customer.Name,
-                Email = customer.Email,
-                Address = GetCustomerAddress(address),
-                Phone = customer.PhoneNumber,
+                FullName = address.Name,
+                Email = address.Email,
+                Address = address.Address,
+                Phone = address.PhoneNumber,
             };
 
             if (voucherId != null)
@@ -373,16 +384,6 @@ namespace shop.Application.Services
                     Data = result
                 };
             }
-        }
-
-        private string GetCustomerAddress(AddressEntity address)
-        {
-            var result = "";
-            if(address != null)
-            {
-                result = $"{address.HomeAddress}, {address.District}, {address.City} ";
-            }
-            return result;
         }
 
         private string GenerateInvoiceCode()

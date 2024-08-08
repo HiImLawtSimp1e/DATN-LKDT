@@ -4,6 +4,7 @@ using Azure;
 using MicroBase.Entity.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.AccountDto;
@@ -59,12 +60,12 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<AccountDetailResponseDto>> GetAdminSingleAccount(Guid id)
+        public async Task<ApiResponse<AccountDetailResponseDto>> GetAdminSingleAccount(Guid accountId)
         {
             var account = await _context.Accounts
                                    .Where(a => !a.Deleted)
                                    .Include(a => a.Role)
-                                   .FirstOrDefaultAsync(a => a.Id == id);
+                                   .FirstOrDefaultAsync(a => a.Id == accountId);
 
             if (account == null)
             {
@@ -75,7 +76,21 @@ namespace shop.Application.Services
                 };
             }
 
+            var address = await _context.Address
+                                      .Where(add => add.IsMain)
+                                      .FirstOrDefaultAsync(add => add.AccountId == accountId);
+
+            if (address == null)
+            {
+                return new ApiResponse<AccountDetailResponseDto>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy thông tin tài khoản"
+                };
+            }
+
             var result = _mapper.Map<AccountDetailResponseDto>(account); // Mapping Account Entity => result(DTO)
+            _mapper.Map(address, result);                                // Mapping Address Entity => result(DTO)
 
             return new ApiResponse<AccountDetailResponseDto>
             {
@@ -95,6 +110,16 @@ namespace shop.Application.Services
 
         public async Task<ApiResponse<bool>> CreateAccount(AddAccountDto newAccount)
         {
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == newAccount.RoleId);
+            if (role == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy role"
+                };
+            }
+
             //check account name exist
             if (await AccountExists(newAccount.Username))
             {
@@ -105,7 +130,22 @@ namespace shop.Application.Services
                 };
             }
 
-            var account = _mapper.Map<AccountEntity>(newAccount);
+            var address = new AddressEntity
+            {
+                Name = newAccount.Name,
+                Email = newAccount.Email,
+                PhoneNumber = newAccount.PhoneNumber,
+                Address = newAccount.Address
+            };
+
+            var account = new AccountEntity
+            {
+                Username = newAccount.Username,
+                Addresses = new List<AddressEntity>(),
+                RoleId = role.Id,
+                Role = role
+            };
+            account.Addresses.Add(address);
 
             var password = newAccount.Password;
             //hash password
@@ -121,7 +161,7 @@ namespace shop.Application.Services
                 Message = "Tạo mới tài khoản thành công"
             };
         }
-        public async Task<ApiResponse<bool>> UpdateAccount(Guid accountId, UpdateAccountDto updateAccount)
+        public async Task<ApiResponse<bool>> UpdateAccount(Guid accountId, UpdateAccountDto updateInfoAccount)
         {
             var dbAccount = await _context.Accounts
                                       .Where(a => !a.Deleted)
@@ -137,7 +177,35 @@ namespace shop.Application.Services
                 };
             }
 
-            _mapper.Map(updateAccount, dbAccount);
+            if (dbAccount.Role.RoleName == "Admin" && !updateInfoAccount.IsActive)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không thể ngưng hoạt động tài khoản admin"
+                };
+            }
+
+            var dbAddress = await _context.Address
+                                      .Where(add => add.IsMain)
+                                      .FirstOrDefaultAsync(add => add.AccountId == accountId);
+
+            if (dbAddress == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy thông tin tài khoản"
+                };
+            }
+
+            // set account's information
+            dbAddress.Name = updateInfoAccount.Name;
+            dbAddress.Email = updateInfoAccount.Email;
+            dbAddress.PhoneNumber = updateInfoAccount.PhoneNumber;
+            dbAddress.Address = updateInfoAccount.Address;
+
+            dbAccount.IsActive = updateInfoAccount.IsActive;
 
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>

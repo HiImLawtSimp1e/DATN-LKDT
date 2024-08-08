@@ -38,11 +38,10 @@ namespace shop.Infrastructure.Initialization
                      }
              );
 
-            modelBuilder.Entity<AccountEntity>().HasData(
-                   
+            modelBuilder.Entity<AccountEntity>().HasData(  
                    new AccountEntity
                    {
-                       Id = Guid.NewGuid(),
+                       Id = new Guid("3aec8f0b-3a6a-4b5d-8a3a-348ae529001a"),
                        Username = "admin@example.com",
                        PasswordHash = passwordHash1,
                        PasswordSalt = passwordSalt1,
@@ -55,13 +54,10 @@ namespace shop.Infrastructure.Initialization
                        PasswordHash = passwordHash2,
                        PasswordSalt = passwordSalt2,
                        RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639"),
-                       Name = "John Doe",
-                       Email = "johndoe@example.com",
-                       PhoneNumber = "0123456789",
                    },
                    new AccountEntity
                    {
-                       Id = Guid.NewGuid(),
+                       Id = new Guid("3141069d-f4f3-475c-8efc-99e1b4c3e627"),
                        Username = "employee@example.com",
                        PasswordHash = passwordHash3,
                        PasswordSalt = passwordSalt3,
@@ -73,10 +69,29 @@ namespace shop.Infrastructure.Initialization
                    new AddressEntity
                    {
                        Id = Guid.NewGuid(),
-                       IdAccount = new Guid("2b25a754-a50e-4468-942c-d65c0bc2c86f"),
-                       City = "Hanoi",
-                       District = "Cau Giay",
-                       HomeAddress = "123 Main Street",
+                       AccountId = new Guid("3aec8f0b-3a6a-4b5d-8a3a-348ae529001a"),
+                       Name = "John Admin",
+                       Email = "johnadmin@example.com",
+                       PhoneNumber = "1234567891",
+                       Address = "125 Đường Cầu Giấy ,Cầu Giấy, Hà Nội"
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("2b25a754-a50e-4468-942c-d65c0bc2c86f"),
+                       Name = "John Doe",
+                       Email = "johndoe@example.com",
+                       PhoneNumber = "0123456789",
+                       Address = "123 Đường Cầu Giấy ,Cầu Giấy, Hà Nội"
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("3141069d-f4f3-475c-8efc-99e1b4c3e627"),
+                       Name = "John Employee",
+                       Email = "johnemployee@example.com",
+                       PhoneNumber = "1234567892",
+                       Address = "121 Đường Cầu Giấy ,Cầu Giấy, Hà Nội"
                    }
                  );
         }

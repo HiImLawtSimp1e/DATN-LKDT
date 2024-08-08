@@ -6,7 +6,7 @@
 
         public Guid? IdBillDetail { get; set; }
 
-        public Guid? IdAccount { get; set; }
+        public Guid? AccountId { get; set; }
 
         public Guid? IdPhoneDetail { get; set; }
 
