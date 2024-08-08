@@ -146,6 +146,21 @@ const RegisterForm = () => {
                 required
               />
             </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Địa chỉ
+              </label>
+              <input
+                id="address"
+                placeholder="Nhập địa chỉ của bạn..."
+                name="address"
+                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                required
+              />
+            </div>
 
             <div>
               {formState.errors.length > 0 && (

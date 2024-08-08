@@ -15,6 +15,7 @@ interface RegisterFormData {
   name: string;
   email: string;
   phoneNumber: string;
+  address: string;
 }
 
 export const customerLoginAction = async (
@@ -62,6 +63,15 @@ export const adminLoginAction = async (
   //get value from formData
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
+
+  //client validation
+  const [errors, isValid] = validateLogin(username, password);
+
+  if (!isValid) {
+    //console.log(errors);
+    return { errors };
+  }
+
   const loginData: LoginFormData = { username, password };
 
   //fetch api [POST] /Auth/admin/login
@@ -70,13 +80,6 @@ export const adminLoginAction = async (
     body: JSON.stringify(loginData),
     headers: { "Content-Type": "application/json" },
   });
-  //client validation
-  const [errors, isValid] = validateLogin(username, password);
-
-  if (!isValid) {
-    //console.log(errors);
-    return { errors };
-  }
 
   const responseData: ApiResponse<string> = await res.json();
   // console.log(responseData);
@@ -103,22 +106,7 @@ export const registerAction = async (
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const phoneNumber = formData.get("phoneNumber") as string;
-
-  const registerData: RegisterFormData = {
-    username,
-    password,
-    confirmPassword,
-    name,
-    email,
-    phoneNumber,
-  };
-
-  //fetch api [POST] /Auth/register
-  const res = await fetch("http://localhost:5000/api/Auth/register", {
-    method: "POST",
-    body: JSON.stringify(registerData),
-    headers: { "Content-Type": "application/json" },
-  });
+  const address = formData.get("address") as string;
 
   //client validation
   const [errors, isValid] = validateRegister(
@@ -127,13 +115,31 @@ export const registerAction = async (
     confirmPassword,
     name,
     email,
-    phoneNumber
+    phoneNumber,
+    address
   );
 
   if (!isValid) {
     //console.log(errors);
     return { errors };
   }
+
+  const registerData: RegisterFormData = {
+    username,
+    password,
+    confirmPassword,
+    name,
+    email,
+    phoneNumber,
+    address,
+  };
+
+  //fetch api [POST] /Auth/register
+  const res = await fetch("http://localhost:5000/api/Auth/register", {
+    method: "POST",
+    body: JSON.stringify(registerData),
+    headers: { "Content-Type": "application/json" },
+  });
 
   const responseData: ApiResponse<string> = await res.json();
   // console.log(responseData);

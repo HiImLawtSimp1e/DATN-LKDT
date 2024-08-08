@@ -115,17 +115,19 @@ const UpdateUserForm = ({ user }: IProps) => {
         onChange={handleChange}
         required
       />
-      <SelectField
-        label="Trạng thái"
-        id="isActive"
-        name="isActive"
-        value={formData.isActive.toString()}
-        onChange={handleChange}
-        options={[
-          { label: "Hoạt động", value: "true" },
-          { label: "Ngưng hoạt động", value: "false" },
-        ]}
-      />
+      <div className={`${formData.role.roleName === "Admin" ? "hidden" : ""}`}>
+        <SelectField
+          label="Trạng thái"
+          id="isActive"
+          name="isActive"
+          value={formData.isActive.toString()}
+          onChange={handleChange}
+          options={[
+            { label: "Hoạt động", value: "true" },
+            { label: "Ngưng hoạt động", value: "false" },
+          ]}
+        />
+      </div>
       {formState.errors.length > 0 && (
         <ul>
           {formState.errors.map((error, index) => (

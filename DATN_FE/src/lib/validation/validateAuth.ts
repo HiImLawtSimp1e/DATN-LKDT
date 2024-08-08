@@ -21,7 +21,8 @@ export const validateRegister = (
   confirmPassword: string,
   name: string,
   email: string,
-  phoneNumber: string
+  phoneNumber: string,
+  address: string
 ): [string[], boolean] => {
   const errors: string[] = [];
 
@@ -57,6 +58,14 @@ export const validateRegister = (
     errors.push("Bạn chưa nhập số điện thoại");
   } else if (!/^(\+?\d{1,3})?0?\d{9}$/.test(phoneNumber)) {
     errors.push("Số điện thoại không hợp lệ");
+  }
+
+  if (!address || address.trim().length === 0) {
+    errors.push("Bạn chưa nhập địa chỉ");
+  } else if (address.length < 6) {
+    errors.push("Địa chỉ không được ngắn hơn 6 ký tự");
+  } else if (address.length > 250) {
+    errors.push("Địa chỉ không được dài hơn 250 ký tự");
   }
 
   return [errors, errors.length === 0];
