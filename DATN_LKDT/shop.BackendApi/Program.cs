@@ -31,6 +31,7 @@ builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDiscountService,  DiscountService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 // Register the repository
 builder.Services.AddScoped<IRepository<BlogEntity>, Repository<BlogEntity>>();
