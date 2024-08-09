@@ -40,21 +40,21 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageResults)
+        public async Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int page, double pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => !b.Deleted).Count() / pageResults));
+            var pageCount = Math.Ceiling(_context.Blogs.Where(b => !b.Deleted).Count() / pageResults);
 
             var blogs = await _context.Blogs
                                .Where(b => !b.Deleted) // Filter blog that status has deleted 
                                .OrderByDescending(b => b.ModifiedAt)
-                               .Skip((currentPage - 1) * pageResults)
-                               .Take(pageResults)
+                               .Skip((page - 1) * (int)pageResults)
+                               .Take((int)pageResults)
                                .ToListAsync();
             var pagingData = new Pagination<List<BlogEntity>>
             {
                 Result = blogs,
-                CurrentPage = currentPage,
-                PageResults = pageResults,
+                CurrentPage = page,
+                PageResults = (int)pageResults,
                 Pages = (int)pageCount
             };
 
@@ -82,15 +82,15 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageResults)
+        public async Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int page, double pageResults)
         {
-            var pageCount = Math.Ceiling((double)(_context.Blogs.Where(b => b.IsActive && !b.Deleted).Count() / pageResults));
+            var pageCount = Math.Ceiling(_context.Blogs.Where(b => b.IsActive && !b.Deleted).Count() / pageResults);
 
             var blogs = await _context.Blogs
                                .Where(b => b.IsActive && !b.Deleted) // Filter blog that status has deleted & status is unactive
                                .OrderByDescending(b => b.CreatedAt)
-                               .Skip((currentPage - 1) * pageResults)
-                               .Take(pageResults)
+                               .Skip((page - 1) * (int)pageResults)
+                               .Take((int)pageResults)
                                .ToListAsync();
 
             var result = _mapper.Map<List<CustomerBlogResponse>>(blogs);
@@ -98,8 +98,8 @@ namespace shop.Application.Services
             var pagingData = new Pagination<List<CustomerBlogResponse>>
             {
                 Result = result,
-                CurrentPage = currentPage,
-                PageResults = pageResults,
+                CurrentPage = page,
+                PageResults = (int)pageResults,
                 Pages = (int)pageCount
             };
 

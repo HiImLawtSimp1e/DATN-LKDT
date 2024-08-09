@@ -14,8 +14,8 @@ namespace AppBusiness.Model.Pagination
 
         int PageResults { get; set; }
 
-        int NumberOfRecords { get; set; }
+        //int NumberOfRecords { get; set; }
 
-        int TotalRecords { get; set; }
+        //int TotalRecords { get; set; }
     }
 }

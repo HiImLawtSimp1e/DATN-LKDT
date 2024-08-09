@@ -30,8 +30,8 @@ namespace shop.Application.Services
         {
             var accountId = _authService.GetUserId();
 
-            var pageResults = 8f;
-            var pageCount = Math.Ceiling(_context.Orders.Count() / pageResults);
+            var pageResults = 6f;
+            var pageCount = Math.Ceiling(_context.Address.Where(a => a.AccountId == accountId).Count() / pageResults);
 
             var addresses = await _context.Address
                                       .Where(a => a.AccountId == accountId)
@@ -44,7 +44,8 @@ namespace shop.Application.Services
             {
                 Result = addresses,
                 CurrentPage = page,
-                Pages = (int)pageCount
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<AddressEntity>>>

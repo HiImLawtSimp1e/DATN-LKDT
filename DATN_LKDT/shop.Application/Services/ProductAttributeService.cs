@@ -95,7 +95,7 @@ namespace shop.Application.Services
         public async Task<ApiResponse<Pagination<List<ProductAttribute>>>> GetProductAttributes(int page)
         {
             var pageResults = 10f;
-            var pageCount = Math.Ceiling(_context.ProductAttributes.Where(p => !p.Deleted).Count() / pageResults);
+            var pageCount = Math.Ceiling(_context.ProductAttributes.Count() / pageResults);
 
             var attributes = await _context.ProductAttributes
                                              .OrderByDescending(p => p.ModifiedAt)

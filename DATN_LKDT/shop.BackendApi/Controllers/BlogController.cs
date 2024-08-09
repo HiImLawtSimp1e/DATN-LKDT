@@ -21,17 +21,17 @@ namespace shop.BackendApi.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<Pagination<List<CustomerBlogResponse>>>>> GetBlogsAsync([FromQuery] int currentPage, [FromQuery] int pageSize)
+        public async Task<ActionResult<ApiResponse<Pagination<List<CustomerBlogResponse>>>>> GetBlogsAsync([FromQuery] int page, [FromQuery] double pageResults)
         {
-            if (currentPage == null || currentPage <= 0)
+            if (page == null || page <= 0)
             {
-                currentPage = 1;
+                page = 1;
             }
-            if(pageSize == null || pageSize <= 0)
+            if(pageResults == null || pageResults <= 0)
             {
-                pageSize = 8;
+                pageResults = 8f;
             }
-            var response = await _service.GetBlogsAsync(currentPage, pageSize);
+            var response = await _service.GetBlogsAsync(page, pageResults);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -49,17 +49,17 @@ namespace shop.BackendApi.Controllers
             return Ok(response);
         }
         [HttpGet("admin")]
-        public async Task<ActionResult<ApiResponse<Pagination<List<BlogEntity>>>>> GetAdminBlogs([FromQuery] int currentPage, [FromQuery] int pageSize)
+        public async Task<ActionResult<ApiResponse<Pagination<List<BlogEntity>>>>> GetAdminBlogs([FromQuery] int page, [FromQuery] double pageResults)
         {
-            if (currentPage == null || currentPage <= 0)
+            if (page == null || page <= 0)
             {
-                currentPage = 1;
+                page = 1;
             }
-            if (pageSize == null || pageSize <= 0)
+            if (pageResults == null || pageResults <= 0)
             {
-                pageSize = 8;
+                pageResults = 8f;
             }
-            var response = await _service.GetAdminBlogs(currentPage, pageSize);
+            var response = await _service.GetAdminBlogs(page, pageResults);
             if (!response.Success)
             {
                 return BadRequest(response);

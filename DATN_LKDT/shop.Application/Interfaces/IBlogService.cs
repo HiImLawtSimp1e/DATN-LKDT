@@ -13,8 +13,8 @@ namespace shop.Application.Interfaces
 {
     public interface IBlogService
     {
-        Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int currentPage, int pageSize);
-        Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int currentPage, int pageSize);
+        Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int page, double pageResults);
+        Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int page, double pageResults);
         Task<ApiResponse<BlogEntity>> GetAdminSingleBlog(Guid id);
         Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(string slug);
         Task<ApiResponse<bool>> CreateBlog(AddBlogDto newBlog);

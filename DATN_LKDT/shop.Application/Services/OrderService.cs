@@ -71,7 +71,7 @@ namespace shop.Application.Services
             }
 
             var pageResults = 10f;
-            var pageCount = Math.Ceiling(_context.Orders.Count() / pageResults);
+            var pageCount = Math.Ceiling(_context.Orders.Where(o => o.AccountId == account.Id).Count() / pageResults);
 
             var orders = await _context.Orders
                                    .Where(o => o.AccountId == account.Id)
@@ -84,7 +84,8 @@ namespace shop.Application.Services
             {
                 Result = orders,
                 CurrentPage = page,
-                Pages = (int)pageCount
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<Order>>>

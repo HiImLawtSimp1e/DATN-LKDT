@@ -35,7 +35,7 @@ namespace shop.Application.Services
 
         public async Task<ApiResponse<Pagination<List<AccountListResponseDto>>>> GetAdminAccounts(int page, double pageResults)
         {
-            var pageCount = Math.Ceiling(_context.Products.Where(p => !p.Deleted && p.IsActive).Count() / pageResults);
+            var pageCount = Math.Ceiling(_context.Accounts.Where(p => !p.Deleted).Count() / pageResults);
             var accounts = await _context.Accounts
                   .Where(a => !a.Deleted)
                   .OrderByDescending(a => a.Role.RoleName == "Admin")
@@ -51,7 +51,8 @@ namespace shop.Application.Services
             {
                 Result = result,
                 CurrentPage = page,
-                Pages = (int)pageCount
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
 
             return new ApiResponse<Pagination<List<AccountListResponseDto>>>

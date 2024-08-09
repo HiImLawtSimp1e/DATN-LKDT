@@ -106,7 +106,7 @@ namespace shop.Application.Services
         public async Task<ApiResponse<Pagination<List<ProductType>>>> GetProductTypes(int page)
         {
             var pageResults = 10f;
-            var pageCount = Math.Ceiling(_context.ProductTypes.Where(p => !p.Deleted).Count() / pageResults);
+            var pageCount = Math.Ceiling(_context.ProductTypes.Count() / pageResults);
 
             var productTypes = await _context.ProductTypes
                                              .OrderByDescending(p => p.ModifiedAt)

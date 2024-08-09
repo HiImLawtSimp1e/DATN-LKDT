@@ -23,17 +23,17 @@ namespace shop.BackendApi.Controllers
             _service = service;
         }
         [HttpGet("admin")]
-        public async Task<ActionResult<ApiResponse<Pagination<List<AccountListResponseDto>>>>> GetAdminAccounts([FromQuery] int currentPage, [FromQuery] double pageResults)
+        public async Task<ActionResult<ApiResponse<Pagination<List<AccountListResponseDto>>>>> GetAdminAccounts([FromQuery] int page, [FromQuery] double pageResults)
         {
-            if (currentPage == null || currentPage <= 0)
+            if (page == null || page <= 0)
             {
-                currentPage = 1;
+                page = 1;
             }
             if (pageResults == null || pageResults <= 0)
             {
                 pageResults = 8f;
             }
-            var response = await _service.GetAdminAccounts(currentPage, pageResults);
+            var response = await _service.GetAdminAccounts(page, pageResults);
             if (!response.Success)
             {
                 return BadRequest(response);
