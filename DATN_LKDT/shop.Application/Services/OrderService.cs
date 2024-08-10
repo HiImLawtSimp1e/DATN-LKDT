@@ -356,14 +356,6 @@ namespace shop.Application.Services
                     Message = "Mã voucher không đúng hoặc đã hết hạn sử dụng"
                 };
             }
-            else if (IsVoucherUsed(voucher.Id))
-            {
-                return new ApiResponse<CustomerVoucherResponseDto>
-                {
-                    Success = false,
-                    Message = "Mã voucher đã được bạn sử dụng"
-                };
-            }
             else
             {
 
