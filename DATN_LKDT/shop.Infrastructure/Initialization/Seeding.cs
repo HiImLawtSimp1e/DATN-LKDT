@@ -82,7 +82,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "John Admin",
                        Email = "johnadmin@example.com",
                        PhoneNumber = "1234567891",
-                       Address = "125 Đường Cầu Giấy ,Cầu Giấy, Hà Nội"
+                       Address = "125 Đường Cầu Giấy ,Cầu Giấy, Hà Nội",
+                       IsMain = true
                    },
                    new AddressEntity
                    {
@@ -91,7 +92,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "Đăng Thị Hồng Nhung",
                        Email = "dangnhung72@gmail.com",
                        PhoneNumber = "0366702305",
-                       Address = "25 Phình Hồ, Văn Chấn, Yên Bái"
+                       Address = "25 Phình Hồ, Văn Chấn, Yên Bái",
+                       IsMain = false
                    }, 
                    new AddressEntity
                    {
@@ -100,7 +102,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "Nguyễn Quang Hưng",
                        Email = "q170302@email.com",
                        PhoneNumber = "0344917302",
-                       Address = "22 Ngã Ba Kim, Mù Cang Chải, Yên Bái"
+                       Address = "22 Ngã Ba Kim, Mù Cang Chải, Yên Bái",
+                       IsMain = true
                    }, 
                    new AddressEntity
                    {
@@ -109,7 +112,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "Nguyễn Văn An",
                        Email = "nguyenvana@example.com",
                        PhoneNumber = "0912345678",
-                       Address = "15 Lê Văn Lương, Thanh Xuân, Hà Nội"
+                       Address = "15 Lê Văn Lương, Thanh Xuân, Hà Nội",
+                       IsMain = true
                    }, 
                    new AddressEntity
                    {
@@ -118,7 +122,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "Lê Thị Bích",
                        Email = "lethib@example.com",
                        PhoneNumber = "0923456789",
-                       Address = "20 Nguyễn Trãi, Thanh Xuân, Hà Nội"
+                       Address = "20 Nguyễn Trãi, Thanh Xuân, Hà Nội",
+                       IsMain = false
                    }, 
                    new AddressEntity
                    {
@@ -127,7 +132,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "Phạm Văn Công",
                        Email = "phamvanc@example.com",
                        PhoneNumber = "0934567890",
-                       Address = "88 Đường Giải Phóng, Hoàng Mai, Hà Nội"
+                       Address = "88 Đường Giải Phóng, Hoàng Mai, Hà Nội",
+                       IsMain = false
                    },
                    new AddressEntity
                    {
@@ -136,7 +142,8 @@ namespace shop.Infrastructure.Initialization
                        Name = "John Employee",
                        Email = "johnemployee@example.com",
                        PhoneNumber = "1234567892",
-                       Address = "121 Đường Cầu Giấy ,Cầu Giấy, Hà Nội"
+                       Address = "121 Đường Cầu Giấy ,Cầu Giấy, Hà Nội",
+                       IsMain = true
                    }
                  );
         }
