@@ -19,6 +19,7 @@ namespace shop.Infrastructure.Initialization
             CryptographyHelper.CreatePasswordHash("123456", out byte[] passwordHash1, out byte[] passwordSalt1);
             CryptographyHelper.CreatePasswordHash("123456", out byte[] passwordHash2, out byte[] passwordSalt2);
             CryptographyHelper.CreatePasswordHash("123456", out byte[] passwordHash3, out byte[] passwordSalt3);
+            CryptographyHelper.CreatePasswordHash("123456", out byte[] passwordHash4, out byte[] passwordSalt4);
 
             modelBuilder.Entity<RoleEntity>().HasData(
                      new RoleEntity
@@ -54,6 +55,14 @@ namespace shop.Infrastructure.Initialization
                        PasswordHash = passwordHash2,
                        PasswordSalt = passwordSalt2,
                        RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639"),
+                   }, 
+                   new AccountEntity
+                   {
+                       Id = new Guid("db757696-89d6-4f61-84bb-61bc9b87ea05"),
+                       Username = "customer2@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639"),
                    },
                    new AccountEntity
                    {
@@ -79,11 +88,47 @@ namespace shop.Infrastructure.Initialization
                    {
                        Id = Guid.NewGuid(),
                        AccountId = new Guid("2b25a754-a50e-4468-942c-d65c0bc2c86f"),
-                       Name = "John Doe",
-                       Email = "johndoe@example.com",
-                       PhoneNumber = "0123456789",
-                       Address = "123 Đường Cầu Giấy ,Cầu Giấy, Hà Nội"
+                       Name = "Đăng Thị Hồng Nhung",
+                       Email = "dangnhung72@gmail.com",
+                       PhoneNumber = "0366702305",
+                       Address = "25 Phình Hồ, Văn Chấn, Yên Bái"
                    }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("2b25a754-a50e-4468-942c-d65c0bc2c86f"),
+                       Name = "Nguyễn Quang Hưng",
+                       Email = "q170302@email.com",
+                       PhoneNumber = "0344917302",
+                       Address = "22 Ngã Ba Kim, Mù Cang Chải, Yên Bái"
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("db757696-89d6-4f61-84bb-61bc9b87ea05"),
+                       Name = "Nguyễn Văn An",
+                       Email = "nguyenvana@example.com",
+                       PhoneNumber = "0912345678",
+                       Address = "15 Lê Văn Lương, Thanh Xuân, Hà Nội"
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("db757696-89d6-4f61-84bb-61bc9b87ea05"),
+                       Name = "Lê Thị Bích",
+                       Email = "lethib@example.com",
+                       PhoneNumber = "0923456789",
+                       Address = "20 Nguyễn Trãi, Thanh Xuân, Hà Nội"
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("db757696-89d6-4f61-84bb-61bc9b87ea05"),
+                       Name = "Phạm Văn Công",
+                       Email = "phamvanc@example.com",
+                       PhoneNumber = "0934567890",
+                       Address = "88 Đường Giải Phóng, Hoàng Mai, Hà Nội"
+                   },
                    new AddressEntity
                    {
                        Id = Guid.NewGuid(),

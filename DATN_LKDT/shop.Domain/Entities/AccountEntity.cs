@@ -19,8 +19,6 @@ namespace shop.Domain.Entities
         public RoleEntity? Role { get; set; }
         [JsonIgnore]
         public CartEntity? Cart { get; set; }
-        [JsonIgnore]
-        public List<Order>? Orders { get; set; }
         public List<AddressEntity>? Addresses { get; set; }
     }
 }

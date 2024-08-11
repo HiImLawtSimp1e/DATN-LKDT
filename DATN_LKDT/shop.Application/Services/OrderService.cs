@@ -145,20 +145,9 @@ namespace shop.Application.Services
                 };
             }
 
-            var customer = await _context.Accounts.FirstOrDefaultAsync(c => c.Id == order.AccountId);
-
-            if (customer == null)
-            {
-                return new ApiResponse<OrderDetailCustomerDto>
-                {
-                    Success = false,
-                    Message = "Không tìm thấy thông tin người dùng"
-                };
-            }
-
             var orderCustomerInfo = new OrderDetailCustomerDto
             {
-                Id = customer.Id,
+                Id = order.Id,
                 FullName = order.FullName,
                 Email = order.Email,
                 Address = order.Address,

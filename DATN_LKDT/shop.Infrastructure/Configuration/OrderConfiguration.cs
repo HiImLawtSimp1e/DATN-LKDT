@@ -15,10 +15,6 @@ namespace shop.Infrastructure.Configuration
         {
             builder.HasKey(o => o.Id);
 
-            builder.HasOne(o => o.Account)
-             .WithMany(a => a.Orders)
-             .HasForeignKey(o => o.AccountId);
-
             builder.HasMany(o => o.OrderItems)
                .WithOne(oi => oi.Order)
                .HasForeignKey(oi => oi.OrderId);
