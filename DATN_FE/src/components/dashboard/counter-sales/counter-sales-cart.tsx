@@ -88,8 +88,11 @@ const CounterSaleCart = () => {
 
       sessionStorage.removeItem("orderItems");
       sessionStorage.removeItem("orderAddress");
-
       setIsLoading(false);
+
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
     } catch (err) {
       setIsLoading(false);
     }
