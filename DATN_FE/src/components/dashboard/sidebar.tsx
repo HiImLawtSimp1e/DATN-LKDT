@@ -49,6 +49,11 @@ const Sidebar = () => {
           icon: <MdDashboard />,
         },
         {
+          title: "Bán hàng",
+          path: "/dashboard/counter-sales",
+          icon: <MdArticle />,
+        },
+        {
           title: "Danh mục sản phẩm",
           path: "/dashboard/category",
           icon: <MdCategory />,
