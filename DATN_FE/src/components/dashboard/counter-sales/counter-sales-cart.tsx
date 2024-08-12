@@ -1,17 +1,20 @@
+"use client";
+
 import { useCounterSaleStore } from "@/lib/store/useCounterSaleStore";
-import CounterSalesOrderItem from "./counter-sales-order-item";
-import { formatPrice } from "@/lib/format/format";
-import { useVoucherStore } from "@/lib/store/useVoucherStore";
 import { useSearchAddressStore } from "@/lib/store/useSearchAddressStore";
-import { Suspense, useEffect, useState } from "react";
-import Loading from "@/components/shop/loading";
-import { toast } from "react-toastify";
+import { useVoucherStore } from "@/lib/store/useVoucherStore";
+import { validateAddress } from "@/lib/validation/validateProfile";
 import { getAuthPublic } from "@/service/auth-service/auth-service";
+import { Suspense, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import CounterSalesOrderItem from "./counter-sales-order-item";
+import Loading from "@/components/shop/loading";
+import { formatPrice } from "@/lib/format/format";
 
 interface IOrderFormData {
-  name: string;
+  fullName: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   address: string;
   orderItems: IOrderItem[];
 }
@@ -20,7 +23,7 @@ const CounterSaleCart = () => {
   const { orderItems } = useCounterSaleStore();
   const { address } = useSearchAddressStore();
   const { voucher } = useVoucherStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const totalAmount = orderItems.reduce(
     (accumulator, currentValue) =>
@@ -39,26 +42,39 @@ const CounterSaleCart = () => {
   }
 
   // Hàm tạo đơn hàng
-  const createOrder = async () => {
+  const createOrder = async (): Promise<FormState | undefined> => {
     const authToken = getAuthPublic();
     if (!authToken) {
-      console.error("No auth token available.");
-      return;
+      return { errors: ["Hết phiên đăng nhập, bạn cần đăng nhập lại"] };
     }
 
     setIsLoading(true);
 
     if (address === null) {
       setIsLoading(false);
-      return;
+      return { errors: ["Chưa có thông tin người mua"] };
+    }
+
+    //client validation
+    const [errors, isValid] = validateAddress(
+      address.name,
+      address.email,
+      address.phoneNumber,
+      address.address
+    );
+
+    if (!isValid) {
+      //console.log(errors);
+      setIsLoading(false);
+      return { errors };
     }
 
     try {
       const orderData: IOrderFormData = {
-        name: address.name,
+        fullName: address.name,
         email: address.email,
-        phoneNumber: address.phoneNumber,
-        address: address.phoneNumber,
+        phone: address.phoneNumber,
+        address: address.address,
         orderItems: orderItems,
       };
 
@@ -73,38 +89,53 @@ const CounterSaleCart = () => {
           body: JSON.stringify(orderData),
         }
       );
-
-      console.log(res);
+      //console.log(res);
 
       const responseData: ApiResponse<boolean> = await res.json();
 
-      console.log(responseData);
+      //console.log(responseData);
 
-      const { data } = responseData;
+      const { success, message } = responseData;
 
-      if (data === false) {
+      if (success) {
+        // If the response is success and success is true
+        sessionStorage.removeItem("orderItems");
+        sessionStorage.removeItem("orderAddress");
         setIsLoading(false);
-      }
-
-      sessionStorage.removeItem("orderItems");
-      sessionStorage.removeItem("orderAddress");
-      setIsLoading(false);
-
-      if (typeof window !== "undefined") {
-        window.location.reload();
+        return { success: true, errors: [] };
+      } else {
+        setIsLoading(false);
+        return { errors: [message] };
       }
     } catch (err) {
       setIsLoading(false);
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (address === null) {
-      toast.error("Địa chỉ khách hàng không được bỏ trống");
-    } else {
-      createOrder();
-      toast.success("Tạo mới đơn hàng thành công");
+      toast.error("Chưa có thông tin người mua");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const result = await createOrder();
+
+      if (result?.success) {
+        toast.success("Tạo hóa đơn thành công");
+        if (typeof window !== "undefined") {
+          window.location.reload(); // Reload the page to clear the form or update the UI
+        }
+      } else {
+        // Nếu không thành công, hiện thông báo lỗi
+        const errorMessage = result?.errors?.[0] || "Tạo hóa đơn thất bại";
+        toast.error(errorMessage);
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred while creating the order.");
     }
   };
 
@@ -144,7 +175,7 @@ const CounterSaleCart = () => {
               )}
               <hr className="my-8" />
               <div className="flex justify-between">
-                <p className="text-lg font-bold">Tổng tiền:</p>
+                <p className="text-lg font-bold">Total:</p>
                 <div className="">
                   <p className="mb-1 text-2xl font-bold">
                     {formatPrice(totalAmount - discount)}
@@ -156,9 +187,8 @@ const CounterSaleCart = () => {
                 <button
                   type="submit"
                   className="mt-6 w-full rounded-md bg-blue-500 text-2xl py-4 font-medium text-blue-50 md:text-lg md:py-2 hover:bg-blue-600"
-                  disabled={isLoading}
                 >
-                  {isLoading ? "Đang xử lý..." : "Tạo đơn hàng"}
+                  {isLoading ? "Đang xử lý..." : "Tạo hóa đơn"}
                 </button>
               </form>
             </div>
