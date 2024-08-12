@@ -12,9 +12,9 @@ import Loading from "@/components/shop/loading";
 import { formatPrice } from "@/lib/format/format";
 
 interface IOrderFormData {
-  fullName: string;
+  name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   address: string;
   orderItems: IOrderItem[];
 }
@@ -71,9 +71,9 @@ const CounterSaleCart = () => {
 
     try {
       const orderData: IOrderFormData = {
-        fullName: address.name,
+        name: address.name,
         email: address.email,
-        phone: address.phoneNumber,
+        phoneNumber: address.phoneNumber,
         address: address.address,
         orderItems: orderItems,
       };
