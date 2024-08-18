@@ -6,6 +6,7 @@ using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
 using shop.Domain.Entities;
+using shop.Domain.Entities.Enum;
 using shop.Infrastructure.Database.Context;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace shop.Application.Services
                 Address = newOrder.Address,
                 OrderItems = orderItems,
                 TotalPrice = totalAmount,
+                State = OrderState.Delivered
             };
 
             if (voucherId != null)

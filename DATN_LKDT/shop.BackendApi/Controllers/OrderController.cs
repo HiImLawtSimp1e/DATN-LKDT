@@ -59,6 +59,17 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Customer")]
+        [HttpPut("cancel-order/{voucherId}")]
+        public async Task<ActionResult<ApiResponse<bool>>> CancelVoucher(Guid voucherId)
+        {
+            var response = await _service.CancelOrder(voucherId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
         [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin")]
         public async Task<ActionResult<ApiResponse<Pagination<List<Order>>>>> GetAdminOrders([FromQuery] int page)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using shop.Domain.Entities.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace shop.Application.ViewModels.ResponseDTOs
         public string Address { get; set; } = string.Empty;
         public string InvoiceCode { get; set; } = string.Empty;
         public int DiscountValue { get; set; } = 0;
+        public OrderState State { get; set; }
         public DateTime OrderCreatedAt { get; set; }
     }
 }
