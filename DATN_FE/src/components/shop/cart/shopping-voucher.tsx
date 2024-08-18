@@ -78,13 +78,13 @@ const ShoppingVoucher = () => {
               type="text"
               placeholder="Nhập mã voucher..."
               name="discountCode"
-              className="p-4 w-3/4"
+              className="p-4 w-3/5"
             />
             <button
               type="submit"
-              className="px-4 w-1/4 bg-red-500 text-white uppercase"
+              className="px-4 w-2/5 bg-red-500 text-white uppercase"
             >
-              Gửi
+              Áp dụng
             </button>
           </div>
         </form>

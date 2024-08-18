@@ -2,7 +2,7 @@
 
 import { updateOrderState } from "@/action/orderAction";
 import { useCustomActionState } from "@/lib/custom/customHook";
-import { OrderState } from "@/lib/enums/OrderState";
+import { mapOrderState, OrderState } from "@/lib/enums/OrderState";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -68,14 +68,14 @@ const UpdateOrderDetail = ({ orderId, orderState }: IProps) => {
         >
           {Object.keys(OrderState)
             .filter((key) => isNaN(Number(key)))
-            .map((key) => (
-              <option
-                key={OrderState[key as keyof typeof OrderState]}
-                value={OrderState[key as keyof typeof OrderState]}
-              >
-                {key}
-              </option>
-            ))}
+            .map((key) => {
+              const stateValue = OrderState[key as keyof typeof OrderState];
+              return (
+                <option key={stateValue} value={stateValue}>
+                  {mapOrderState(stateValue)}
+                </option>
+              );
+            })}
         </select>
         <button
           type="submit"

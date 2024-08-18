@@ -28,5 +28,6 @@ interface IOrderDetail {
   address: string;
   invoiceCode: string;
   discountValue: number;
+  state: number;
   orderCreatedAt: string;
 }
