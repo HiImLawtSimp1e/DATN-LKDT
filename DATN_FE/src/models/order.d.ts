@@ -7,6 +7,8 @@ interface IOrder {
   state: number;
   createdAt: string;
   modifiedAt: string;
+  createdBy: string;
+  modifiedBy: string;
 }
 
 interface IOrderItem {

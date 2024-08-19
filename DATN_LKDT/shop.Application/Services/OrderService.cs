@@ -184,7 +184,13 @@ namespace shop.Application.Services
                     Message = "Không tìm thấy đơn hàng"
                 };
             }
+
+            var username = _authService.GetUserName();
+
             dbOrder.State = state;
+            dbOrder.ModifiedAt = DateTime.Now;
+            dbOrder.ModifiedBy = username;
+
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>
             {
@@ -288,6 +294,7 @@ namespace shop.Application.Services
                 Email = address.Email,
                 Address = address.Address,
                 Phone = address.PhoneNumber,
+                CreatedBy = "Khách hàng"
             };
 
             if (voucherId != null)
@@ -394,6 +401,9 @@ namespace shop.Application.Services
             }
 
             order.State = OrderState.Cancelled;
+            order.ModifiedAt = DateTime.Now;
+            order.ModifiedBy = "Khách hàng";
+
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>

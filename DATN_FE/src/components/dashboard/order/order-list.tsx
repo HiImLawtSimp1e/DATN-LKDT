@@ -9,13 +9,7 @@ interface IProps {
   pages: number;
   currentPage: number;
 }
-const cssTagField: string[] = [
-  "bg-gray-900",
-  "bg-yellow-900",
-  "bg-green-900",
-  "bg-blue-900",
-  "bg-red-900",
-];
+
 const OrderList = ({ orders, pages, currentPage }: IProps) => {
   const pageSize = 10;
   const startIndex = (currentPage - 1) * pageSize;
@@ -29,6 +23,8 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">Trạng thái</th>
             <th className="px-4 py-2">Ngày tạo</th>
             <th className="px-4 py-2">Ngày sửa</th>
+            <th className="px-4 py-2">Người tạo</th>
+            <th className="px-4 py-2">Người sửa</th>
             <th className="px-4 py-2">Tổng tiền</th>
             <th className="px-4 py-2"></th>
           </tr>
@@ -46,8 +42,10 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
               </td>
               <td className="px-4 py-2">{formatDate(order.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(order.modifiedAt)}</td>
+              <td className="px-4 py-2">{order.createdBy}</td>
+              <td className="px-4 py-2">{order.modifiedBy}</td>
               <td className="px-4 py-2">
-                {formatPrice(order.totalPrice - order.discountValue)}
+                {formatPrice(order.totalPrice - order.discountValue + 30000)}
               </td>
               <td className="px-4 py-2">
                 <Link href={`/dashboard/orders/${order.id}`}>

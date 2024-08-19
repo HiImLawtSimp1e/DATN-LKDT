@@ -20,14 +20,18 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public OrderCounterService(AppDbContext context, IMapper mapper)
+        public OrderCounterService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> CreateOrderCounter(Guid? voucherId, CreateOrderCounterDto newOrder)
         {
+            var username = _authService.GetUserName();
+
             var newOrderItems = newOrder.OrderItems;
 
             if(newOrderItems == null || newOrderItems.Count() == 0)
@@ -54,7 +58,8 @@ namespace shop.Application.Services
                 Address = newOrder.Address,
                 OrderItems = orderItems,
                 TotalPrice = totalAmount,
-                State = OrderState.Delivered
+                State = OrderState.Delivered,
+                CreatedBy = username
             };
 
             if (voucherId != null)
