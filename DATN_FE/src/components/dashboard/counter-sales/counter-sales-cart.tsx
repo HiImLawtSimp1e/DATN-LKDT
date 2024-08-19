@@ -3,7 +3,6 @@
 import { useCounterSaleStore } from "@/lib/store/useCounterSaleStore";
 import { useSearchAddressStore } from "@/lib/store/useSearchAddressStore";
 import { useVoucherStore } from "@/lib/store/useVoucherStore";
-import { validateAddress } from "@/lib/validation/validateProfile";
 import { getAuthPublic } from "@/service/auth-service/auth-service";
 import { Suspense, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -53,20 +52,6 @@ const CounterSaleCart = () => {
     if (address === null) {
       setIsLoading(false);
       return { errors: ["Chưa có thông tin người mua"] };
-    }
-
-    //client validation
-    const [errors, isValid] = validateAddress(
-      address.name,
-      address.email,
-      address.phoneNumber,
-      address.address
-    );
-
-    if (!isValid) {
-      //console.log(errors);
-      setIsLoading(false);
-      return { errors };
     }
 
     try {

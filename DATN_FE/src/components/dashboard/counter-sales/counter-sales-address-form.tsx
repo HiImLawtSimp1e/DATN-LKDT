@@ -75,7 +75,7 @@ const CounterSalesAddressForm = () => {
         <input
           id="address"
           name="address"
-          placeholder="Enter customer address"
+          placeholder="Nhập địa chỉ khách hàng..."
           value={address?.address}
           className="text-sm rounded-lg w-full p-2.5 bg-gray-500 placeholder-gray-300 text-white"
           onChange={handleChange}
