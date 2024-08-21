@@ -20,15 +20,20 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public CategoryService(AppDbContext context, IMapper mapper)
+        public CategoryService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> CreateCategory(AddCategoryDto newCategory)
         {
+            var username = _authService.GetUserName();
+
             var category = _mapper.Map<Category>(newCategory);
+            category.CreatedBy = username;
 
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
@@ -119,7 +124,13 @@ namespace shop.Application.Services
                     Message = "Không tìm thấy danh mục"
                 };
             }
+
+            var username = _authService.GetUserName();
+
             category.Deleted = true;
+            category.ModifiedAt = DateTime.Now;
+            category.ModifiedBy = username;
+
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
@@ -143,8 +154,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateCategory, dbCategory);
             dbCategory.ModifiedAt = DateTime.Now;
+            dbCategory.ModifiedBy = username;
 
             await _context.SaveChangesAsync();
 

@@ -1,4 +1,5 @@
 ﻿using AppBusiness.Model.Pagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
@@ -29,6 +30,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin")]
         public async Task<ActionResult<ApiResponse<Pagination<List<Category>>>>> GetAdminCategories([FromQuery] int page)
         {
@@ -43,6 +45,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin/{id}")]
         public async Task<ActionResult<ApiResponse<Category>>> GetAdminCategory(Guid id)
         {
@@ -63,6 +66,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> CreateCategory(AddCategoryDto newCategory)
         {
@@ -73,7 +77,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateCategory(Guid id, UpdateCategoryDto category)
         {
@@ -84,7 +88,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{categoryId}")]
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteCategories(Guid categoryId)
         {

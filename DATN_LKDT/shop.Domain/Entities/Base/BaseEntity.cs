@@ -5,7 +5,7 @@ namespace shop.Domain.Entities.Base;
 [NotMapped]
 public class BaseEntity
 {
-    public virtual string CreatedBy { get; set; } = string.Empty;
+    public virtual string CreatedBy { get; set; } = "admin@fshop.com";
 
     public virtual string ModifiedBy { get; set; } = string.Empty;
 

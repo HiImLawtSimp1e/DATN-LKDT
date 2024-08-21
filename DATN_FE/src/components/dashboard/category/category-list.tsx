@@ -72,7 +72,9 @@ const CategoryList = ({ categories, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">Slug</th>
             <th className="px-4 py-2">Trạng thái</th>
             <th className="px-4 py-2">Ngày tạo</th>
-            <th className="px-4 py-2">Ngày chỉnh sửa</th>
+            <th className="px-4 py-2">Ngày sửa</th>
+            <th className="px-4 py-2">Người tạo</th>
+            <th className="px-4 py-2">Người sửa</th>
             <th className="px-4 py-2">Hành động</th>
           </tr>
         </thead>
@@ -90,6 +92,8 @@ const CategoryList = ({ categories, pages, currentPage }: IProps) => {
               </td>
               <td className="px-4 py-2">{formatDate(category.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(category.modifiedAt)}</td>
+              <td className="px-4 py-2">{category.createdBy}</td>
+              <td className="px-4 py-2">{category.modifiedBy}</td>
               <td className="px-4 py-2">
                 <div className="flex gap-2">
                   <Link href={`/dashboard/category/${category.id}`}>
