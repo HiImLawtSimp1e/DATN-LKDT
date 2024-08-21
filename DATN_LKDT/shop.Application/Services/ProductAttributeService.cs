@@ -18,15 +18,20 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public ProductAttributeService(AppDbContext context, IMapper mapper)
+        public ProductAttributeService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> CreateProductAttribute(AddUpdateProductAttributeDto newProductAttribute)
         {
+            var username = _authService.GetUserName();
+
             var attribute = _mapper.Map<ProductAttribute>(newProductAttribute);
+            attribute.CreatedBy = username;
 
             _context.ProductAttributes.Add(attribute);
             await _context.SaveChangesAsync();
@@ -49,7 +54,12 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateProductAttribute, dbAttribute);
+            dbAttribute.ModifiedAt = DateTime.Now;
+            dbAttribute.ModifiedBy = username;
+
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>
             {
