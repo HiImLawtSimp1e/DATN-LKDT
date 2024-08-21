@@ -21,16 +21,21 @@ namespace shop.Application.Services
         private readonly IRepository<BlogEntity> _repo;
         private readonly IMapper _mapper;
         private readonly AppDbContext _context;
+        private readonly IAuthService _authService;
 
-        public BlogService(IRepository<BlogEntity> repo, IMapper mapper, AppDbContext context)
+        public BlogService(IRepository<BlogEntity> repo, IMapper mapper, AppDbContext context, IAuthService authService)
         {
             _repo = repo;
             _mapper = mapper;
             _context = context;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> CreateBlog(AddBlogDto newBlog)
         {
+            var username = _authService.GetUserName();
+
             var blog = _mapper.Map<BlogEntity>(newBlog);
+            blog.CreatedBy = username;
 
             await _repo.InsertAsync(blog);
             return new ApiResponse<bool>
@@ -139,7 +144,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             dbBlog.Deleted = true;
+            dbBlog.ModifiedAt = DateTime.Now;
+            dbBlog.ModifiedBy = username;
 
             await _repo.UpdateAsync(dbBlog);
 
@@ -162,8 +171,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateBlog, dbBlog);
             dbBlog.ModifiedAt = DateTime.Now;
+            dbBlog.ModifiedBy = username;
 
             await _repo.UpdateAsync(dbBlog);
 

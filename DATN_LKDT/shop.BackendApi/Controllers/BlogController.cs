@@ -1,4 +1,5 @@
 ﻿using AppBusiness.Model.Pagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -48,6 +49,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin")]
         public async Task<ActionResult<ApiResponse<Pagination<List<BlogEntity>>>>> GetAdminBlogs([FromQuery] int page, [FromQuery] double pageResults)
         {
@@ -66,6 +68,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin/{id}")]
         public async Task<ActionResult<ApiResponse<BlogEntity>>> GetAdminBlog(Guid id)
         {
@@ -76,6 +79,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> CreateBlog(AddBlogDto newBlog)
         {
@@ -86,6 +90,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateBlog(Guid id,UpdateBlogDto updateBlog)
         {
@@ -96,6 +101,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteBlog(Guid id)
         {

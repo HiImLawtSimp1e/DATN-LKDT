@@ -89,7 +89,7 @@ const Sidebar = () => {
           icon: <MdSupervisedUserCircle />,
         },
         {
-          title: "Tin tức",
+          title: "Bài viết",
           path: "/dashboard/posts",
           icon: <MdOutlinePostAdd />,
         },

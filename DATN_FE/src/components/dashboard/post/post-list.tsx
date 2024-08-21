@@ -62,7 +62,7 @@ const PostList = ({ posts, pages, currentPage }: IProps) => {
         <Link href="/dashboard/posts/add">
           <button className="p-2 flex items-center justify-center mb-5 bg-purple-600 text-white rounded">
             <MdAdd />
-            Thêm bài viết mới
+            Thêm mới bài viết
           </button>
         </Link>
       </div>
@@ -71,11 +71,12 @@ const PostList = ({ posts, pages, currentPage }: IProps) => {
           <tr>
             <th className="px-4 py-2">#</th>
             <th className="px-4 py-2">Tiêu đề</th>
-            <th className="px-4 py-2">Slug</th>
             <th className="px-4 py-2">Trạng thái</th>
             <th className="px-4 py-2">Ngày tạo</th>
             <th className="px-4 py-2">Ngày sửa</th>
-            <th className="px-4 py-2">Hành động</th>
+            <th className="px-4 py-2">Người tạo</th>
+            <th className="px-4 py-2">Người sửa</th>
+            <th className="px-4 py-2"></th>
           </tr>
         </thead>
         <tbody>
@@ -83,7 +84,6 @@ const PostList = ({ posts, pages, currentPage }: IProps) => {
             <tr key={post.id} className="border-b border-gray-700">
               <td className="px-4 py-2">{startIndex + index + 1}</td>
               <td className="px-4 py-2">{post.title}</td>
-              <td className="px-4 py-2">{post.slug}</td>
               <td className="px-4 py-2">
                 <TagFiled
                   cssClass={post.isActive ? "bg-lime-900" : "bg-red-700"}
@@ -92,6 +92,8 @@ const PostList = ({ posts, pages, currentPage }: IProps) => {
               </td>
               <td className="px-4 py-2">{formatDate(post.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(post.modifiedAt)}</td>
+              <td className="px-4 py-2">{post.createdBy}</td>
+              <td className="px-4 py-2">{post.modifiedBy}</td>
               <td className="px-4 py-2">
                 <div className="flex gap-2">
                   <Link href={`/dashboard/posts/${post.id}`}>

@@ -75,7 +75,7 @@ const CategoryList = ({ categories, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">Ngày sửa</th>
             <th className="px-4 py-2">Người tạo</th>
             <th className="px-4 py-2">Người sửa</th>
-            <th className="px-4 py-2">Hành động</th>
+            <th className="px-4 py-2"></th>
           </tr>
         </thead>
         <tbody>
