@@ -1,4 +1,5 @@
 ﻿using AppBusiness.Model.Pagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
@@ -42,6 +43,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> AddProductType(AddUpdateProductTypeDto productType)
         {
@@ -52,6 +54,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProductType(Guid id, AddUpdateProductTypeDto productType)
         {
@@ -62,6 +65,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductType(Guid id)
         {

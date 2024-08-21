@@ -69,8 +69,10 @@ const ProductTypeList = ({ productTypes, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">#</th>
             <th className="px-4 py-2">Tên</th>
             <th className="px-4 py-2">Ngày Tạo</th>
-            <th className="px-4 py-2">Ngày Sửa Đổi</th>
-            <th className="px-4 py-2">Hành Động</th>
+            <th className="px-4 py-2">Ngày Sửa</th>
+            <th className="px-4 py-2">Người Tạo</th>
+            <th className="px-4 py-2">Người Sửa</th>
+            <th className="px-4 py-2"></th>
           </tr>
         </thead>
         <tbody>
@@ -80,6 +82,8 @@ const ProductTypeList = ({ productTypes, pages, currentPage }: IProps) => {
               <td className="px-4 py-2">{type.name}</td>
               <td className="px-4 py-2">{formatDate(type.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(type.modifiedAt)}</td>
+              <td className="px-4 py-2">{type.createdBy}</td>
+              <td className="px-4 py-2">{type.modifiedBy}</td>
               <td className="px-4 py-2">
                 <div className="flex gap-2">
                   <Link href={`/dashboard/product-types/${type.id}`}>
