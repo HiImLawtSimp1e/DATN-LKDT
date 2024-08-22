@@ -23,13 +23,16 @@ namespace shop.Application.Services
         private readonly ICartService _cartService;
         private readonly IAuthService _authService;
 
-        public OrderService(AppDbContext context,IMapper mapper , ICartService cartService, IAuthService authService)
+        public OrderService(AppDbContext context, IMapper mapper, ICartService cartService, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
             _cartService = cartService;
             _authService = authService;
         }
+
+        #region GetOrderInformationService
+
         public async Task<ApiResponse<Pagination<List<Order>>>> GetAdminOrders(int page)
         {
             var pageResults = 10f;
@@ -164,6 +167,10 @@ namespace shop.Application.Services
             };
         }
 
+        #endregion GetOrderInformationService
+
+        #region ManagerOrderService
+
         public async Task<ApiResponse<bool>> UpdateOrderState(Guid orderId, OrderState state)
         {
             if (!Enum.IsDefined(typeof(OrderState), state))
@@ -183,6 +190,21 @@ namespace shop.Application.Services
                     Success = false,
                     Message = "Không tìm thấy đơn hàng"
                 };
+            }
+
+            if (dbOrder.State == OrderState.Cancelled)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không thể cập nhật đơn hàng đã hủy"
+                };
+            }
+
+            // Trả số lượng sản phẩm về như cũ khi hủy đơn hàng
+            if (state == OrderState.Cancelled)
+            {
+                await TurnBackVariantQuantity(orderId);
             }
 
             var username = _authService.GetUserName();
@@ -214,6 +236,10 @@ namespace shop.Application.Services
                 Data = (int)order.State
             };
         }
+
+        #endregion ManagerOrderService
+
+        #region Customer'sOrderService
 
         public async Task<ApiResponse<bool>> PlaceOrder(Guid? voucherId)
         {
@@ -281,6 +307,7 @@ namespace shop.Application.Services
                     ProductTypeName = variant.ProductType.Name,
                     ProductTitle = product.Title
                 };
+                variant.Quantity -= ci.Quantity; //Trừ số lượng sản phẩm khi khách đặt hàng
                 orderItems.Add(item);
             });
 
@@ -404,6 +431,8 @@ namespace shop.Application.Services
             order.ModifiedAt = DateTime.Now;
             order.ModifiedBy = "Khách hàng";
 
+            await TurnBackVariantQuantity(orderId); // Trả lại số lượng sản phẩm khi hủy đơn hàng
+
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
@@ -411,6 +440,10 @@ namespace shop.Application.Services
                 Message = "Hủy đơn hàng thành công"
             };
         }
+
+        #endregion Customer'sOrderService
+
+        #region PrivateService
 
         private string GenerateInvoiceCode()
         {
@@ -453,5 +486,29 @@ namespace shop.Application.Services
             }
             return result;
         }
+
+        private async Task<bool> TurnBackVariantQuantity(Guid orderId)
+        {
+            var orderItems = await _context.OrderItems
+                                      .Where(o => o.OrderId == orderId)
+                                      .ToListAsync();
+
+            if (orderItems == null || orderItems.Count() == 0)
+            {
+                return false;
+            }
+
+            orderItems.ForEach(oi =>
+            {
+                var variant = _context.ProductVariants
+                                   .FirstOrDefault(v => v.ProductId == oi.ProductId && v.ProductTypeId == oi.ProductTypeId);
+                // Turn back variant quantity
+                variant.Quantity += oi.Quantity;
+            });
+
+            return true;
+        }
+
+        #endregion PrivateService
     }
 }

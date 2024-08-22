@@ -43,6 +43,15 @@ namespace shop.Application.Services
                 };
             }
 
+            newOrderItems.ForEach(oi =>
+            {
+                var variant = _context.ProductVariants
+                                    .Include(v => v.ProductType)
+                                    .FirstOrDefault(v => v.ProductId == oi.ProductId && v.ProductTypeId == oi.ProductTypeId);
+
+                variant.Quantity -= oi.Quantity;
+            });
+
             int totalAmount = 0;
 
             newOrderItems.ForEach(item => totalAmount += item.Price * item.Quantity);
