@@ -3,6 +3,7 @@
 // Import các module và interface cần thiết
 import { validateVariant } from "@/lib/validation/validateVariant";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { cookies as nextCookies } from "next/headers";
 
 // Định nghĩa interface VariantFormData
 interface VariantFormData {
@@ -45,13 +46,20 @@ export const addVariant = async (
     originalPrice,
   };
 
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   try {
     const res = await fetch(
       `http://localhost:5000/api/ProductVariant/admin/${productId}`,
       {
         method: "POST",
         body: JSON.stringify(variantData),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -137,13 +145,20 @@ export const updateVariant = async (
     isActive,
   };
 
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   try {
     const res = await fetch(
       `http://localhost:5000/api/ProductVariant/admin/${productId}`,
       {
         method: "PUT",
         body: JSON.stringify(variantData),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -193,6 +208,10 @@ export const updateVariant = async (
   }
 };
 
+//get access token form cookie
+const cookieStore = nextCookies();
+const token = cookieStore.get("authToken")?.value || "";
+
 // Định nghĩa hàm deleteVariant
 export const deleteVariant = async (
   prevState: FormState,
@@ -205,7 +224,10 @@ export const deleteVariant = async (
     `http://localhost:5000/api/ProductVariant/admin/${productId}?productTypeId=${productTypeId}`,
     {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
 

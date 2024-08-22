@@ -54,7 +54,7 @@ const ProductVariantForm = ({ productId, variants }: IProps) => {
         >
           <button className="p-2 flex items-center justify-center mb-5 bg-purple-600 text-white rounded">
             <MdAdd />
-            Thêm Biến Thể Mới
+            Thêm Loại Sản Phẩm Mới
           </button>
         </Link>
       </div>
@@ -63,7 +63,7 @@ const ProductVariantForm = ({ productId, variants }: IProps) => {
           <tr>
             <th className="px-4 py-2">#</th>
             <th className="px-4 py-2">Loại Sản Phẩm</th>
-            <th className="px-4 py-2">Giá</th>
+            <th className="px-4 py-2">Giá Bán</th>
             <th className="px-4 py-2">Giá Gốc</th>
             <th className="px-4 py-2">Số Lượng</th>
             <th className="px-4 py-2">Trạng Thái</th>
@@ -79,7 +79,11 @@ const ProductVariantForm = ({ productId, variants }: IProps) => {
               <td className="px-4 py-2">{index + 1}</td>
               <td className="px-4 py-2">{variant.productType.name}</td>
               <td className="px-4 py-2">{variant.price}</td>
-              <td className="px-4 py-2">{variant.originalPrice}</td>
+              <td className="px-4 py-2">
+                {variant.originalPrice > variant.price
+                  ? variant.originalPrice
+                  : variant.price}
+              </td>
               <td className="px-4 py-2">{variant.quantity}</td>
               <td className="px-4 py-2">
                 <TagField

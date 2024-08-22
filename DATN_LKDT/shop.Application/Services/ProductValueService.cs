@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.WebPages;
 
 namespace shop.Application.Services
 {
@@ -17,11 +18,13 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public ProductValueService(AppDbContext context, IMapper mapper)
+        public ProductValueService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> AddAttributeValue(Guid productId, AddProductValueDto newAttributeValue)
         {
@@ -62,12 +65,18 @@ namespace shop.Application.Services
                 };
             }
 
+            // Lấy username tài khoản thực hiện tác vụ
+            var username = _authService.GetUserName();
+
             // Nếu giá trị thuộc tính đã bị xóa, phục hồi giá trị thuộc tính
             if (existingAttributeValue != null && existingAttributeValue.Deleted)
             {
                 existingAttributeValue.Deleted = false;
                 existingAttributeValue.IsActive = true;
                 existingAttributeValue.Value = newAttributeValue.Value;
+
+                dbProduct.ModifiedAt = DateTime.Now;
+                dbProduct.ModifiedBy = username;
 
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
@@ -85,6 +94,7 @@ namespace shop.Application.Services
 
                 _context.ProductValues.Add(attributeValue);
                 dbProduct.ModifiedAt = DateTime.Now;
+                dbProduct.ModifiedBy = username;
 
                 await _context.SaveChangesAsync();
 
@@ -128,9 +138,13 @@ namespace shop.Application.Services
         public async Task<ApiResponse<bool>> SoftDeleteAttributeValue(Guid productId, Guid productAttributeId)
         {
             var attributeValue = await _context.ProductValues
-                                       .Where(pv => !pv.Deleted && pv.ProductId == productId)
-                                       .FirstOrDefaultAsync(pv => pv.ProductAttributeId == productAttributeId);
-            if (attributeValue == null)
+                                         .Where(pv => !pv.Deleted && pv.ProductAttributeId == productAttributeId)
+                                         .FirstOrDefaultAsync(pv => pv.ProductId == productId);
+            var dbProduct = await _context.Products
+                                          .Where(p => !p.Deleted)
+                                          .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (attributeValue == null || dbProduct == null)
             {
                 return new ApiResponse<bool>
                 {
@@ -139,7 +153,12 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             attributeValue.Deleted = true;
+            dbProduct.ModifiedAt = DateTime.Now;
+            dbProduct.ModifiedBy = username;
+
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
@@ -156,6 +175,7 @@ namespace shop.Application.Services
             var dbProduct = await _context.Products
                                           .Where(p => !p.Deleted)
                                           .FirstOrDefaultAsync(p => p.Id == productId);
+
             if (dbAttributeValue == null || dbProduct == null)
             {
                 return new ApiResponse<bool>
@@ -165,8 +185,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateAttributeValue, dbAttributeValue);
-            dbProduct.ModifiedAt = DateTime.UtcNow;
+            dbProduct.ModifiedAt = DateTime.Now;
+            dbProduct.ModifiedBy = username;
 
             await _context.SaveChangesAsync();
 

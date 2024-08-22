@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
 using shop.Application.Interfaces;
@@ -18,7 +19,7 @@ namespace shop.BackendApi.Controllers
             _service = service;
         }
         [HttpGet("{productId}")]
-        public async Task<ActionResult<ApiResponse<ProductValue>>> Get(Guid productId, [FromQuery] Guid productAttributeId)
+        public async Task<ActionResult<ApiResponse<ProductValue>>> GetAttributeValue(Guid productId, [FromQuery] Guid productAttributeId)
         {
             var response = await _service.GetAttributeValue(productId, productAttributeId);
             if (!response.Success)
@@ -27,8 +28,9 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin/{productId}")]
-        public async Task<ActionResult<ApiResponse<bool>>> AddVariant(Guid productId, AddProductValueDto newValue)
+        public async Task<ActionResult<ApiResponse<bool>>> AddAttributeValue(Guid productId, AddProductValueDto newValue)
         {
             var response = await _service.AddAttributeValue(productId, newValue);
             if (!response.Success)
@@ -37,8 +39,9 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{productId}")]
-        public async Task<ActionResult<ApiResponse<bool>>> UpdateVariant(Guid productId, UpdateProductValueDto updateValue)
+        public async Task<ActionResult<ApiResponse<bool>>> UpdateAttributeValue(Guid productId, UpdateProductValueDto updateValue)
         {
             var response = await _service.UpdateAttributeValue(productId, updateValue);
             if (!response.Success)
@@ -47,8 +50,9 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{productId}")]
-        public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteVariant(Guid productId, [FromQuery] Guid productAttributeId)
+        public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteAttributeValue(Guid productId, [FromQuery] Guid productAttributeId)
         {
             var response = await _service.SoftDeleteAttributeValue(productId, productAttributeId);
             if (!response.Success)

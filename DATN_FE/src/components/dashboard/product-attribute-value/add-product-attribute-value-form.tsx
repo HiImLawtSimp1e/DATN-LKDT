@@ -90,7 +90,7 @@ const AddProductAttributeValueForm = ({
         type="submit"
         className="float-right mt-4 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
       >
-        Tạo
+        Tạo thuộc tính
       </button>
       {formState.errors.length > 0 && (
         <ul>

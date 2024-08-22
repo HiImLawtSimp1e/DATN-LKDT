@@ -1,4 +1,5 @@
 ﻿using AppBusiness.Model.Pagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -38,6 +39,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin")]
         public async Task<ActionResult<ApiResponse<Pagination<List<Product>>>>> GetAdminProducts([FromQuery] int page, [FromQuery] double pageResults)
         {
@@ -56,6 +58,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("admin/{id}")]
         public async Task<ActionResult<ApiResponse<Product>>> GetAdminProduct(Guid id)
         {
@@ -94,6 +97,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> CreateProduct(AddProductDto newProduct)
         {
@@ -104,6 +108,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProduct(Guid id, UpdateProductDto product)
         {
@@ -114,6 +119,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{productId}")]
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteProduct(Guid productId)
         {

@@ -31,8 +31,8 @@ const AddProductForm = ({ categorySelect, typeSelect }: IProps) => {
     seoKeyworks: "",
     categoryId: "",
     productTypeId: "",
-    price: "",
-    originalPrice: "",
+    price: 0,
+    originalPrice: 0,
   });
 
   const [toastDisplayed, setToastDisplayed] = useState(false);

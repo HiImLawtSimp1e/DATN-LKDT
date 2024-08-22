@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
 using shop.Application.Interfaces;
@@ -27,6 +28,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(res);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> CreateProductImage(AddProductImageDto newImage)
         {
@@ -37,6 +39,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(res);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProductImage(Guid id, UpdateProductImageDto updateImage)
         {
@@ -47,6 +50,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(res);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductImage(Guid id)
         {

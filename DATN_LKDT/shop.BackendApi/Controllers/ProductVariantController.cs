@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
 using shop.Application.Interfaces;
@@ -27,6 +28,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin/{productId}")]
         public async Task<ActionResult<ApiResponse<bool>>> AddVariant(Guid productId, AddProductVariantDto newVariant)
         {
@@ -37,6 +39,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{productId}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateVariant(Guid productId, UpdateProductVariantDto updateVariant)
         {
@@ -47,6 +50,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{productId}")]
         public async Task<ActionResult<ApiResponse<bool>>> SoftDeleteVariant(Guid productId, [FromQuery] Guid productTypeId)
         {

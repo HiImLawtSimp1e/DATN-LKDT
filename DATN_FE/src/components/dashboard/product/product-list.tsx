@@ -80,7 +80,9 @@ const ProductList = ({ products, pages, currentPage }: IProps) => {
             <th className="px-4 py-2">Trạng Thái</th>
             <th className="px-4 py-2">Ngày Tạo</th>
             <th className="px-4 py-2">Ngày Sửa</th>
-            <th className="px-4 py-2">Hành Động</th>
+            <th className="px-4 py-2">Người Tạo</th>
+            <th className="px-4 py-2">Người Sửa</th>
+            <th className="px-4 py-2"></th>
           </tr>
         </thead>
         <tbody>
@@ -112,6 +114,8 @@ const ProductList = ({ products, pages, currentPage }: IProps) => {
               </td>
               <td className="px-4 py-2">{formatDate(product.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(product.modifiedAt)}</td>
+              <td className="px-4 py-2">{product.createdBy}</td>
+              <td className="px-4 py-2">{product.modifiedBy}</td>
               <td className="px-4 py-2">
                 <div className="flex gap-2">
                   <Link href={`/dashboard/products/${product.id}`}>

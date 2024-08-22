@@ -21,15 +21,22 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public ProductService(AppDbContext context, IMapper mapper)
+        public ProductService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> CreateProduct(AddProductDto newProduct)
         {
+            //Lấy username tài khoản thực hiện tác vụ
+            var username = _authService.GetUserName();
+
+            //Map DTO to Product Entity
             var product = _mapper.Map<Product>(newProduct);
+            product.CreatedBy = username;
 
             // Thêm hình ảnh sản phẩm
             var productImage = new ProductImage
@@ -82,8 +89,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateProduct, dbProduct);
             dbProduct.ModifiedAt = DateTime.Now;
+            dbProduct.ModifiedBy = username;
 
             await _context.SaveChangesAsync();
 
@@ -110,7 +120,12 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             product.Deleted = true;
+            product.ModifiedAt = DateTime.Now;
+            product.ModifiedBy = username;
+
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>

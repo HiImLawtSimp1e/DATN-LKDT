@@ -61,7 +61,7 @@ const ProductAttributeValueForm = ({ productId, productValues }: IProps) => {
         >
           <button className="p-2 flex items-center justify-center mb-5 bg-purple-600 text-white rounded">
             <MdAdd />
-            Thêm Giá Trị Mới
+            Thêm Thuộc Tính Mới
           </button>
         </Link>
       </div>

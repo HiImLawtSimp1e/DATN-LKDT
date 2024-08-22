@@ -17,11 +17,13 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public ProductVariantService(AppDbContext context, IMapper mapper)
+        public ProductVariantService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<bool>> AddVariant(Guid productId, AddProductVariantDto newVariant)
         {
@@ -62,6 +64,9 @@ namespace shop.Application.Services
                 };
             }
 
+            // Lấy username tài khoản thực hiện tác vụ
+            var username = _authService.GetUserName();
+
             // Nếu biến thể đã bị xóa, khôi phục biến thể
             if (existingVariant != null && existingVariant.Deleted)
             {
@@ -69,6 +74,9 @@ namespace shop.Application.Services
                 existingVariant.IsActive = true;
                 existingVariant.Price = newVariant.Price;
                 existingVariant.OriginalPrice = newVariant.OriginalPrice;
+
+                dbProduct.ModifiedAt = DateTime.Now;
+                dbProduct.ModifiedBy = username;
 
                 await _context.SaveChangesAsync();
                 return new ApiResponse<bool>
@@ -83,6 +91,9 @@ namespace shop.Application.Services
                 var variant = _mapper.Map<ProductVariant>(newVariant);
                 variant.ProductId = productId;
                 variant.IsActive = true;
+
+                dbProduct.ModifiedAt = DateTime.Now;
+                dbProduct.ModifiedBy = username;
 
                 _context.ProductVariants.Add(variant);
                 dbProduct.ModifiedAt = DateTime.Now;
@@ -129,9 +140,13 @@ namespace shop.Application.Services
         public async Task<ApiResponse<bool>> SoftDeleteVariant(Guid productTypeId, Guid productId)
         {
             var variant = await _context.ProductVariants
-                                         .Where(v => !v.Deleted && v.ProductId == productId)
-                                         .FirstOrDefaultAsync(v => v.ProductTypeId == productTypeId);
-            if (variant == null)
+                                          .Where(v => !v.Deleted && v.ProductTypeId == productTypeId)
+                                          .FirstOrDefaultAsync(v => v.ProductId == productId);
+            var dbProduct = await _context.Products
+                                          .Where(v => !v.Deleted)
+                                          .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (variant == null || dbProduct == null)
             {
                 return new ApiResponse<bool>
                 {
@@ -140,7 +155,12 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             variant.Deleted = true;
+            dbProduct.ModifiedAt = DateTime.Now;
+            dbProduct.ModifiedBy = username;
+
             await _context.SaveChangesAsync();
 
             return new ApiResponse<bool>
@@ -157,6 +177,7 @@ namespace shop.Application.Services
             var dbProduct = await _context.Products
                                           .Where(v => !v.Deleted)
                                           .FirstOrDefaultAsync(p => p.Id == productId);
+
             if (dbVariant == null || dbProduct == null)
             {
                 return new ApiResponse<bool>
@@ -166,8 +187,11 @@ namespace shop.Application.Services
                 };
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateVariant, dbVariant);
-            dbProduct.ModifiedAt = DateTime.UtcNow;
+            dbProduct.ModifiedAt = DateTime.Now;
+            dbProduct.ModifiedBy = username;
 
             await _context.SaveChangesAsync();
 
