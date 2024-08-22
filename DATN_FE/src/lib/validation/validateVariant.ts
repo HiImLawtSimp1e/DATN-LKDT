@@ -5,6 +5,7 @@ export const validateVariant = (
   quantity?: number | null
 ): [string[], boolean] => {
   const errors: string[] = [];
+  const maxIntValue = 2147483647;
 
   // Validate product type ID
   if (!productTypeId) {
@@ -16,6 +17,8 @@ export const validateVariant = (
     errors.push("Giá bán là bắt buộc.");
   } else if (price < 1000) {
     errors.push("Giá bán phải là số nguyên và lớn hơn hoặc bằng 1000.");
+  } else if (price > maxIntValue) {
+    errors.push(`Giá bán không được lớn hơn ${maxIntValue}.`);
   }
 
   // Validate original price
@@ -33,6 +36,8 @@ export const validateVariant = (
   ) {
     if (originalPrice < 1000) {
       errors.push("Giá gốc phải lớn hơn hoặc bằng 1000");
+    } else if (originalPrice > maxIntValue) {
+      errors.push(`Giá gốc không được lớn hơn ${maxIntValue}.`);
     }
   }
 

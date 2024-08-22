@@ -18,11 +18,13 @@ namespace shop.Application.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public DiscountService(AppDbContext context, IMapper mapper)
+        public DiscountService(AppDbContext context, IMapper mapper, IAuthService authService)
         {
             _context = context;
             _mapper = mapper;
+            _authService = authService;
         }
         public async Task<ApiResponse<Pagination<List<DiscountEntity>>>> GetVouchers(int page, double pageResults)
         {
@@ -80,10 +82,13 @@ namespace shop.Application.Services
             //Giá trị giảm giá tối đa chỉ dành cho voucher giảm giá theo phần trăm
             if (!newVoucher.IsDiscountPercent && newVoucher.DiscountValue != 0)
             {
-                newVoucher.DiscountValue = 0;
+                newVoucher.MaxDiscountValue = 0;
             }
 
+            var username = _authService.GetUserName();
+
             var voucher = _mapper.Map<DiscountEntity>(newVoucher);
+            voucher.CreatedBy = username;
 
             _context.Discounts.Add(voucher);
             await _context.SaveChangesAsync();
@@ -103,10 +108,9 @@ namespace shop.Application.Services
                 return new ApiResponse<bool>
                 {
                     Success = false,
-                    Message = "Không tìm thấy mã giảm giá"
+                    Message = "Không tìm thấy voucher giảm giá"
                 };
             }
-
 
             //Giá trị giảm giá tối đa chỉ dành cho voucher giảm giá theo phần trăm
             if (!updateVoucher.IsDiscountPercent && updateVoucher.MaxDiscountValue != 0)
@@ -114,7 +118,11 @@ namespace shop.Application.Services
                 updateVoucher.MaxDiscountValue = 0;
             }
 
+            var username = _authService.GetUserName();
+
             _mapper.Map(updateVoucher, dbVoucher);
+            dbVoucher.ModifiedAt = DateTime.Now;
+            dbVoucher.ModifiedBy = username;
 
             await _context.SaveChangesAsync();
             return new ApiResponse<bool>

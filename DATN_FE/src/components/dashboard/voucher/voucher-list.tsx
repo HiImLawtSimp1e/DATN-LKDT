@@ -71,13 +71,14 @@ const VoucherList = ({ vouchers, pages, currentPage }: IProps) => {
           <tr>
             <th className="px-4 py-2">#</th>
             <th className="px-4 py-2">Mã giảm giá</th>
-            <th className="px-4 py-2">Tên voucher</th>
+
             <th className="px-4 py-2">Loại giảm giá</th>
-            <th className="px-4 py-2">Giá trị giảm giá</th>
-            <th className="px-4 py-2">Ngày bắt đầu</th>
-            <th className="px-4 py-2">Ngày kết thúc</th>
+            <th className="px-4 py-2">Giảm giá</th>
+            <th className="px-4 py-2">Trạng thái</th>
             <th className="px-4 py-2">Ngày tạo</th>
             <th className="px-4 py-2">Ngày sửa</th>
+            <th className="px-4 py-2">Người tạo</th>
+            <th className="px-4 py-2">Người sửa</th>
             <th className="px-4 py-2"></th>
           </tr>
         </thead>
@@ -86,7 +87,6 @@ const VoucherList = ({ vouchers, pages, currentPage }: IProps) => {
             <tr key={voucher.id} className="border-b border-gray-700">
               <td className="px-4 py-2">{startIndex + index + 1}</td>
               <td className="px-4 py-2">{voucher.code}</td>
-              <td className="px-4 py-2">{voucher.voucherName}</td>
               <td className="px-4 py-2">
                 <TagFiled
                   cssClass={
@@ -100,10 +100,16 @@ const VoucherList = ({ vouchers, pages, currentPage }: IProps) => {
                   ? `${voucher.discountValue}%`
                   : formatPrice(voucher.discountValue)}
               </td>
-              <td className="px-4 py-2">{formatDate(voucher.startDate)}</td>
-              <td className="px-4 py-2">{formatDate(voucher.endDate)}</td>
+              <td className="px-4 py-2">
+                <TagFiled
+                  cssClass={voucher.isActive ? "bg-lime-900" : "bg-red-700"}
+                  context={voucher.isActive ? "Hoạt Động" : "Ngưng Hoạt Động"}
+                />
+              </td>
               <td className="px-4 py-2">{formatDate(voucher.createdAt)}</td>
               <td className="px-4 py-2">{formatDate(voucher.modifiedAt)}</td>
+              <td className="px-4 py-2">{voucher.createdBy}</td>
+              <td className="px-4 py-2">{voucher.modifiedBy}</td>
               <td className="px-4 py-2">
                 <div className="flex gap-2">
                   <Link href={`/dashboard/vouchers/${voucher.id}`}>

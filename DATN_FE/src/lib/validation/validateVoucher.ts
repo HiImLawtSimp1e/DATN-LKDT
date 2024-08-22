@@ -10,6 +10,7 @@ export const validateVoucher = (
   isDiscountPercent: boolean
 ): [string[], boolean] => {
   const errors: string[] = [];
+  const maxIntValue = 2147483647;
 
   if (!code || code.trim().length === 0) {
     errors.push("Không được bỏ trống mã giảm giá");
@@ -33,7 +34,11 @@ export const validateVoucher = (
     }
   } else {
     if (discountValue !== null && discountValue < 10000) {
-      errors.push("Giả trị giảm giá phải ít nhất là 10000đ");
+      errors.push("Giả trị giảm giá(cố định) phải ít nhất là 10000đ");
+    } else if (discountValue !== null && discountValue > maxIntValue) {
+      errors.push(
+        `Giả trị giảm giá(cố định) không được vượt quá ${maxIntValue}.`
+      );
     }
   }
 
@@ -41,10 +46,16 @@ export const validateVoucher = (
     errors.push(
       "Tổng giá trị đơn hàng tối thiểu để sử dụng voucher không được âm"
     );
+  } else if (minOrderCondition !== null && minOrderCondition > maxIntValue) {
+    errors.push(
+      `Tổng giá trị đơn hàng tối thiểu để sử dụng voucher không được vượt quá ${maxIntValue}.`
+    );
   }
 
   if (maxDiscountValue !== null && maxDiscountValue < 0) {
     errors.push("Giá trị giảm giá tối đa không được âm");
+  } else if (maxDiscountValue !== null && maxDiscountValue > maxIntValue) {
+    errors.push(`Giá trị giảm giá tối đa không được vượt quá ${maxIntValue}.`);
   }
 
   if (quantity !== null && quantity < 0) {

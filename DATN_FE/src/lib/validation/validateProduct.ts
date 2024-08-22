@@ -8,6 +8,7 @@ export const validateAddProduct = (
   originalPrice: number | null
 ): [string[], boolean] => {
   const errors: string[] = [];
+  const maxIntValue = 2147483647;
 
   if (!title || title.trim().length === 0) {
     errors.push("Tiêu đề sản phẩm là bắt buộc.");
@@ -38,6 +39,8 @@ export const validateAddProduct = (
     errors.push("Giá bán là bắt buộc.");
   } else if (price < 1000) {
     errors.push("Giá bán phải là số nguyên và lớn hơn hoặc bằng 1000.");
+  } else if (price > maxIntValue) {
+    errors.push(`Giá bán không được vượt quá ${maxIntValue}.`);
   }
 
   // Validate original price
@@ -55,6 +58,8 @@ export const validateAddProduct = (
   ) {
     if (originalPrice < 1000) {
       errors.push("Giá gốc phải lớn hơn hoặc bằng 1000");
+    } else if (originalPrice > maxIntValue) {
+      errors.push(`Giá gốc không được vượt quá ${maxIntValue}.`);
     }
   }
 
