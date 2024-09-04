@@ -19,8 +19,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
-builder.Services.AddScoped<IApplicationRoleService, ApplicationRoleService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductTypeService, ProductTypeService>();
@@ -36,8 +34,6 @@ builder.Services.AddScoped<IOrderCounterService, OrderCounterService>();
 
 // Register the repository
 builder.Services.AddScoped<IRepository<BlogEntity>, Repository<BlogEntity>>();
-builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
-builder.Services.AddScoped<IRepository<ApplicationRole>, Repository<ApplicationRole>>();
 
 //Enable CORS
 builder.Services.AddCors(options =>
