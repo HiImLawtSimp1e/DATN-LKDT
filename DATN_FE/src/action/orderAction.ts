@@ -150,7 +150,7 @@ export const updateOrderState = async (
     );
 
     const responseData: ApiResponse<string> = await res.json();
-    console.log(responseData);
+    //console.log(responseData);
     const { success, message } = responseData;
 
     if (success) {
