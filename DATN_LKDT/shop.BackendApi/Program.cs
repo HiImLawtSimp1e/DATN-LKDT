@@ -30,7 +30,9 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDiscountService,  DiscountService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
-builder.Services.AddScoped<IOrderCounterService, OrderCounterService>();   
+builder.Services.AddScoped<IOrderCounterService, OrderCounterService>();
+builder.Services.AddScoped<IVnpayService, VnpayService>();
+builder.Services.AddScoped<IVnpayTransactionService, VnpayTransactionService>();
 
 // Register the repository
 builder.Services.AddScoped<IRepository<BlogEntity>, Repository<BlogEntity>>();
