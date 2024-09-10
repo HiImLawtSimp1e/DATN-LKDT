@@ -136,7 +136,8 @@ namespace shop.Application.Services
                 Name = newAccount.Name,
                 Email = newAccount.Email,
                 PhoneNumber = newAccount.PhoneNumber,
-                Address = newAccount.Address
+                Address = newAccount.Address,
+                IsMain = true
             };
 
             var account = new AccountEntity

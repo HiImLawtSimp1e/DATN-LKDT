@@ -194,7 +194,8 @@ namespace shop.Application.Services
                     Name = registerDTO.Name,
                     Email = registerDTO.Email,
                     PhoneNumber = registerDTO.PhoneNumber,
-                    Address = registerDTO.Address
+                    Address = registerDTO.Address,
+                    IsMain = true
                 };
 
                 var account = new AccountEntity
