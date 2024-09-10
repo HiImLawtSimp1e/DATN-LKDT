@@ -71,7 +71,7 @@ const UserProfile = ({ addresses, pages, currentPage, pageSize }: IProps) => {
                 cssClass={`text-white ${
                   address.isMain ? "bg-blue-600" : "bg-pink-700"
                 }`}
-                context={address.isMain ? "Active" : "Passive"}
+                context={address.isMain ? "Hoạt động" : "Không hoạt động"}
               />
               <Link
                 href={`/profile/${address.id}`}

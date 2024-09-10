@@ -2,11 +2,9 @@
 
 import { deleteUser } from "@/action/userAction";
 import Pagination from "@/components/ui/pagination";
-import Search from "@/components/ui/search";
 import TagFiled from "@/components/ui/tag";
 import { useCustomActionState } from "@/lib/custom/customHook";
 import { formatDate } from "@/lib/format/format";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -58,12 +56,11 @@ const UserList = ({ users, pages, currentPage }: IProps) => {
 
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
-      <div className="flex items-center justify-between mb-5">
-        <Search placeholder="Tìm kiếm người dùng..." />
+      <div className="flex items-center justify-end mb-5">
         <Link href="/dashboard/users/add">
           <button className="p-2 flex items-center justify-center mb-5 bg-purple-600 text-white rounded">
             <MdAdd />
-            Thêm Người Dùng Mới
+            Tạo Tài Khoản Mới
           </button>
         </Link>
       </div>
@@ -120,7 +117,7 @@ const UserList = ({ users, pages, currentPage }: IProps) => {
                 <div className="flex gap-2">
                   <Link href={`/dashboard/users/${user.id}`}>
                     <button className="m-1 px-5 py-2 bg-teal-500 text-white rounded">
-                      Xem
+                      Chi Tiết
                     </button>
                   </Link>
                   <form onSubmit={handleSubmit}>

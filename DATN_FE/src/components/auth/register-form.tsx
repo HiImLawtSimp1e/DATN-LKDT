@@ -29,11 +29,12 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
-      toast.error("Register failed");
+      toast.error("Đăng ký tài khoản thất bại!");
       setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
     }
     if (formState.success) {
       setAuthPublic(formState.data?.toString() || "");
+      toast.error("Đăng ký tài khoản thành công!");
       router.push("/");
     }
   }, [formState, toastDisplayed]);
