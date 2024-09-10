@@ -13,5 +13,6 @@ namespace shop.Application.Interfaces
     {
         public Task<string> CreatePaymentUrl(HttpContext context, Guid? voucherId, string transactionId);
         public Task<ApiResponse<VnPaymentResponseModel>> PaymentExecute(IQueryCollection collections);
+        public Task<ApiResponse<bool>> CreateVnpayOrder(Guid userId, Guid? voucherId);
     }
 }

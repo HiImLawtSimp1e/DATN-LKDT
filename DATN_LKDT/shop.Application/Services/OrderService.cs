@@ -1,6 +1,7 @@
 ﻿using AppBusiness.Model.Pagination;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.ResponseDTOs;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 
 namespace shop.Application.Services
 {
@@ -258,9 +260,25 @@ namespace shop.Application.Services
                 };
             }
 
-            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == accountId);
+            var createOrder = await CreateOrder(voucherId, customer, "Thanh toán khi nhận hàng (COD)");
 
-            var cartItem = (await _cartService.GetCartItems()).Data;
+            if (!createOrder.Success)
+            {
+                return createOrder;
+            }
+
+            return new ApiResponse<bool>
+            {
+                Data = true,
+                Message = "Đặt hàng thành công"
+            };
+        }
+
+        public async Task<ApiResponse<bool>> CreateOrder(Guid? voucherId, AccountEntity customer, string pmOrder)
+        {
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == customer.Id);
+
+            var cartItem = (await _cartService.GetCartItemsByAccountId(customer.Id)).Data;
 
             if (cart == null || cartItem == null || cartItem.Count() == 0)
             {
@@ -272,7 +290,7 @@ namespace shop.Application.Services
             }
 
             var address = await _context.Address
-                                      .Where(a => a.IsMain)      
+                                      .Where(a => a.IsMain)
                                       .FirstOrDefaultAsync(a => a.AccountId == customer.Id);
 
             if (address == null)
@@ -281,6 +299,16 @@ namespace shop.Application.Services
                 {
                     Success = false,
                     Message = "Không tìm thấy địa chỉ khách hàng"
+                };
+            }
+
+            var paymentMethod = await _context.PaymentMethods.FirstOrDefaultAsync(pm => pm.Name == pmOrder);
+            if (paymentMethod == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy phương thức thanh toán"
                 };
             }
 
@@ -321,7 +349,8 @@ namespace shop.Application.Services
                 Email = address.Email,
                 Address = address.Address,
                 Phone = address.PhoneNumber,
-                CreatedBy = "Khách hàng"
+                CreatedBy = "Khách hàng",
+                PaymentMethod = paymentMethod,
             };
 
             if (voucherId != null)
@@ -346,13 +375,13 @@ namespace shop.Application.Services
             }
 
             _context.Orders.Add(order);
-            _context.CartItems.RemoveRange(_context.CartItems.Where(ci => ci.CartId == cart.Id)); 
+            _context.CartItems.RemoveRange(_context.CartItems.Where(ci => ci.CartId == cart.Id));
 
             await _context.SaveChangesAsync();
+
             return new ApiResponse<bool>
             {
-                Data = true,
-                Message = "Đặt hàng thành công"
+                Data = true
             };
         }
 

@@ -12,6 +12,7 @@ namespace shop.Application.Interfaces
     public interface ICartService
     {
         Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItems();
+        Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItemsByAccountId(Guid? accountId);
         Task<ApiResponse<bool>> StoreCartItems(List<StoreCartItemDto> items);
         Task<ApiResponse<bool>> AddToCart(StoreCartItemDto newItem);
         Task<ApiResponse<bool>> UpdateQuantity(StoreCartItemDto updateItem);

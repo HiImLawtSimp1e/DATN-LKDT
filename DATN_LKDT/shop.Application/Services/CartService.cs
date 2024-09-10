@@ -322,5 +322,79 @@ namespace shop.Application.Services
 
             return dbCart;
         }
+
+        public async Task<ApiResponse<List<CustomerCartItemDto>>> GetCartItemsByAccountId(Guid? accountId)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Id == accountId);
+
+            if (account == null)
+            {
+                return new ApiResponse<List<CustomerCartItemDto>>
+                {
+                    Success = false,
+                    Message = "Bạn chưa đăng nhập"
+                };
+            }
+
+            var result = new ApiResponse<List<CustomerCartItemDto>>
+            {
+                Data = new List<CustomerCartItemDto>()
+            };
+
+            var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.AccountId == accountId);
+
+            if (dbCart == null)
+            {
+                return result;
+            }
+
+            var items = await _context.CartItems
+                                    .Where(ci => ci.CartId == dbCart.Id)
+                                    .ToListAsync();
+
+            if (items == null)
+            {
+                return result;
+            }
+
+            foreach (var item in items)
+            {
+                var product = await _context.Products
+                    .Where(p => p.Id == item.ProductId)
+                    .FirstOrDefaultAsync();
+
+                if (product == null)
+                {
+                    continue;
+                }
+
+                var productVariant = await _context.ProductVariants
+                    .Where(v => v.ProductId == item.ProductId
+                        && v.ProductTypeId == item.ProductTypeId)
+                    .Include(v => v.ProductType)
+                    .FirstOrDefaultAsync();
+
+                if (productVariant == null)
+                {
+                    continue;
+                }
+
+                var cartProduct = new CustomerCartItemDto
+                {
+                    ProductId = product.Id,
+                    ProductTitle = product.Title,
+                    ImageUrl = product.ImageUrl,
+                    Price = productVariant.Price,
+                    OriginalPrice = productVariant.OriginalPrice,
+                    ProductTypeId = productVariant.ProductTypeId,
+                    ProductTypeName = productVariant.ProductType.Name,
+                    Quantity = item.Quantity
+                };
+
+                result.Data.Add(cartProduct);
+            }
+
+            return result;
+        }
     }
 }

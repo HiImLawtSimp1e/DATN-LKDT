@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using shop.Domain.Entities;
 
 namespace shop.Application.Services
 {
@@ -20,12 +21,14 @@ namespace shop.Application.Services
         private readonly AppDbContext _context;
         private readonly IConfiguration _config;
         private readonly ICartService _cartService;
+        private readonly IOrderService _orderService;
 
-        public VnpayService(AppDbContext context, IConfiguration config, ICartService cartService)
+        public VnpayService(AppDbContext context, IConfiguration config, ICartService cartService, IOrderService orderService)
         {
             _context = context;
             _config = config;
             _cartService = cartService;
+            _orderService = orderService;
         }
         public async Task<string> CreatePaymentUrl(HttpContext context, Guid? voucherId, string transactionId)
         {
@@ -109,6 +112,33 @@ namespace shop.Application.Services
             };
         }
 
+        public async Task<ApiResponse<bool>> CreateVnpayOrder(Guid userId, Guid? voucherId)
+        {
+            var customer = await GetCustomerById(userId);
+
+            if (customer == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Missing customer information transaction"
+                };
+            }
+
+            var createOrder = await _orderService.CreateOrder(voucherId, customer, "Ví điện tử (VNPay)");
+
+            if (!createOrder.Success)
+            {
+                return createOrder;
+            }
+
+            return new ApiResponse<bool>
+            {
+                Data = true,
+                Message = "Thanh toán bằng ví điện tử VNPAY thành công!"
+            };
+        }
+
         private async Task<int> CaculateCartTotalAmount(Guid? voucherId)
         {
             int shippingCost = 30000; //hard code shipping cost
@@ -158,6 +188,14 @@ namespace shop.Application.Services
                 result = (int)voucher.DiscountValue;
             }
             return result;
+        }
+
+        private async Task<AccountEntity> GetCustomerById(Guid userId)
+        {
+            var customer = await _context.Accounts
+                                        .Include(c => c.Cart)
+                                        .FirstOrDefaultAsync(c => c.Id == userId);
+            return customer;
         }
 
         private string GetIpAddress(HttpContext context)
