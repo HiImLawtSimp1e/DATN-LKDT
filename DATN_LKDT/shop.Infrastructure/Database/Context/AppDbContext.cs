@@ -32,6 +32,8 @@ public class AppDbContext : DbContext
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<VnpayTransactions> VnpayTransactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -51,6 +53,7 @@ public class AppDbContext : DbContext
         });
 
         Seeding.SeedingAccount(builder);
+        Seeding.SeedingBase(builder);
         Seeding.SeedingData(builder);
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

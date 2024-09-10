@@ -22,6 +22,8 @@ namespace shop.Domain.Entities
         public int DiscountValue { get; set; } = 0;
         public Guid? DiscountId { get; set; }
         public Guid? AccountId { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; }
+        public Guid PaymentMethodId { get; set; }
         public List<OrderItem>? OrderItems { get; set; }
     }
 }

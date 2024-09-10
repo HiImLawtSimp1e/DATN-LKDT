@@ -39,7 +39,7 @@ namespace shop.Infrastructure.Initialization
                      }
              );
 
-            modelBuilder.Entity<AccountEntity>().HasData(  
+            modelBuilder.Entity<AccountEntity>().HasData(
                    new AccountEntity
                    {
                        Id = new Guid("3aec8f0b-3a6a-4b5d-8a3a-348ae529001a"),
@@ -55,7 +55,7 @@ namespace shop.Infrastructure.Initialization
                        PasswordHash = passwordHash2,
                        PasswordSalt = passwordSalt2,
                        RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639"),
-                   }, 
+                   },
                    new AccountEntity
                    {
                        Id = new Guid("db757696-89d6-4f61-84bb-61bc9b87ea05"),
@@ -94,7 +94,7 @@ namespace shop.Infrastructure.Initialization
                        PhoneNumber = "0366702305",
                        Address = "25 Phình Hồ, Văn Chấn, Yên Bái",
                        IsMain = false
-                   }, 
+                   },
                    new AddressEntity
                    {
                        Id = Guid.NewGuid(),
@@ -104,7 +104,7 @@ namespace shop.Infrastructure.Initialization
                        PhoneNumber = "0344917302",
                        Address = "22 Ngã Ba Kim, Mù Cang Chải, Yên Bái",
                        IsMain = true
-                   }, 
+                   },
                    new AddressEntity
                    {
                        Id = Guid.NewGuid(),
@@ -114,7 +114,7 @@ namespace shop.Infrastructure.Initialization
                        PhoneNumber = "0912345678",
                        Address = "15 Lê Văn Lương, Thanh Xuân, Hà Nội",
                        IsMain = true
-                   }, 
+                   },
                    new AddressEntity
                    {
                        Id = Guid.NewGuid(),
@@ -124,7 +124,7 @@ namespace shop.Infrastructure.Initialization
                        PhoneNumber = "0923456789",
                        Address = "20 Nguyễn Trãi, Thanh Xuân, Hà Nội",
                        IsMain = false
-                   }, 
+                   },
                    new AddressEntity
                    {
                        Id = Guid.NewGuid(),
@@ -146,6 +146,32 @@ namespace shop.Infrastructure.Initialization
                        IsMain = true
                    }
                  );
+        }
+
+        public static void SeedingBase(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PaymentMethod>().HasData(
+               new PaymentMethod
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Thanh toán khi nhận hàng (COD)"
+               },
+               new PaymentMethod
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Thanh toán tiền mặt tại quầy"
+               },
+               new PaymentMethod
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Chuyển khoản"
+               },
+               new PaymentMethod
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Ví điện tử (VNPay)"
+               }
+               );
         }
 
         public static void SeedingData(ModelBuilder modelBuilder)

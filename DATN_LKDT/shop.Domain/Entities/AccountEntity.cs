@@ -11,8 +11,6 @@ namespace shop.Domain.Entities
         public string Username { get; set; } = string.Empty;
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
-        public int? Points { get; set; }
         public bool IsActive { get; set; } = true;
         public bool Deleted { get; set; } = false;
         public Guid RoleId { get; set; }
