@@ -167,11 +167,54 @@ namespace shop.Application.Services
             };
         }
 
+        public async Task<ApiResponse<Pagination<List<DiscountEntity>>>> SearchVouchers(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindAdminVouchersBySearchText(searchText)).Count / pageResults);
+
+            var vouchers = await _context.Discounts
+                                .Where(v => v.Code.ToLower().Contains(searchText.ToLower())
+                                 || v.VoucherName.ToLower().Contains(searchText.ToLower()))
+                                .OrderByDescending(p => p.ModifiedAt)
+                                .Skip((page - 1) * (int)pageResults)
+                                .Take((int)pageResults)
+                                .ToListAsync();
+
+            if (vouchers == null)
+            {
+                return new ApiResponse<Pagination<List<DiscountEntity>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy voucher"
+                };
+            }
+
+            var pagingData = new Pagination<List<DiscountEntity>>
+            {
+                Result = vouchers,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<DiscountEntity>>>
+            {
+                Data = pagingData,
+            };
+        }
+
         private bool CheckDiscountCodeExisting(string discountCode)
         {
             var existingDiscountCode = _context.Discounts
                                              .FirstOrDefault(v => v.Code.ToLower() == discountCode.ToLower());
             return existingDiscountCode != null;
+        }
+
+        private async Task<List<DiscountEntity>> FindAdminVouchersBySearchText(string searchText)
+        {
+            return await _context.Discounts
+                                .Where(v => v.Code.ToLower().Contains(searchText.ToLower())
+                                    || v.VoucherName.ToLower().Contains(searchText.ToLower()))
+                                .ToListAsync();
         }
     }
 }

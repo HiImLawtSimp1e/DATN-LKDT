@@ -1,17 +1,27 @@
 import VoucherList from "@/components/dashboard/voucher/voucher-list";
 import { cookies as nextCookies } from "next/headers";
 
-const Vouchers = async ({ params }: { params: { page?: number } }) => {
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const Vouchers = async ({ page, searchText }: IProps) => {
   const cookieStore = nextCookies();
   const token = cookieStore.get("authToken")?.value || "";
 
-  const { page } = params;
   let url = "";
-  if (page == null || page <= 0) {
+
+  if (searchText == null || searchText == undefined) {
     url = "http://localhost:5000/api/Discount/admin";
   } else {
-    url = `http://localhost:5000/api/Discount/admin?page=${page}`;
+    url = `http://localhost:5000/api/Discount/admin/search/${searchText}`;
   }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
+  }
+
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -35,13 +45,15 @@ const Vouchers = async ({ params }: { params: { page?: number } }) => {
 const VouchersPage = ({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; searchText?: string };
 }) => {
   // Destructure page from searchParams
-  const { page } = searchParams;
+  const { page, searchText } = searchParams;
 
-  // Render Products component with params prop
-  return <Vouchers params={{ page: page || undefined }} />;
+  // Render Vouchers component with params prop
+  return (
+    <Vouchers page={page || undefined} searchText={searchText || undefined} />
+  );
 };
 
 export default VouchersPage;

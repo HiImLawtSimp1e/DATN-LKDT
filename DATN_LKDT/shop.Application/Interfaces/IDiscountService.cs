@@ -17,5 +17,6 @@ namespace shop.Application.Interfaces
         public Task<ApiResponse<bool>> CreateVoucher(AddDiscountDto newVoucher);
         public Task<ApiResponse<bool>> UpdateVoucher(Guid voucherId, UpdateDiscountDto updateVoucher);
         public Task<ApiResponse<bool>> DeleteVoucher(Guid voucherId);
+        public Task<ApiResponse<Pagination<List<DiscountEntity>>>> SearchVouchers(string searchText ,int page, double pageResults);
     }
 }
