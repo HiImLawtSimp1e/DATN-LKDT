@@ -200,5 +200,46 @@ namespace shop.Application.Services
                 Data = types
             };
         }
+
+        public async Task<ApiResponse<Pagination<List<ProductType>>>> SearchAdminProductTypes(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindProductTypesBySearchText(searchText)).Count / pageResults);
+
+            var types = await _context.ProductTypes
+                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) && !p.Deleted)
+                .OrderByDescending(p => p.ModifiedAt)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            if (types == null)
+            {
+                return new ApiResponse<Pagination<List<ProductType>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy loại sản phẩm"
+                };
+            }
+
+            var pagingData = new Pagination<List<ProductType>>
+            {
+                Result = types,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<ProductType>>>
+            {
+                Data = pagingData,
+            };
+        }
+
+        private async Task<List<ProductType>> FindProductTypesBySearchText(string searchText)
+        {
+            return await _context.ProductTypes
+                                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) && !p.Deleted)
+                                .ToListAsync();
+        }
     }
 }

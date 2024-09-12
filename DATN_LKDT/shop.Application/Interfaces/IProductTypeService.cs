@@ -19,5 +19,6 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<bool>> DeleteProductType(Guid productTypeId);
         Task<ApiResponse<List<ProductType>>> GetProductTypesSelect();
         Task<ApiResponse<List<ProductType>>> GetProductTypesSelectByProduct(Guid productId);
+        Task<ApiResponse<Pagination<List<ProductType>>>> SearchAdminProductTypes(string searchText, int page, double pageResults);
     }
 }

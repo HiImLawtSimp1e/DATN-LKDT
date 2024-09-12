@@ -11,6 +11,7 @@ namespace shop.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Employee")]
     public class ProductTypeController : ControllerBase
     {
         private readonly IProductTypeService _service;
@@ -43,7 +44,7 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "Admin,Employee")]
+
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> AddProductType(AddUpdateProductTypeDto productType)
         {
@@ -54,7 +55,6 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProductType(Guid id, AddUpdateProductTypeDto productType)
         {
@@ -65,7 +65,6 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductType(Guid id)
         {
@@ -90,6 +89,24 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<ProductType>>>> GetSelectProductTypes(Guid productId)
         {
             var response = await _service.GetProductTypesSelect();
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+        [HttpGet("admin/search/{searchText}")]
+        public async Task<ActionResult<ApiResponse<Pagination<List<ProductType>>>>> SearchAdminProductTypes(string searchText, [FromQuery] int page, [FromQuery] double pageResults)
+        {
+            if (page == null || page <= 0)
+            {
+                page = 1;
+            }
+            if (pageResults == null || pageResults <= 0)
+            {
+                pageResults = 10f;
+            }
+            var response = await _service.SearchAdminProductTypes(searchText, page, pageResults);
             if (!response.Success)
             {
                 return BadRequest(response);

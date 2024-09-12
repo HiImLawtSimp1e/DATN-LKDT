@@ -1,15 +1,33 @@
 import ProductTypeList from "@/components/dashboard/productType/product-type-list";
+import { cookies as nextCookies } from "next/headers";
 
-const ProductTypes = async ({ params }: { params: { page?: number } }) => {
-  const { page } = params;
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const ProductTypes = async ({ page, searchText }: IProps) => {
+  // Lấy access token từ cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   let url = "";
-  if (page == null || page <= 0) {
+
+  if (searchText == null || searchText == undefined) {
     url = "http://localhost:5000/api/ProductType";
   } else {
-    url = `http://localhost:5000/api/ProductType?page=${page}`;
+    url = `http://localhost:5000/api/ProductType/admin/search/${searchText}`;
   }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
+  }
+
   const res = await fetch(url, {
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`, // header Authorization
+    },
     next: { tags: ["productTypeList"] },
   });
 
@@ -31,10 +49,18 @@ const ProductTypes = async ({ params }: { params: { page?: number } }) => {
 const ProductTypesPage = ({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; searchText?: string };
 }) => {
-  const { page } = searchParams;
-  return <ProductTypes params={{ page: page || undefined }} />;
+  // Destructure page và searchText từ searchParams
+  const { page, searchText } = searchParams;
+
+  // Render component Product Types với các prop
+  return (
+    <ProductTypes
+      page={page || undefined}
+      searchText={searchText || undefined}
+    />
+  );
 };
 
 export default ProductTypesPage;
