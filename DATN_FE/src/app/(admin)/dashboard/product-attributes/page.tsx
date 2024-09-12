@@ -1,22 +1,39 @@
 import ProductAttributeList from "@/components/dashboard/product-attribute/product-attribute-list";
+import { cookies as nextCookies } from "next/headers";
 
-const ProductAttributes = async ({ params }: { params: { page?: number } }) => {
-  const { page } = params;
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const ProductAttributes = async ({ page, searchText }: IProps) => {
+  // Lấy access token từ cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   let url = "";
-  if (page == null || page <= 0) {
+
+  if (searchText == null || searchText == undefined) {
     url = "http://localhost:5000/api/ProductAttribute";
   } else {
-    url = `http://localhost:5000/api/ProductAttribute?page=${page}`;
+    url = `http://localhost:5000/api/ProductAttribute/admin/search/${searchText}`;
   }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
+  }
+
   const res = await fetch(url, {
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`, // header Authorization
+    },
     next: { tags: ["productAttributeList"] },
   });
 
   const responseData: ApiResponse<PagingParams<IProductAttribute[]>> =
     await res.json();
   const { data, success, message } = responseData;
-  // console.log(responseData);
   const { result, pages, currentPage } = data;
 
   return (
@@ -31,10 +48,18 @@ const ProductAttributes = async ({ params }: { params: { page?: number } }) => {
 const ProductAttributesPage = ({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; searchText?: string };
 }) => {
-  const { page } = searchParams;
-  return <ProductAttributes params={{ page: page || undefined }} />;
+  // Destructure page và searchText từ searchParams
+  const { page, searchText } = searchParams;
+
+  // Render component Product Attributes với các prop
+  return (
+    <ProductAttributes
+      page={page || undefined}
+      searchText={searchText || undefined}
+    />
+  );
 };
 
 export default ProductAttributesPage;

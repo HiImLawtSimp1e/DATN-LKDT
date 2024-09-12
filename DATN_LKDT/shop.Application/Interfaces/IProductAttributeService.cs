@@ -18,5 +18,6 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<bool>> UpdateProductAttribute(Guid productAttributeId, AddUpdateProductAttributeDto updateProductAttribute);
         Task<ApiResponse<bool>> DeleteProductAttribute(Guid productAttributeId);
         Task<ApiResponse<List<ProductAttribute>>> GetProductAttributeSelect(Guid productId);
+        Task<ApiResponse<Pagination<List<ProductAttribute>>>> SearchAdminProductAttributes(string searchText, int page, double pageResults);
     }
 }

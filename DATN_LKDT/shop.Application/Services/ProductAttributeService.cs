@@ -178,5 +178,46 @@ namespace shop.Application.Services
                 Data = missingAttribute
             };
         }
+
+        public async Task<ApiResponse<Pagination<List<ProductAttribute>>>> SearchAdminProductAttributes(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResults);
+
+            var attributes = await _context.ProductAttributes
+                                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) && !p.Deleted)
+                                .OrderByDescending(p => p.ModifiedAt)
+                                .Skip((page - 1) * (int)pageResults)
+                                .Take((int)pageResults)
+                                .ToListAsync();
+
+            if (attributes == null)
+            {
+                return new ApiResponse<Pagination<List<ProductAttribute>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy thuộc tính sản phẩm"
+                };
+            }
+
+            var pagingData = new Pagination<List<ProductAttribute>>
+            {
+                Result = attributes,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<ProductAttribute>>>
+            {
+                Data = pagingData,
+            };
+        }
+
+        private async Task<List<ProductAttribute>> FindProductsBySearchText(string searchText)
+        {
+            return await _context.ProductAttributes
+                                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) && !p.Deleted)
+                                .ToListAsync();
+        }
     }
 }

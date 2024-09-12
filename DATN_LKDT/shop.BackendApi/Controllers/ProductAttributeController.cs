@@ -11,6 +11,7 @@ namespace shop.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Employee")]
     public class ProductAttributeController : ControllerBase
     {
         private readonly IProductAttributeService _service;
@@ -43,7 +44,6 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("admin")]
         public async Task<ActionResult<ApiResponse<bool>>> AddProductAttribute(AddUpdateProductAttributeDto productAttribute)
         {
@@ -54,7 +54,6 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> UpdateProductAttribute(Guid id, AddUpdateProductAttributeDto productAttribute)
         {
@@ -65,7 +64,6 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
-        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("admin/{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductAttribute(Guid id)
         {
@@ -80,6 +78,24 @@ namespace shop.BackendApi.Controllers
         public async Task<ActionResult<ApiResponse<List<ProductAttribute>>>> GetSelectProductAttributes(Guid productId)
         {
             var response = await _service.GetProductAttributeSelect(productId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+        [HttpGet("admin/search/{searchText}")]
+        public async Task<ActionResult<ApiResponse<Pagination<List<ProductAttribute>>>>> SearchAdminProductAttributes(string searchText, [FromQuery] int page, [FromQuery] double pageResults)
+        {
+            if (page == null || page <= 0)
+            {
+                page = 1;
+            }
+            if (pageResults == null || pageResults <= 0)
+            {
+                pageResults = 10f;
+            }
+            var response = await _service.SearchAdminProductAttributes(searchText, page, pageResults);
             if (!response.Success)
             {
                 return BadRequest(response);
