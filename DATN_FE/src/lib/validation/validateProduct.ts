@@ -11,32 +11,36 @@ export const validateAddProduct = (
   const maxIntValue = 2147483647;
 
   if (!title || title.trim().length === 0) {
-    errors.push("Tiêu đề sản phẩm là bắt buộc.");
+    errors.push("Tiêu đề sản phẩm không được để trống");
   } else if (title.trim().length < 2) {
-    errors.push("Tiêu đề sản phẩm phải có ít nhất 2 ký tự.");
+    errors.push("Tiêu đề sản phẩm phải chứa ít nhất 2 ký tự");
+  } else if (title.trim().length > 100) {
+    errors.push("Tiêu đề sản phẩm không được dài hơn 100 ký tự");
   }
 
   if (!description || description.trim().length === 0) {
-    errors.push("Mô tả sản phẩm là bắt buộc.");
+    errors.push("Mô tả cản phẩm không được để trống");
   } else if (description.trim().length < 6) {
-    errors.push("Mô tả sản phẩm phải có ít nhất 6 ký tự.");
+    errors.push("Mô tả sản phẩm phải chứa ít nhất 6 ký tự");
+  } else if (description.trim().length > 250) {
+    errors.push("Mô tả sản phẩm không được dài hơn 250 ký tự");
   }
 
   if (seoTitle && seoTitle.trim().length > 70) {
-    errors.push("Tiêu đề SEO không được dài hơn 70 ký tự.");
+    errors.push("Tiêu đề SEO không được dài hơn 70 ký tự");
   }
 
   if (seoDescription && seoDescription.trim().length > 160) {
-    errors.push("Mô tả SEO không được dài hơn 160 ký tự.");
+    errors.push("Mô tả SEO không được dài hơn 160 ký tự");
   }
 
   if (seoKeyworks && seoKeyworks.trim().length > 100) {
-    errors.push("Từ khóa SEO không được dài hơn 100 ký tự.");
+    errors.push("Từ khóa SEO không được dài hơn 100 ký tự");
   }
 
   // Validate price
   if (price === null || price === undefined) {
-    errors.push("Giá bán là bắt buộc.");
+    errors.push("Giá bán là bắt buộc");
   } else if (price < 1000) {
     errors.push("Giá bán phải là số nguyên và lớn hơn hoặc bằng 1000.");
   } else if (price > maxIntValue) {
@@ -57,7 +61,7 @@ export const validateAddProduct = (
     originalPrice !== 0
   ) {
     if (originalPrice < 1000) {
-      errors.push("Giá gốc phải lớn hơn hoặc bằng 1000");
+      errors.push("Giá gốc (nếu có) phải lớn hơn hoặc bằng 1000");
     } else if (originalPrice > maxIntValue) {
       errors.push(`Giá gốc không được vượt quá ${maxIntValue}.`);
     }
@@ -71,7 +75,7 @@ export const validateAddProduct = (
     price !== undefined
   ) {
     if (originalPrice !== 0 && originalPrice < price) {
-      errors.push("Giá gốc phải lớn hơn hoặc bằng giá bán");
+      errors.push("Giá gốc (nếu có) phải lớn hơn giá bán");
     }
   }
 
