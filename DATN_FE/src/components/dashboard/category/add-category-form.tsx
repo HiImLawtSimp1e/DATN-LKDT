@@ -6,6 +6,7 @@ import { useCustomActionState } from "@/lib/custom/customHook";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import slugify from "slugify";
 
 const AddCategoryForm = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const AddCategoryForm = () => {
 
   const [formData, setFormData] = useState({
     title: "",
+    slug: "",
   });
 
   const [toastDisplayed, setToastDisplayed] = useState(false);
@@ -39,6 +41,12 @@ const AddCategoryForm = () => {
       ...prevFormData,
       [name]: value,
     }));
+    if (name === "title") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        slug: slugify(value, { lower: true }),
+      }));
+    }
   };
 
   useEffect(() => {
@@ -61,6 +69,14 @@ const AddCategoryForm = () => {
         value={formData.title}
         onChange={handleChange}
         required
+      />
+      <InputField
+        label="Slug"
+        id="slug"
+        name="slug"
+        value={formData.slug}
+        onChange={handleChange}
+        readonly
       />
       {formState.errors.length > 0 && (
         <ul>

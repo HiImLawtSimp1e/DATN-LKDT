@@ -37,7 +37,6 @@ const UpdateCategoryForm = ({ category }: IProps) => {
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
 
