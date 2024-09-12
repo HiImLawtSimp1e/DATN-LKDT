@@ -9,9 +9,11 @@ namespace shop.Application.ViewModels.RequestDTOs.ProductValueDto
 {
     public class UpdateProductValueDto
     {
-        [Required(ErrorMessage = "ProductAttributeId of product value is required")]
+        [Required(ErrorMessage = "Missing product attribute id")]
         public Guid ProductAttributeId { get; set; }
-        [Required(ErrorMessage = "Product attribute value is required"), MinLength(2, ErrorMessage = "Product attribute value must have at least 2 characters")]
+        [Required(ErrorMessage = "Giá trị thuộc tính sản phẩm không được bỏ trống")]
+        [MinLength(2, ErrorMessage = "Giá trị thuộc tính sản phẩm phải chứa ít nhất 2 ký tự")]
+        [StringLength(100, ErrorMessage = "Giá trị thuộc tính không được dài quá 100 ký tự")]
         public string Value { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }

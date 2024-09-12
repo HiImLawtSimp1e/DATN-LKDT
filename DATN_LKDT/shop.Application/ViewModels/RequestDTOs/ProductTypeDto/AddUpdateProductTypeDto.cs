@@ -9,7 +9,9 @@ namespace shop.Application.ViewModels.RequestDTOs.ProductTypeDto
 {
     public class AddUpdateProductTypeDto
     {
-        [Required(ErrorMessage = "Tên loại sản phẩm không được thể trống"), MinLength(2, ErrorMessage = "Tên loại sản phẩm phải chứa ít nhất 2 ký tự")]
+        [Required(ErrorMessage = "Tên loại sản phẩm không được thể trống")]
+        [MinLength(2, ErrorMessage = "Tên loại sản phẩm phải chứa ít nhất 2 ký tự")]
+        [StringLength(50, ErrorMessage = "Tên loại sản phẩm không được dài quá 50 ký tự")]
         public string Name { get; set; } = string.Empty;
     }
 }
