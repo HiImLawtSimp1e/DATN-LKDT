@@ -10,9 +10,11 @@ namespace shop.Domain.Entities
     public class VnpayTransactions
     {
         [Required]
-        public string TransactionId { get; set; }
+        [StringLength(30)]
+        public string TransactionId { get; set; } = string.Empty;   
         public Guid UserId { get; set; }
         public Guid? VoucherId { get; set; }
+        [StringLength(30)]
         public string Status { get; set; } = string.Empty;
         public DateTime CreateAt { get; set; } = DateTime.Now;
     }

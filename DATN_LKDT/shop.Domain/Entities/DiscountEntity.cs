@@ -9,7 +9,9 @@ namespace shop.Domain.Entities
     public class DiscountEntity : BaseEntity
     {
         public Guid Id { get; set; }
+        [StringLength(25, MinimumLength = 2)]
         public string Code { get; set; } = string.Empty;
+        [StringLength(50, MinimumLength = 2)]
         public string VoucherName { get; set; } = string.Empty;
         public bool IsDiscountPercent { get; set; } = false;
         [Column(TypeName = "decimal(18,2)")]
