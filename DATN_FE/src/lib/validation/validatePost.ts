@@ -8,28 +8,34 @@ export const validatePost = (
 ): [string[], boolean] => {
   const errors: string[] = [];
 
+  // Kiểm tra tiêu đề
   if (!title || title.trim().length === 0) {
     errors.push("Tiêu đề bài viết là bắt buộc.");
-  } else if (title.trim().length < 2) {
-    errors.push("Tiêu đề bài viết phải có ít nhất 2 ký tự.");
+  } else if (title.trim().length > 250) {
+    errors.push("Tiêu đề không được dài hơn 250 ký tự.");
   }
 
+  // Kiểm tra mô tả
   if (description && description.trim().length > 250) {
-    errors.push("Mô tả bài viết không được dài quá 250 ký tự");
+    errors.push("Mô tả không được dài hơn 250 ký tự.");
   }
 
+  // Kiểm tra nội dung
   if (!content || content.trim().length === 0) {
     errors.push("Nội dung bài viết là bắt buộc.");
   }
 
-  if (seoTitle && seoTitle.trim().length > 70) {
-    errors.push("Tiêu đề SEO không được dài hơn 70 ký tự.");
+  // Kiểm tra tiêu đề SEO
+  if (seoTitle && seoTitle.trim().length > 250) {
+    errors.push("Tiêu đề SEO không được dài hơn 250 ký tự.");
   }
 
+  // Kiểm tra mô tả SEO
   if (seoDescription && seoDescription.trim().length > 160) {
     errors.push("Mô tả SEO không được dài hơn 160 ký tự.");
   }
 
+  // Kiểm tra từ khóa SEO
   if (seoKeyworks && seoKeyworks.trim().length > 100) {
     errors.push("Từ khóa SEO không được dài hơn 100 ký tự.");
   }

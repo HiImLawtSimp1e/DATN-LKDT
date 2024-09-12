@@ -11,7 +11,7 @@ namespace shop.Application.ViewModels.RequestDTOs.BlogDto
     public class AddBlogDto
     {
         [Required(ErrorMessage = "Tiêu đề bài viết là bắt buộc")]
-        [StringLength(100, ErrorMessage = "Tiêu đề không được dài hơn 100 ký tự")]
+        [StringLength(250, ErrorMessage = "Tiêu đề không được dài hơn 250 ký tự")]
         public string Title { get; set; } = string.Empty;
         public string Slug { get; set; } = string.Empty;
 
@@ -22,10 +22,10 @@ namespace shop.Application.ViewModels.RequestDTOs.BlogDto
         [AllowHtml]
         public string Content { get; set; } = string.Empty;
 
-        [StringLength(70, ErrorMessage = "Tiêu đề SEO không được dài hơn 70 ký tự")]
+        [StringLength(250, ErrorMessage = "Tiêu đề SEO không được dài hơn 250 ký tự")]
         public string SeoTitle { get; set; } = string.Empty;
 
-        [StringLength(160, ErrorMessage = "Mô tả SEO không được dài hơn 160 ký tự")]
+        [StringLength(250, ErrorMessage = "Mô tả SEO không được dài hơn 160 ký tự")]
         public string SeoDescription { get; set; } = string.Empty;
 
         [StringLength(100, ErrorMessage = "Từ khóa SEO không được dài hơn 100 ký tự")]
