@@ -13,15 +13,22 @@ namespace shop.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<ApiResponse<Pagination<List<CustomerProductResponseDto>>>> GetProductsAsync(int page, double pageResults);
+        #region AdminManagerProductServices
         Task<ApiResponse<Pagination<List<Product>>>> GetAdminProducts(int page, double pageResults);
         Task<ApiResponse<Product>> GetAdminSingleProduct(Guid id);
-        Task<ApiResponse<CustomerProductResponseDto>> GetProductBySlug(string slug);
-        Task<ApiResponse<Pagination<List<CustomerProductResponseDto>>>> GetProductsByCategory(string categorySlug, int page, double pageResults);
+        Task<ApiResponse<Pagination<List<Product>>>> SearchAdminProducts(string searchText, int page, double pageResults);
         Task<ApiResponse<bool>> CreateProduct(AddProductDto newProduct);
         Task<ApiResponse<bool>> UpdateProduct(Guid id, UpdateProductDto updateProduct);
         Task<ApiResponse<bool>> SoftDeleteProduct(Guid productId);
+
+        #endregion AdminManagerProductServices
+
+        #region CustomerProductServices
+        Task<ApiResponse<Pagination<List<CustomerProductResponseDto>>>> GetProductsAsync(int page, double pageResults);
+        Task<ApiResponse<CustomerProductResponseDto>> GetProductBySlug(string slug);
+        Task<ApiResponse<Pagination<List<CustomerProductResponseDto>>>> GetProductsByCategory(string categorySlug, int page, double pageResults);
         Task<ApiResponse<Pagination<List<CustomerProductResponseDto>>>> SearchProducts(string searchText, int page, double pageResults);
         Task<ApiResponse<List<string>>> GetProductSearchSuggestions(string seacrchText);
+        #endregion CustomerProductServices
     }
 }

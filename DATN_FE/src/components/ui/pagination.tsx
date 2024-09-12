@@ -19,14 +19,14 @@ const Pagination = ({ pages, currentPage, pageSize, clsColor }: IProps) => {
               : ""
           }`}
         >
-          <Link href={currentPage === 1 ? "#" : `?page=${currentPage - 1}`}>
+          <Link href={currentPage === 1 ? "" : `?page=${currentPage - 1}`}>
             Trước
           </Link>
         </button>
       </li>
       {pageNumbers.map((page) => (
         <li key={page}>
-          <Link href={currentPage === page ? "#" : `?page=${page}`}>
+          <Link href={currentPage === page ? "" : `?page=${page}`}>
             <button
               className={`flex items-center justify-center px-3 h-8 leading-tight ${
                 currentPage === page

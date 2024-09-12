@@ -1,18 +1,30 @@
 import ProductList from "@/components/dashboard/product/product-list";
 import { cookies as nextCookies } from "next/headers";
 
-const Products = async ({ params }: { params: { page?: number } }) => {
-  //get access token form cookie
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const Products = async ({ page, searchText }: IProps) => {
+  // Lấy access token từ cookie
   const cookieStore = nextCookies();
   const token = cookieStore.get("authToken")?.value || "";
 
-  const { page } = params;
   let url = "";
-  if (page == null || page <= 0) {
+
+  if (searchText == null || searchText == undefined) {
     url = "http://localhost:5000/api/Product/admin";
   } else {
-    url = `http://localhost:5000/api/Product/admin?page=${page}`;
+    url = `http://localhost:5000/api/Product/admin/search/${searchText}`;
   }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
+  }
+
+  //console.log(url);
+
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -22,8 +34,8 @@ const Products = async ({ params }: { params: { page?: number } }) => {
   });
 
   const responseData: ApiResponse<PagingParams<IProduct[]>> = await res.json();
+  //console.log(responseData);
   const { data, success, message } = responseData;
-  // console.log(responseData);
   const { result, pages, currentPage } = data;
 
   return (
@@ -34,13 +46,15 @@ const Products = async ({ params }: { params: { page?: number } }) => {
 const ProductsPage = ({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; searchText?: string };
 }) => {
-  // Destructure page from searchParams
-  const { page } = searchParams;
+  // Destructure page và searchText từ searchParams
+  const { page, searchText } = searchParams;
 
-  // Render Products component with params prop
-  return <Products params={{ page: page || undefined }} />;
+  // Render component Products với các prop
+  return (
+    <Products page={page || undefined} searchText={searchText || undefined} />
+  );
 };
 
 export default ProductsPage;

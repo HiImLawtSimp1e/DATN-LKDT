@@ -12,9 +12,10 @@ import {
 } from "@/lib/format/format";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { toast } from "react-toastify";
+import AdminNotFoundPage from "../not-found";
 
 interface IProps {
   products: IProduct[];
@@ -48,6 +49,23 @@ const ProductList = ({ products, pages, currentPage }: IProps) => {
     setToastDisplayed(false); // Đặt lại toastDisplayed khi đang submit
   };
 
+  const handleSearch = (event: FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const searchText = formData.get("searchText") as string;
+
+    console.log(searchText);
+    console.log(searchText.length);
+
+    let url: string = `/dashboard/products`;
+
+    if (searchText !== "" && searchText.length > 0) {
+      url = `/dashboard/products?searchText=${searchText}`;
+    }
+
+    router.push(url);
+  };
+
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
       toast.error("Xóa sản phẩm thất bại!");
@@ -62,7 +80,11 @@ const ProductList = ({ products, pages, currentPage }: IProps) => {
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
       <div className="flex items-center justify-between mb-5">
-        <Search placeholder="Tìm kiếm sản phẩm..." />
+        <Search
+          placeholder="Tìm kiếm sản phẩm..."
+          name="searchText"
+          onSubmit={handleSearch}
+        />
         <Link href="/dashboard/products/add">
           <button className="p-2 flex items-center justify-center mb-5 bg-purple-600 text-white rounded">
             <MdAdd />
@@ -70,77 +92,91 @@ const ProductList = ({ products, pages, currentPage }: IProps) => {
           </button>
         </Link>
       </div>
-      <table className="w-full text-left text-gray-400">
-        <thead className="bg-gray-700 text-gray-400 uppercase">
-          <tr>
-            <th className="px-4 py-2">#</th>
-            <th className="px-4 py-2">Tiêu Đề</th>
-            <th className="px-4 py-2">Loại sản phẩm</th>
-            <th className="px-4 py-2">Giá</th>
-            <th className="px-4 py-2">Trạng Thái</th>
-            <th className="px-4 py-2">Ngày Tạo</th>
-            <th className="px-4 py-2">Ngày Sửa</th>
-            <th className="px-4 py-2">Người Tạo</th>
-            <th className="px-4 py-2">Người Sửa</th>
-            <th className="px-4 py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product: IProduct, index) => (
-            <tr key={product.id} className="border-b border-gray-700">
-              <td className="px-4 py-2">{startIndex + index + 1}</td>
-              <td className="px-4 py-2">{product.title}</td>
-              <td className="px-4 py-2">
-                {product.productVariants.map(
-                  (variant: IProductVariant, index) => (
-                    <div key={index}>
-                      {formatProductType(variant.productType.name)}
+      {products.length == 0 && (
+        <AdminNotFoundPage
+          title="Not found"
+          content="Không tìm thấy sản phẩm đang tìm kiếm"
+        />
+      )}
+      {products.length > 0 && (
+        <>
+          <table className="w-full text-left text-gray-400">
+            <thead className="bg-gray-700 text-gray-400 uppercase">
+              <tr>
+                <th className="px-4 py-2">#</th>
+                <th className="px-4 py-2">Tiêu Đề</th>
+                <th className="px-4 py-2">Loại sản phẩm</th>
+                <th className="px-4 py-2">Giá</th>
+                <th className="px-4 py-2">Trạng Thái</th>
+                <th className="px-4 py-2">Ngày Tạo</th>
+                <th className="px-4 py-2">Ngày Sửa</th>
+                <th className="px-4 py-2">Người Tạo</th>
+                <th className="px-4 py-2">Người Sửa</th>
+                <th className="px-4 py-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product: IProduct, index) => (
+                <tr key={product.id} className="border-b border-gray-700">
+                  <td className="px-4 py-2">{startIndex + index + 1}</td>
+                  <td className="px-4 py-2">{product.title}</td>
+                  <td className="px-4 py-2">
+                    {product.productVariants.map(
+                      (variant: IProductVariant, index) => (
+                        <div key={index}>
+                          {formatProductType(variant.productType.name)}
+                        </div>
+                      )
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    {product.productVariants.map(
+                      (variant: IProductVariant, index) => (
+                        <div key={index}>{formatPrice(variant.price)}</div>
+                      )
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    <TagField
+                      cssClass={product.isActive ? "bg-lime-900" : "bg-red-700"}
+                      context={
+                        product.isActive ? "Hoạt Động" : "Ngưng Hoạt Động"
+                      }
+                    />
+                  </td>
+                  <td className="px-4 py-2">{formatDate(product.createdAt)}</td>
+                  <td className="px-4 py-2">
+                    {formatDate(product.modifiedAt)}
+                  </td>
+                  <td className="px-4 py-2">{product.createdBy}</td>
+                  <td className="px-4 py-2">{product.modifiedBy}</td>
+                  <td className="px-4 py-2">
+                    <div className="flex gap-2">
+                      <Link href={`/dashboard/products/${product.id}`}>
+                        <button className="m-1 px-5 py-2 bg-teal-500 text-white rounded">
+                          Xem
+                        </button>
+                      </Link>
+                      <form onSubmit={handleSubmit}>
+                        <input type="hidden" name="id" value={product.id} />
+                        <button className="m-1 px-5 py-2 bg-red-500 text-white rounded">
+                          Xóa
+                        </button>
+                      </form>
                     </div>
-                  )
-                )}
-              </td>
-              <td className="px-4 py-2">
-                {product.productVariants.map(
-                  (variant: IProductVariant, index) => (
-                    <div key={index}>{formatPrice(variant.price)}</div>
-                  )
-                )}
-              </td>
-              <td className="px-4 py-2">
-                <TagField
-                  cssClass={product.isActive ? "bg-lime-900" : "bg-red-700"}
-                  context={product.isActive ? "Hoạt Động" : "Ngưng Hoạt Động"}
-                />
-              </td>
-              <td className="px-4 py-2">{formatDate(product.createdAt)}</td>
-              <td className="px-4 py-2">{formatDate(product.modifiedAt)}</td>
-              <td className="px-4 py-2">{product.createdBy}</td>
-              <td className="px-4 py-2">{product.modifiedBy}</td>
-              <td className="px-4 py-2">
-                <div className="flex gap-2">
-                  <Link href={`/dashboard/products/${product.id}`}>
-                    <button className="m-1 px-5 py-2 bg-teal-500 text-white rounded">
-                      Xem
-                    </button>
-                  </Link>
-                  <form onSubmit={handleSubmit}>
-                    <input type="hidden" name="id" value={product.id} />
-                    <button className="m-1 px-5 py-2 bg-red-500 text-white rounded">
-                      Xóa
-                    </button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination
-        pages={pages}
-        currentPage={currentPage}
-        pageSize={pageSize}
-        clsColor="gray"
-      />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination
+            pages={pages}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            clsColor="gray"
+          />
+        </>
+      )}
     </div>
   );
 };

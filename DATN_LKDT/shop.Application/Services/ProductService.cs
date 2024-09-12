@@ -29,6 +29,7 @@ namespace shop.Application.Services
             _mapper = mapper;
             _authService = authService;
         }
+        #region AdminManagerProductServices
         public async Task<ApiResponse<bool>> CreateProduct(AddProductDto newProduct)
         {
             //Lấy username tài khoản thực hiện tác vụ
@@ -177,7 +178,46 @@ namespace shop.Application.Services
                 Data = product
             };
         }
+        public async Task<ApiResponse<Pagination<List<Product>>>> SearchAdminProducts(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindAdminProductsBySearchText(searchText)).Count / pageResults);
 
+            var products = await _context.Products
+                .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                && !p.Deleted)
+                .OrderByDescending(p => p.ModifiedAt)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .Include(p => p.ProductVariants.Where(pv => !pv.Deleted))
+                .ThenInclude(pv => pv.ProductType)
+                .ToListAsync();
+
+            if (products == null)
+            {
+                return new ApiResponse<Pagination<List<Product>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy sản phẩm"
+                };
+            }
+
+            var pagingData = new Pagination<List<Product>>
+            {
+                Result = products,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<Product>>>
+            {
+                Data = pagingData,
+            };
+        }
+
+        #endregion AdminManagerProductServices
+
+        #region CustomerProductServices
         public async Task<ApiResponse<CustomerProductResponseDto>> GetProductBySlug(string slug)
         {
             var product = await _context.Products
@@ -344,12 +384,20 @@ namespace shop.Application.Services
             };
         }
 
+        #endregion CustomerProductServices
         private async Task<List<Product>> FindProductsBySearchText(string searchText)
         {
             return await _context.Products
                                 .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) ||
                                     p.Description.ToLower().Contains(searchText.ToLower()) &&
                                     p.IsActive && !p.Deleted)
+                                .ToListAsync();
+        }
+        private async Task<List<Product>> FindAdminProductsBySearchText(string searchText)
+        {
+            return await _context.Products
+                                .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                                    && !p.Deleted)
                                 .ToListAsync();
         }
     }
