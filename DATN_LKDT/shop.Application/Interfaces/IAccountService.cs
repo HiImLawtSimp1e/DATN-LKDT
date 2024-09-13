@@ -20,5 +20,6 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<bool>> CreateAccount(AddAccountDto newAccount);
         Task<ApiResponse<bool>> UpdateAccount(Guid accountId, UpdateAccountDto updateInfoAccount);
         Task<ApiResponse<bool>> SoftDeleteAccount(Guid accountId);
+        Task<ApiResponse<Pagination<List<AccountEntity>>>> SearchAccounts(string searchText, int page, double pageResults);
     }
 }

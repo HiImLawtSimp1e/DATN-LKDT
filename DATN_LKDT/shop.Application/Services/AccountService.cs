@@ -247,6 +247,42 @@ namespace shop.Application.Services
             };
         }
 
+        public async Task<ApiResponse<Pagination<List<AccountEntity>>>> SearchAccounts(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindAccountsBySearchText(searchText)).Count / pageResults);
+
+            var accounts = await _context.Accounts
+                .Where(p => p.Username.ToLower().Contains(searchText.ToLower())
+                && !p.Deleted)
+                .OrderByDescending(p => p.ModifiedAt)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .Include(a => a.Role)
+                .ToListAsync();
+
+            if (accounts == null)
+            {
+                return new ApiResponse<Pagination<List<AccountEntity>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy tài khoản"
+                };
+            }
+
+            var pagingData = new Pagination<List<AccountEntity>>
+            {
+                Result = accounts,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<AccountEntity>>>
+            {
+                Data = pagingData,
+            };
+        }
+
         private async Task<bool> AccountExists(string username)
         {
             if (await _context.Accounts
@@ -265,6 +301,14 @@ namespace shop.Application.Services
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
+        }
+
+        private async Task<List<AccountEntity>> FindAccountsBySearchText(string searchText)
+        {
+            return await _context.Accounts
+                                .Where(p => p.Username.ToLower().Contains(searchText.ToLower())
+                                    && !p.Deleted)
+                                .ToListAsync();
         }
     }
 }

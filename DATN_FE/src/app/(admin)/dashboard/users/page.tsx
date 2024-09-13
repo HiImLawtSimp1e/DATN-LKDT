@@ -1,18 +1,26 @@
 import UserList from "@/components/dashboard/user/user-list";
 import { cookies as nextCookies } from "next/headers";
 
-const Users = async ({ params }: { params: { page?: number } }) => {
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const Users = async ({ page, searchText }: IProps) => {
   //get access token form cookie
   const cookieStore = nextCookies();
   const token = cookieStore.get("authToken")?.value || "";
 
-  const { page } = params;
   let url = "";
 
-  if (page == null || page <= 0) {
-    url = `http://localhost:5000/api/Account/admin`;
+  if (searchText == null || searchText == undefined) {
+    url = "http://localhost:5000/api/Account/admin";
   } else {
-    url = `http://localhost:5000/api/Account/admin?page=${page}`;
+    url = `http://localhost:5000/api/Account/admin/search/${searchText}`;
+  }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
   }
 
   const res = await fetch(url, {
@@ -34,13 +42,15 @@ const Users = async ({ params }: { params: { page?: number } }) => {
 const UsersPage = async ({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; searchText?: string };
 }) => {
   // Destructure page from searchParams
-  const { page } = searchParams;
+  const { page, searchText } = searchParams;
 
   // Render Users component with params prop
-  return <Users params={{ page: page || undefined }} />;
+  return (
+    <Users page={page || undefined} searchText={searchText || undefined} />
+  );
 };
 
 export default UsersPage;
