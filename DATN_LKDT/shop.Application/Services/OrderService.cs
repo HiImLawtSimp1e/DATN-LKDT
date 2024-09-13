@@ -171,7 +171,7 @@ namespace shop.Application.Services
 
         #endregion GetOrderInformationService
 
-        #region ManagerOrderService
+        #region AdminManagerOrderService
 
         public async Task<ApiResponse<bool>> UpdateOrderState(Guid orderId, OrderState state)
         {
@@ -238,10 +238,43 @@ namespace shop.Application.Services
                 Data = (int)order.State
             };
         }
+        public async Task<ApiResponse<Pagination<List<Order>>>> SearchAdminOrders(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindAdminOrdersBySearchText(searchText)).Count / pageResults);
 
-        #endregion ManagerOrderService
+            var orders = await _context.Orders
+                .Where(p => p.InvoiceCode.ToLower().Contains(searchText.ToLower()))
+                .OrderByDescending(p => p.ModifiedAt)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
 
-        #region Customer'sOrderService
+            if (orders == null)
+            {
+                return new ApiResponse<Pagination<List<Order>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy hóa đơn"
+                };
+            }
+
+            var pagingData = new Pagination<List<Order>>
+            {
+                Result = orders,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<Order>>>
+            {
+                Data = pagingData,
+            };
+        }
+
+        #endregion AdminManagerOrderService
+
+        #region CustomerOrderService
 
         public async Task<ApiResponse<bool>> PlaceOrder(Guid? voucherId)
         {
@@ -470,7 +503,7 @@ namespace shop.Application.Services
             };
         }
 
-        #endregion Customer'sOrderService
+        #endregion CustomerOrderService
 
         #region PrivateService
 
@@ -492,6 +525,7 @@ namespace shop.Application.Services
             return isUsedVoucher != null;
         }
 
+        //Caculate Discount Value
         private int CaculateDiscountValue(DiscountEntity voucher, int totalAmount)
         {
             int result = 0;
@@ -516,6 +550,7 @@ namespace shop.Application.Services
             return result;
         }
 
+        //Turn back product variant quantity after cancel order
         private async Task<bool> TurnBackVariantQuantity(Guid orderId)
         {
             var orderItems = await _context.OrderItems
@@ -536,6 +571,13 @@ namespace shop.Application.Services
             });
 
             return true;
+        }
+
+        private async Task<List<Order>> FindAdminOrdersBySearchText(string searchText)
+        {
+            return await _context.Orders
+                                .Where(p => p.InvoiceCode.ToLower().Contains(searchText.ToLower()))
+                                .ToListAsync();
         }
 
         #endregion PrivateService

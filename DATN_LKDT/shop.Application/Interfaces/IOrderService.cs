@@ -14,15 +14,26 @@ namespace shop.Application.Interfaces
 {
     public interface IOrderService
     {
-        public Task<ApiResponse<bool>> PlaceOrder(Guid? voucherId);
-        public Task<ApiResponse<CustomerVoucherResponseDto>> ApplyVoucher(string discountCode);
-        public Task<ApiResponse<bool>> CancelOrder(Guid orderId);
-        public Task<ApiResponse<bool>> CreateOrder(Guid? voucherId, AccountEntity customer, string pmOrder);
+        #region GetOrderInformationService
         public Task<ApiResponse<Pagination<List<Order>>>> GetAdminOrders(int page);
         public Task<ApiResponse<Pagination<List<Order>>>> GetCustomerOrders(int page);
         public Task<ApiResponse<List<OrderItemDto>>> GetOrderItems(Guid orderId);
         public Task<ApiResponse<OrderDetailCustomerDto>> GetOrderDetailInfo(Guid orderId);
+        #endregion GetOrderInformationService 
+
+        #region CustomerOrderServices
+        public Task<ApiResponse<bool>> PlaceOrder(Guid? voucherId);
+        public Task<ApiResponse<CustomerVoucherResponseDto>> ApplyVoucher(string discountCode);
+        public Task<ApiResponse<bool>> CancelOrder(Guid orderId);
+        public Task<ApiResponse<bool>> CreateOrder(Guid? voucherId, AccountEntity customer, string pmOrder);
+        
+        #endregion CustomerOrderServices
+
+        #region AdminOrderServies
+        
         public Task<ApiResponse<bool>> UpdateOrderState(Guid orderId, OrderState state);
         public Task<ApiResponse<int>> GetOrderState(Guid orderId);
+        public Task<ApiResponse<Pagination<List<Order>>>> SearchAdminOrders(string searchText, int page, double pageResults);
+        #endregion AdminOrderServices
     }
 }

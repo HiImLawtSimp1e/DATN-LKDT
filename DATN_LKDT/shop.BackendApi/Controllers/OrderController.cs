@@ -127,5 +127,24 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(response);
         }
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpGet("admin/search/{searchText}")]
+        public async Task<ActionResult<ApiResponse<Pagination<List<Order>>>>> SearchAdminOrders(string searchText, [FromQuery] int page, [FromQuery] double pageResults)
+        {
+            if (page == null || page <= 0)
+            {
+                page = 1;
+            }
+            if (pageResults == null || pageResults <= 0)
+            {
+                pageResults = 10f;
+            }
+            var response = await _service.SearchAdminOrders(searchText, page, pageResults);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }
