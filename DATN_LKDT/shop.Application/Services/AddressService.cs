@@ -147,8 +147,8 @@ namespace shop.Application.Services
                 };
             }
 
-            //Kiểm tra xem đây có phải địa chỉ chính hay không
-            //Nếu là địa chỉ chính => Sửa địa chỉ đã tồn tại trong db thành không hoạt động
+            //Kiểm tra xem đây địa chỉ mới có isMain hay không
+            //Nếu là địa chỉ mới isMain => Sửa địa chỉ chính đã tồn tại trong db thành không hoạt động
             if (updateAddress.IsMain == true)
             {
                 var mainAddress = _context.Address
@@ -160,6 +160,31 @@ namespace shop.Application.Services
                 {
                     mainAddress.IsMain = false;
                 }
+            }
+
+            //Kiểm tra nếu ngừng hoạt động địa chỉ isMain
+            if(updateAddress.IsMain == false && dbAddress.IsMain == true)
+            {
+                //Timf địa chỉ khác của tài khoản
+                var somethingElseAddress = await _context.Address
+                                             .Where(a => a.Id != addressId)
+                                             .FirstOrDefaultAsync(a => a.AccountId == accountId);
+
+                //Nếu không có địa chỉ nào khác
+                if (somethingElseAddress == null)
+                {
+                    return new ApiResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Không thể ngừng hoạt động địa chỉ duy nhất"
+                    };
+                }
+                //Nếu có, chọn địa chỉ khác bất kỳ của tài khoản làm isMain
+                else
+                {
+                    somethingElseAddress.IsMain = true;
+                }
+
             }
 
             _mapper.Map(updateAddress, dbAddress);
