@@ -36,7 +36,7 @@ const CustomerLoginForm = ({ redirectUrl }: IProps) => {
 
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
-      toast.error("Login failed");
+      toast.error("Đăng nhập thất bại");
       setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
     }
     if (formState.success) {

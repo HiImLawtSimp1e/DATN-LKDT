@@ -34,7 +34,7 @@ const RegisterForm = () => {
     }
     if (formState.success) {
       setAuthPublic(formState.data?.toString() || "");
-      toast.error("Đăng ký tài khoản thành công!");
+      toast.success("Đăng ký tài khoản thành công!");
       router.push("/");
     }
   }, [formState, toastDisplayed]);

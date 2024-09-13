@@ -46,11 +46,11 @@ const UpdateAddressForm = ({ address }: IProps) => {
 
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
-      toast.error("Updated address failed");
+      toast.error("Cập nhật địa chỉ thất bại");
       setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
     }
     if (formState.success) {
-      toast.success("Updated address successfully!");
+      toast.success("Cập nhật địa chỉ thành công");
       router.push("/profile");
     }
   }, [formState, toastDisplayed]);
@@ -144,7 +144,7 @@ const UpdateAddressForm = ({ address }: IProps) => {
                 className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow "
                 id="isMain"
                 name="isMain"
-                value={formData.isMain.toString()}
+                value={formData.isMain?.toString()}
                 onChange={handleChange}
               >
                 <option value="true">Có</option>
@@ -169,7 +169,7 @@ const UpdateAddressForm = ({ address }: IProps) => {
                 className="py-1.5 px-3 m-1 text-center bg-violet-700 border rounded-md text-white hover:bg-violet-500 hover:text-gray-100"
                 type="submit"
               >
-                Save Changes
+                Lưu thay đổi
               </button>
             </div>
           </div>
