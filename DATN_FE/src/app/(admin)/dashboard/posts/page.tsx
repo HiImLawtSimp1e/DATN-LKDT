@@ -1,17 +1,27 @@
 import PostList from "@/components/dashboard/post/post-list";
 import { cookies as nextCookies } from "next/headers";
 
-const Posts = async ({ params }: { params: { page?: number } }) => {
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const Posts = async ({ page, searchText }: IProps) => {
   const cookieStore = nextCookies();
   const token = cookieStore.get("authToken")?.value || "";
 
-  const { page } = params;
   let url = "";
-  if (page == null || page <= 0) {
+
+  if (searchText == null || searchText == undefined) {
     url = "http://localhost:5000/api/Blog/admin";
   } else {
-    url = `http://localhost:5000/api/Blog/admin?page=${page}`;
+    url = `http://localhost:5000/api/Blog/admin/search/${searchText}`;
   }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
+  }
+
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -28,11 +38,18 @@ const Posts = async ({ params }: { params: { page?: number } }) => {
   return <PostList posts={result} pages={pages} currentPage={currentPage} />;
 };
 
-const PostsPage = ({ searchParams }: { searchParams: { page?: number } }) => {
-  const { page } = searchParams;
+const PostsPage = ({
+  searchParams,
+}: {
+  searchParams: { page?: number; searchText?: string };
+}) => {
+  // Destructure page và searchText từ searchParams
+  const { page, searchText } = searchParams;
 
-  // Render Products component with params prop
-  return <Posts params={{ page: page || undefined }} />;
+  // Render Posts component with params prop
+  return (
+    <Posts page={page || undefined} searchText={searchText || undefined} />
+  );
 };
 
 export default PostsPage;

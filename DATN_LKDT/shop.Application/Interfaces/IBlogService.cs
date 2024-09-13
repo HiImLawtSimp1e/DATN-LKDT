@@ -13,12 +13,18 @@ namespace shop.Application.Interfaces
 {
     public interface IBlogService
     {
-        Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int page, double pageResults);
+        #region CustomerBlogService
         Task<ApiResponse<Pagination<List<CustomerBlogResponse>>>> GetBlogsAsync(int page, double pageResults);
-        Task<ApiResponse<BlogEntity>> GetAdminSingleBlog(Guid id);
         Task<ApiResponse<CustomerBlogResponse>> GetSingleBlog(string slug);
+        #endregion CustomerBlogService
+
+        #region AdminBlogService
+        Task<ApiResponse<Pagination<List<BlogEntity>>>> GetAdminBlogs(int page, double pageResults);
+        Task<ApiResponse<BlogEntity>> GetAdminSingleBlog(Guid id);
         Task<ApiResponse<bool>> CreateBlog(AddBlogDto newBlog);
         Task<ApiResponse<bool>> UpdateBlog(Guid blogId, UpdateBlogDto updateBlog);
         Task<ApiResponse<bool>> SoftDeleteBlog(Guid blogId);
+        Task<ApiResponse<Pagination<List<BlogEntity>>>> SearchAdminBlogs(string searchText, int page, double pageResults);
+        #endregion AdminBlogService
     }
 }
