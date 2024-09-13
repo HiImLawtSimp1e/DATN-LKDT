@@ -39,6 +39,10 @@ const UpdateOrderDetail = ({ orderId, orderState }: IProps) => {
     setFormData(value);
   };
 
+  const isUpdate =
+    mapOrderState(Number(orderState)) !== "Hủy bỏ" &&
+    mapOrderState(Number(orderState)) !== "Thành công";
+
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
       toast.error(formState.errors[0]);
@@ -51,7 +55,7 @@ const UpdateOrderDetail = ({ orderId, orderState }: IProps) => {
   }, [formState, toastDisplayed]);
   return (
     <div className="mt-12">
-      {mapOrderState(Number(orderState)) !== "Hủy bỏ" ? (
+      {isUpdate ? (
         <form onSubmit={handleSubmit} className="px-4 w-full">
           <input type="hidden" value={orderId} name="id" />
           <label

@@ -29,7 +29,14 @@ const OrderDetail = ({ orderDetail, orderItems }: IProps) => {
             Mã hóa đơn #{orderDetail.invoiceCode}
           </div>
           <div className="mb-2 ml-auto text-lg text-gray-400">
-            Ngày đặt hàng: {formatDate(orderDetail.orderCreatedAt)}
+            Ngày đặt hàng:{" "}
+            <span className="text-white">
+              {formatDate(orderDetail.orderCreatedAt)}
+            </span>
+          </div>
+          <div className="mb-2 ml-auto text-lg text-gray-400">
+            Phương thức thanh toán:{" "}
+            <span className="text-white">{orderDetail.paymentMethodName}</span>
           </div>
         </div>
         <div className="px-6 py-4 border-t border-gray-200">

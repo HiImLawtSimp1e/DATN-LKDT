@@ -56,8 +56,15 @@ const OrderHistoryDetail = ({ orderItems, orderDetail }: IProps) => {
         <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
           Đơn hàng {orderDetail.invoiceCode}
         </h1>
-        <p className="text-base font-medium leading-6 text-gray-600">
-          {formatDate(orderDetail.orderCreatedAt)}
+        <p className="text-base font-medium leading-6 text-gray-400">
+          Ngày đặt hàng:{" "}
+          <span className="text-gray-800">
+            {formatDate(orderDetail.orderCreatedAt)}
+          </span>
+        </p>
+        <p className="text-base font-medium leading-6 text-gray-400">
+          Phương thức thanh toán:{" "}
+          <span className="text-gray-800">{orderDetail.paymentMethodName}</span>
         </p>
       </div>
       <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">

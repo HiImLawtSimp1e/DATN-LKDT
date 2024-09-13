@@ -140,7 +140,9 @@ namespace shop.Application.Services
         }
         public async Task<ApiResponse<OrderDetailCustomerDto>> GetOrderDetailInfo(Guid orderId)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+            var order = await _context.Orders
+                                .Include(o => o.PaymentMethod)
+                                .FirstOrDefaultAsync(o => o.Id == orderId);
             if (order == null)
             {
                 return new ApiResponse<OrderDetailCustomerDto>
@@ -158,6 +160,7 @@ namespace shop.Application.Services
                 Address = order.Address,
                 Phone = order.Phone,
                 InvoiceCode = order.InvoiceCode,
+                PaymentMethodName = order.PaymentMethod.Name,
                 DiscountValue = order.DiscountValue,
                 OrderCreatedAt = order.CreatedAt,
                 State = order.State
@@ -200,6 +203,15 @@ namespace shop.Application.Services
                 {
                     Success = false,
                     Message = "Không thể cập nhật đơn hàng đã hủy"
+                };
+            }
+
+            if(dbOrder.State == OrderState.Delivered)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không thể cập nhật đơn hàng đã giao thành công"
                 };
             }
 

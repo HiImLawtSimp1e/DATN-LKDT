@@ -15,6 +15,7 @@ namespace shop.Application.ViewModels.ResponseDTOs
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string InvoiceCode { get; set; } = string.Empty;
+        public string PaymentMethodName { get; set; } = string.Empty;
         public int DiscountValue { get; set; } = 0;
         public OrderState State { get; set; }
         public DateTime OrderCreatedAt { get; set; }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
@@ -68,7 +67,8 @@ namespace shop.Application.Services
                 OrderItems = orderItems,
                 TotalPrice = totalAmount,
                 State = OrderState.Delivered,
-                CreatedBy = username
+                CreatedBy = username,
+                PaymentMethodId = newOrder.PaymentMethodId
             };
 
             if (voucherId != null)
@@ -164,6 +164,27 @@ namespace shop.Application.Services
             };
         }
 
+        public async Task<ApiResponse<List<PaymentMethod>>> GetPaymentMethodSelect()
+        {
+            var paymentMethods = await _context.PaymentMethods
+                                            .Where(pm => pm.Name != "Thanh toán khi nhận hàng (COD)")
+                                            .ToListAsync();
+
+            if(paymentMethods == null)
+            {
+                return new ApiResponse<List<PaymentMethod>>
+                {
+                    Success = false,
+                    Message = "Missing payment method"
+                };
+            }
+
+            return new ApiResponse<List<PaymentMethod>>
+            {
+                Data = paymentMethods
+            };
+        }
+
         private string GenerateInvoiceCode()
         {
             return $"INV-{DateTime.Now:yyyyMMddHHmmssfff}-{new Random().Next(1000, 9999)}";
@@ -192,5 +213,6 @@ namespace shop.Application.Services
             }
             return result;
         }
+
     }
 }

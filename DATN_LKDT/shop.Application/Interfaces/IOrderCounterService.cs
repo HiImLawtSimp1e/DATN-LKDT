@@ -1,6 +1,7 @@
 ﻿using shop.Application.Common;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
+using shop.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<bool>> CreateOrderCounter(Guid? voucherId, CreateOrderCounterDto newOrder);
         Task<ApiResponse<List<SearchAddressItemResponse>>> SearchAddressItems(string searchText);
         Task<ApiResponse<List<SearchProductItemResponse>>> SearchProducts(string searchText);
+        Task<ApiResponse<List<PaymentMethod>>> GetPaymentMethodSelect();
     }
 }

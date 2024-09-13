@@ -5,6 +5,7 @@ using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
+using shop.Domain.Entities;
 
 namespace shop.BackendApi.Controllers
 {
@@ -36,6 +37,16 @@ namespace shop.BackendApi.Controllers
             if (!res.Success)
             {
                 return BadRequest(res);
+            }
+            return Ok(res);
+        }
+        [HttpGet("select/payment-method")]
+        public async Task<ActionResult<ApiResponse<List<PaymentMethod>>>> GetPaymentMethodSelect()
+        {
+            var res = await _service.GetPaymentMethodSelect();
+            if (!res.Success)
+            {
+                return BadRequest();
             }
             return Ok(res);
         }

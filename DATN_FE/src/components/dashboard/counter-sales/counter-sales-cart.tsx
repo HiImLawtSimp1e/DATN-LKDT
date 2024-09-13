@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import CounterSalesOrderItem from "./counter-sales-order-item";
 import Loading from "@/components/shop/loading";
 import { formatPrice } from "@/lib/format/format";
+import PaymentMethodSelect from "./payment-method-select";
 
 interface IOrderFormData {
   name: string;
@@ -16,12 +17,15 @@ interface IOrderFormData {
   phoneNumber: string;
   address: string;
   orderItems: IOrderItem[];
+  paymentMethodId: string;
 }
 
 const CounterSaleCart = () => {
   const { orderItems } = useCounterSaleStore();
   const { address } = useSearchAddressStore();
   const { voucher } = useVoucherStore();
+  const [paymentMethodId, setPaymentMethodId] = useState<string>("");
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const totalAmount = orderItems.reduce(
@@ -54,6 +58,11 @@ const CounterSaleCart = () => {
       return { errors: ["Chưa có thông tin người mua"] };
     }
 
+    if (paymentMethodId === null || paymentMethodId === "") {
+      setIsLoading(false);
+      return { errors: ["Chưa chọn phương thức thanh toán"] };
+    }
+
     try {
       const orderData: IOrderFormData = {
         name: address.name,
@@ -61,6 +70,7 @@ const CounterSaleCart = () => {
         phoneNumber: address.phoneNumber,
         address: address.address,
         orderItems: orderItems,
+        paymentMethodId: paymentMethodId,
       };
 
       const res = await fetch(
@@ -133,6 +143,10 @@ const CounterSaleCart = () => {
   return (
     <div className="h-[150vh]">
       <div className="flex flex-col gap-4">
+        <PaymentMethodSelect
+          value={paymentMethodId}
+          onChange={(id) => setPaymentMethodId(id)}
+        />
         {orderItems.length > 0 ? (
           <>
             <div className="p-5 flex flex-col gap-1 rounded-lg bg-gray-600">
