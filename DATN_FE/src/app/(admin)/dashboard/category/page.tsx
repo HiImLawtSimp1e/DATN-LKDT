@@ -1,17 +1,27 @@
 import CategoryList from "@/components/dashboard/category/category-list";
 import { cookies as nextCookies } from "next/headers";
 
-const Categories = async ({ params }: { params: { page?: number } }) => {
+interface IProps {
+  page?: number;
+  searchText?: string;
+}
+
+const Categories = async ({ page, searchText }: IProps) => {
   const cookieStore = nextCookies();
   const token = cookieStore.get("authToken")?.value || "";
 
-  const { page } = params;
   let url = "";
-  if (page == null || page <= 0) {
+
+  if (searchText == null || searchText == undefined) {
     url = "http://localhost:5000/api/Category/admin";
   } else {
-    url = `http://localhost:5000/api/Category/admin?page=${page}`;
+    url = `http://localhost:5000/api/Category/admin/search/${searchText}`;
   }
+
+  if (!(page == null || page <= 0)) {
+    url += `?page=${page}`;
+  }
+
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -33,10 +43,15 @@ const Categories = async ({ params }: { params: { page?: number } }) => {
 const CategoiesPage = ({
   searchParams,
 }: {
-  searchParams: { page?: number };
+  searchParams: { page?: number; searchText?: string };
 }) => {
-  const { page } = searchParams;
-  return <Categories params={{ page: page || undefined }} />;
+  // Destructure page và searchText từ searchParams
+  const { page, searchText } = searchParams;
+
+  // Render component Categories với các prop
+  return (
+    <Categories page={page || undefined} searchText={searchText || undefined} />
+  );
 };
 
 export default CategoiesPage;

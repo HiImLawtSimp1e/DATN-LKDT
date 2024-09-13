@@ -96,19 +96,35 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<List<CategorySelectResponseDto>>> GetCategoriesSelect()
+        public async Task<ApiResponse<bool>> UpdateCategory(Guid categoryId, UpdateCategoryDto updateCategory)
         {
-            var categories = await _context.Categories
-                                   .Where(c => !c.Deleted)
-                                   .ToListAsync();
+            var dbCategory = await _context.Categories
+                                         .Where(c => !c.Deleted)
+                                         .FirstOrDefaultAsync(c => c.Id == categoryId);
 
-            var result = _mapper.Map<List<CategorySelectResponseDto>>(categories);
-
-            return new ApiResponse<List<CategorySelectResponseDto>>
+            if (dbCategory == null)
             {
-                Data = result
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy danh mục"
+                };
+            }
+
+            var username = _authService.GetUserName();
+
+            _mapper.Map(updateCategory, dbCategory);
+            dbCategory.ModifiedAt = DateTime.Now;
+            dbCategory.ModifiedBy = username;
+
+            await _context.SaveChangesAsync();
+
+            return new ApiResponse<bool>
+            {
+                Message = "Danh mục đã được cập nhật"
             };
         }
+
 
         public async Task<ApiResponse<bool>> SoftDeleteCategory(Guid categoryId)
         {
@@ -139,33 +155,61 @@ namespace shop.Application.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> UpdateCategory(Guid categoryId, UpdateCategoryDto updateCategory)
+        public async Task<ApiResponse<List<CategorySelectResponseDto>>> GetCategoriesSelect()
         {
-            var dbCategory = await _context.Categories
-                                         .Where(c => !c.Deleted)
-                                         .FirstOrDefaultAsync(c => c.Id == categoryId);
+            var categories = await _context.Categories
+                                   .Where(c => !c.Deleted)
+                                   .ToListAsync();
 
-            if (dbCategory == null)
+            var result = _mapper.Map<List<CategorySelectResponseDto>>(categories);
+
+            return new ApiResponse<List<CategorySelectResponseDto>>
             {
-                return new ApiResponse<bool>
+                Data = result
+            };
+        }
+
+        public async Task<ApiResponse<Pagination<List<Category>>>> SearchAdminCategories(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindAdminCategoriesBySearchText(searchText)).Count / pageResults);
+
+            var categories = await _context.Categories
+                .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                && !p.Deleted)
+                .OrderByDescending(p => p.ModifiedAt)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            if (categories == null)
+            {
+                return new ApiResponse<Pagination<List<Category>>>
                 {
                     Success = false,
-                    Message = "Không tìm thấy danh mục"
+                    Message = "Không tìm thấy danh mục sản phẩm"
                 };
             }
 
-            var username = _authService.GetUserName();
-
-            _mapper.Map(updateCategory, dbCategory);
-            dbCategory.ModifiedAt = DateTime.Now;
-            dbCategory.ModifiedBy = username;
-
-            await _context.SaveChangesAsync();
-
-            return new ApiResponse<bool>
+            var pagingData = new Pagination<List<Category>>
             {
-                Message = "Danh mục đã được cập nhật"
+                Result = categories,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
             };
+
+            return new ApiResponse<Pagination<List<Category>>>
+            {
+                Data = pagingData,
+            };
+        }
+
+        private async Task<List<Category>> FindAdminCategoriesBySearchText(string searchText)
+        {
+            return await _context.Categories
+                                .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                                    && !p.Deleted)
+                                .ToListAsync();
         }
     }
 }

@@ -21,5 +21,6 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<bool>> UpdateCategory(Guid categoryId, UpdateCategoryDto updateCategory);
         Task<ApiResponse<bool>> SoftDeleteCategory(Guid categoryId);
         Task<ApiResponse<List<CategorySelectResponseDto>>> GetCategoriesSelect();
+        Task<ApiResponse<Pagination<List<Category>>>> SearchAdminCategories(string searchText, int page, double pageResults);
     }
 }
