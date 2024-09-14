@@ -10,6 +10,7 @@ import CounterSalesOrderItem from "./counter-sales-order-item";
 import Loading from "@/components/shop/loading";
 import { formatPrice } from "@/lib/format/format";
 import PaymentMethodSelect from "./payment-method-select";
+import CounterSaleVoucher from "./counter-sales-voucher";
 
 interface IOrderFormData {
   name: string;
@@ -73,17 +74,21 @@ const CounterSaleCart = () => {
         paymentMethodId: paymentMethodId,
       };
 
-      const res = await fetch(
-        `http://localhost:5000/api/OrderCounter/create-order`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(orderData),
-        }
-      );
+      let url = "";
+      if (!voucher === null || voucher === undefined || voucher?.id === null) {
+        url = `http://localhost:5000/api/OrderCounter/create-order`;
+      } else {
+        url = `http://localhost:5000/api/OrderCounter/create-order?voucherId=${voucher?.id}`;
+      }
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
       //console.log(res);
 
       const responseData: ApiResponse<boolean> = await res.json();
@@ -120,7 +125,7 @@ const CounterSaleCart = () => {
       const result = await createOrder();
 
       if (result?.success) {
-        toast.success("Tạo hóa đơn thành công");
+        toast.success("Tạo đơn hàng thành công");
         if (typeof window !== "undefined") {
           window.location.reload(); // Reload the page to clear the form or update the UI
         }
@@ -150,6 +155,10 @@ const CounterSaleCart = () => {
         {orderItems.length > 0 ? (
           <>
             <div className="p-5 flex flex-col gap-1 rounded-lg bg-gray-600">
+              <div className="mb-5">
+                <CounterSaleVoucher />
+              </div>
+
               {isClient ? (
                 orderItems.map((item: IOrderItem, index: number) => (
                   <Suspense key={index} fallback={<Loading />}>
@@ -187,7 +196,7 @@ const CounterSaleCart = () => {
                   type="submit"
                   className="mt-6 w-full rounded-md bg-blue-500 text-2xl py-4 font-medium text-blue-50 md:text-lg md:py-2 hover:bg-blue-600"
                 >
-                  {isLoading ? "Đang xử lý..." : "Tạo hóa đơn"}
+                  {isLoading ? "Đang xử lý..." : "Tạo đơn hàng"}
                 </button>
               </form>
             </div>

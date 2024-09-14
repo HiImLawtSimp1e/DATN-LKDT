@@ -1,9 +1,9 @@
 "use client";
 
-import { applyVoucher } from "@/action/orderAction";
+import { applyVoucher } from "@/action/orderCounterAction";
 import { useCustomActionState } from "@/lib/custom/customHook";
 import { formatPrice } from "@/lib/format/format";
-import { useCartStore } from "@/lib/store/useCartStore";
+import { useCounterSaleStore } from "@/lib/store/useCounterSaleStore";
 import { useVoucherStore } from "@/lib/store/useVoucherStore";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -13,24 +13,22 @@ const CounterSaleVoucher = () => {
     if (totalAmount < voucher.minOrderCondition) {
       return `Voucher "${
         voucher.code
-      }" is only applies to orders from ${formatPrice(
+      }" chỉ áp dụng cho đơn hàng có giá trị từ ${formatPrice(
         voucher.minOrderCondition
-      )}`;
+      )} trở lên`;
     }
     let result = voucher.isDiscountPercent
-      ? `Applying "${voucher.code}" voucher, ${voucher.discountValue}% discount`
-      : `Applying "${voucher.code}" voucher, ${formatPrice(
+      ? `Đang áp dụng voucher "${voucher.code}", giảm ${voucher.discountValue}%`
+      : `Đang áp dụng voucher "${voucher.code}", giảm ${formatPrice(
           voucher.discountValue
-        )} discount`;
+        )}`;
 
     if (voucher.isDiscountPercent && voucher.maxDiscountValue > 0) {
-      result += `, up to ${formatPrice(voucher.maxDiscountValue)}`;
+      result += `, tối đa ${formatPrice(voucher.maxDiscountValue)}`;
     }
 
     if (voucher.minOrderCondition > 0) {
-      result += `, applies to orders from ${formatPrice(
-        voucher.minOrderCondition
-      )}`;
+      result += `, cho đơn hàng từ ${formatPrice(voucher.minOrderCondition)}`;
     }
 
     return result;
@@ -38,7 +36,7 @@ const CounterSaleVoucher = () => {
 
   //for state manager
   const { voucher, setVoucher } = useVoucherStore();
-  const { totalAmount } = useCartStore();
+  const { totalAmount } = useCounterSaleStore();
 
   const voucherInfo = voucher ? generateVoucherInfo(voucher) : "";
 
@@ -54,6 +52,9 @@ const CounterSaleVoucher = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    if (totalAmount !== null && totalAmount > 0) {
+      formData.set("totalAmount", totalAmount.toString());
+    }
     formAction(formData);
     setToastDisplayed(false); // Reset toastDisplayed when submitting
   };
@@ -64,7 +65,7 @@ const CounterSaleVoucher = () => {
       setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
     }
     if (formState.success) {
-      toast.success("Applied discount code successfully!");
+      toast.success("Áp dụng voucher thành công!");
       if (formState.data !== undefined) {
         const voucher: IVoucher = formState.data;
         setVoucher(voucher);
@@ -78,15 +79,15 @@ const CounterSaleVoucher = () => {
           <div className="flex gap-1">
             <input
               type="text"
-              placeholder="Enter discount code"
+              placeholder="Nhập mã voucher..."
               name="discountCode"
               className="text-black p-4 w-3/4"
             />
             <button
               type="submit"
-              className="px-4 w-1/4 bg-red-500 text-white uppercase"
+              className="px-4 w-2/5 bg-red-500 text-white uppercase"
             >
-              Submit
+              Áp dụng
             </button>
           </div>
         </form>
@@ -95,8 +96,8 @@ const CounterSaleVoucher = () => {
         <div
           className={`py-1 px-3 text-lg leading-2 ${
             totalAmount > voucher.minOrderCondition
-              ? "text-green-600"
-              : "text-red-400"
+              ? "text-green-400"
+              : "text-red-600"
           } `}
         >
           {voucherInfo}

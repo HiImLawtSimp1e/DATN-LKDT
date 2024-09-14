@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
 using shop.Domain.Entities;
 using shop.Domain.Entities.Enum;
@@ -71,6 +72,8 @@ namespace shop.Application.Services
                 PaymentMethodId = newOrder.PaymentMethodId
             };
 
+            var discountValue = 0;
+
             if (voucherId != null)
             {
                 //Kiểm tra xem voucher còn hoạt động, đã hết hạn hoặc hết số lượng hay chưa
@@ -84,13 +87,15 @@ namespace shop.Application.Services
 
                     if (voucher.MinOrderCondition <= 0 || totalAmount > voucher.MinOrderCondition)
                     {
-                        var discountValue = CalculateDiscountValue(voucher, totalAmount);
+                        discountValue = CalculateDiscountValue(voucher, totalAmount);
                         order.DiscountValue = discountValue;
                         order.DiscountId = voucher.Id;
                         voucher.Quantity -= 1;
                     }
                 }
             }
+
+            order.TotalAmount = order.TotalPrice - discountValue;
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
@@ -185,6 +190,43 @@ namespace shop.Application.Services
             };
         }
 
+        public async Task<ApiResponse<CustomerVoucherResponseDto>> ApplyVoucher(string discountCode, int totalAmount)
+        {
+            //Kiểm tra xem voucher còn hoạt động, đã hết hạn hoặc hết số lượng hay chưa
+            var voucher = await _context.Discounts
+                                           .Where(v => v.IsActive == true && DateTime.Now > v.StartDate && DateTime.Now < v.EndDate && v.Quantity > 0)
+                                           .FirstOrDefaultAsync(v => v.Code == discountCode);
+            if (voucher == null)
+            {
+                return new ApiResponse<CustomerVoucherResponseDto>
+                {
+                    Success = false,
+                    Message = "Mã voucher không đúng hoặc đã hết hạn sử dụng"
+                };
+            }
+            else
+            {
+
+                // MinOrderCondition = 0 nghĩa là voucher không có giá trị giảm giá tối đa => pass
+                // "Giá trị đơn hàng" lớn hơn "giá trị giảm giá tối đa" => pass
+                if (voucher.MinOrderCondition > 0 && totalAmount < voucher.MinOrderCondition)
+                {
+                    return new ApiResponse<CustomerVoucherResponseDto>
+                    {
+                        Success = false,
+                        Message = string.Format("Voucher chỉ áp dụng cho đơn hàng có giá trị từ {0}đ", voucher.MinOrderCondition)
+                    };
+                }
+
+                var result = _mapper.Map<CustomerVoucherResponseDto>(voucher);
+
+                return new ApiResponse<CustomerVoucherResponseDto>
+                {
+                    Data = result
+                };
+            }
+        }
+
         private string GenerateInvoiceCode()
         {
             return $"INV-{DateTime.Now:yyyyMMddHHmmssfff}-{new Random().Next(1000, 9999)}";
@@ -213,6 +255,5 @@ namespace shop.Application.Services
             }
             return result;
         }
-
     }
 }

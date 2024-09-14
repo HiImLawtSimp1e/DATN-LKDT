@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
+using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
 using shop.Domain.Entities;
 
@@ -59,6 +60,16 @@ namespace shop.BackendApi.Controllers
                 return BadRequest(res);
             }
             return Ok(res);
+        }
+        [HttpPost("apply-voucher")]
+        public async Task<ActionResult<ApiResponse<CustomerVoucherResponseDto>>> ApplyVoucher(string discountCode, int totalAmount)
+        {
+            var response = await _service.ApplyVoucher(discountCode, totalAmount);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
     }
 }
