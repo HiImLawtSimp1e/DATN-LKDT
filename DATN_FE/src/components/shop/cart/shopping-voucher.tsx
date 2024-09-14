@@ -62,7 +62,7 @@ const ShoppingVoucher = () => {
       setToastDisplayed(true); // Set toastDisplayed to true to prevent multiple toasts
     }
     if (formState.success) {
-      toast.success("Applied discount code successfully!");
+      toast.success("Áp dụng voucher giảm giá thành công!");
       if (formState.data !== undefined) {
         const voucher: IVoucher = formState.data;
         setVoucher(voucher);

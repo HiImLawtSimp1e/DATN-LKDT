@@ -51,7 +51,7 @@ const VnPayment = () => {
         className="mt-6 w-full rounded-md border border-blue-500 bg-white text-blue-500 text-2xl py-4 font-medium md:text-lg md:py-2"
         onClick={() => handlePayment(voucher)}
       >
-        Thanh toán VnPay
+        Thanh toán bằng ví điện tử VnPay
       </button>
     </div>
   );
