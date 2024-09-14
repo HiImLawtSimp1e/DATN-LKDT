@@ -26,6 +26,7 @@ namespace shop.Domain.Entities
         [StringLength(250, MinimumLength = 6)]
         public string Address { get; set; } = string.Empty;
         public int DiscountValue { get; set; } = 0;
+        public int TotalAmount { get; set; } = 0; 
         public Guid? DiscountId { get; set; }
         public Guid? AccountId { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
