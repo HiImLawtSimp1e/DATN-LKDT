@@ -13,7 +13,7 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<string>> Register(RegisterDto registerDTO);
         Task<ApiResponse<string>> Login(LoginDto loginDTO);
         Task<ApiResponse<string>> AdminLogin(LoginDto loginDTO);
-        Task<ApiResponse<bool>> ChangePassword(Guid accountId, string newPassword);
+        Task<ApiResponse<bool>> ChangePassword(ChangePasswordDto changePasswordDto);
         Task<ApiResponse<string>> VerifyToken(string token);
         Guid GetUserId();
         string GetUserName();

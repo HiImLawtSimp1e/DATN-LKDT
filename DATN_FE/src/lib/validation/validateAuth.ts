@@ -74,3 +74,22 @@ export const validateRegister = (
 
   return [errors, errors.length === 0];
 };
+
+export const validatePassword = (
+  password: string,
+  confirmPassword: string
+): [string[], boolean] => {
+  const errors: string[] = [];
+
+  if (!password || password.trim().length === 0) {
+    errors.push("Mật khẩu không được để trống");
+  } else if (password.length < 6 || password.length > 100) {
+    errors.push("Mật khẩu không được dài hơn 100 ký tự & ngắn hơn 6 ký tự");
+  }
+
+  if (password !== confirmPassword) {
+    errors.push("Xác nhận mật khẩu không khớp");
+  }
+
+  return [errors, errors.length === 0];
+};

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using shop.Application.Common;
 using shop.Application.Interfaces;
@@ -41,6 +42,17 @@ namespace shop.BackendApi.Controllers
         {
             var res = await _service.AdminLogin(req);
             if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<ActionResult<ApiResponse<bool>>> ChangePassword(ChangePasswordDto req)
+        {
+            var res = await _service.ChangePassword(req);
+            if (res.Success)
             {
                 return BadRequest(res);
             }

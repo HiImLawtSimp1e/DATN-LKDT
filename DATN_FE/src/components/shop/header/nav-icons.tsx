@@ -101,6 +101,12 @@ const NavIcons = () => {
               >
                 Đơn hàng của tôi
               </Link>
+              <Link
+                className="inline-block min-w-40 hover:opacity-60"
+                href="profile/change-password"
+              >
+                Đổi mật khẩu
+              </Link>
               <div
                 onClick={handleLogout}
                 className="inline-block min-w-40 hover:opacity-60 cursor-pointer"

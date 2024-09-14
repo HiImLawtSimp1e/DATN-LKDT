@@ -41,31 +41,6 @@ namespace shop.Application.Services
         #endregion GetTokenClaimsService
 
         #region AuthService
-        public async Task<ApiResponse<bool>> ChangePassword(Guid accountId, string newPassword)
-        {
-            var account = await _context.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
-            if (account == null)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    Message = "Không tìm thấy tài khoản"
-                };
-            }
-
-            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
-
-            account.PasswordHash = passwordHash;
-            account.PasswordSalt = passwordSalt;
-            await _context.SaveChangesAsync();
-
-            return new ApiResponse<bool>
-            {
-                Data = true,
-                Message = "Thay đổi mật khẩu thành công"
-            };
-        }
-
         public async Task<ApiResponse<string>> Login(LoginDto loginDTO)
         {
             var username = loginDTO.Username;
@@ -230,6 +205,41 @@ namespace shop.Application.Services
                 throw ex;
             }
 
+        }
+
+        public async Task<ApiResponse<bool>> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var accountId = GetUserId();
+            var account = await _context.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
+            if (account == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Bạn cần đăng nhập lại"
+                };
+            }
+
+            if (!VerifyPasswordHash(changePasswordDto.OldPassword, account.PasswordHash, account.PasswordSalt))
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Mật khẩu cũ không chính xác"
+                };
+            }
+
+            CreatePasswordHash(changePasswordDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            account.PasswordHash = passwordHash;
+            account.PasswordSalt = passwordSalt;
+
+            await _context.SaveChangesAsync();
+
+            return new ApiResponse<bool>
+            {
+                Data = true,
+                Message = "Đổi mật khẩu thành công"
+            };
         }
 
         public async Task<ApiResponse<string>> VerifyToken(string token)
