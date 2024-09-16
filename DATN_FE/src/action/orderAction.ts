@@ -74,11 +74,13 @@ export const cancelOrder = async (
   //console.log(responseData);
   const { success, message } = responseData;
 
+  revalidatePath("/order-history");
+
   //catch error
   if (!success) {
-    revalidatePath("/order-history");
     errors.push(message);
   }
+
   if (errors.length > 0) {
     return { errors };
   }
@@ -155,6 +157,7 @@ export const updateOrderState = async (
 
     if (success) {
       // If the response is success, revalidate the path and redirect
+      revalidatePath("/dashboard/orders");
       revalidateTag("orderDetail");
       revalidateTag("orderCustomerDetail");
       return { success: true, errors: [] };
