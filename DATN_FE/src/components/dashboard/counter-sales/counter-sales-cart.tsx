@@ -75,10 +75,15 @@ const CounterSaleCart = () => {
       };
 
       let url = "";
-      if (!voucher === null || voucher === undefined || voucher?.id === null) {
-        url = `http://localhost:5000/api/OrderCounter/create-order`;
-      } else {
+      if (
+        !voucher !== null &&
+        voucher !== undefined &&
+        voucher?.id !== null &&
+        voucher?.id !== undefined
+      ) {
         url = `http://localhost:5000/api/OrderCounter/create-order?voucherId=${voucher?.id}`;
+      } else {
+        url = `http://localhost:5000/api/OrderCounter/create-order`;
       }
 
       const res = await fetch(url, {
