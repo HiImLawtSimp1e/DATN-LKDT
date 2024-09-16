@@ -34,6 +34,7 @@ namespace shop.Application.Interfaces
         public Task<ApiResponse<bool>> UpdateOrderState(Guid orderId, OrderState state);
         public Task<ApiResponse<int>> GetOrderState(Guid orderId);
         public Task<ApiResponse<Pagination<List<Order>>>> SearchAdminOrders(string searchText, int page, double pageResults);
+        public Task<ApiResponse<Pagination<List<Order>>>> FilterAdminOrdersByState(OrderState orderState, int page, double pageResults);
         #endregion AdminOrderServices
     }
 }

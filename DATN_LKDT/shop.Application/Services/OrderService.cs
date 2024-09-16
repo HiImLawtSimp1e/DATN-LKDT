@@ -11,6 +11,7 @@ using shop.Domain.Entities.Enum;
 using shop.Infrastructure.Database.Context;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -262,6 +263,38 @@ namespace shop.Application.Services
                 .ToListAsync();
 
             if (orders == null)
+            {
+                return new ApiResponse<Pagination<List<Order>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy hóa đơn"
+                };
+            }
+
+            var pagingData = new Pagination<List<Order>>
+            {
+                Result = orders,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<Order>>>
+            {
+                Data = pagingData,
+            };
+        }
+        public async Task<ApiResponse<Pagination<List<Order>>>> FilterAdminOrdersByState(OrderState orderState, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindAdminOrdersByState(orderState)).Count / pageResults);
+
+            var orders = await _context.Orders
+                                   .Where(o => o.State == orderState)
+                                   .OrderByDescending(p => p.ModifiedAt)
+                                   .Skip((page - 1) * (int)pageResults)
+                                   .Take((int)pageResults)
+                                   .ToListAsync();
+            if(orders == null)
             {
                 return new ApiResponse<Pagination<List<Order>>>
                 {
@@ -594,6 +627,13 @@ namespace shop.Application.Services
             return await _context.Orders
                                 .Where(p => p.InvoiceCode.ToLower().Contains(searchText.ToLower()))
                                 .ToListAsync();
+        }
+
+        private async Task<List<Order>> FindAdminOrdersByState(OrderState orderState)
+        {
+            return await _context.Orders
+                             .Where(o => o.State == orderState)
+                             .ToListAsync();
         }
 
         #endregion PrivateService

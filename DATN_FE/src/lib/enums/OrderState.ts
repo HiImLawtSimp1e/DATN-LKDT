@@ -22,8 +22,24 @@ const cssTagFieldMapping: Record<number, string> = {
   [OrderState.Cancelled]: "bg-red-900",
 };
 
+const filterMapping: Record<string, string> = {
+  [OrderState.Pending]: "0",
+  [OrderState.Processing]: "1",
+  [OrderState.Shipped]: "2",
+  [OrderState.Delivered]: "3",
+  [OrderState.Cancelled]: "4",
+};
+
 export const mapOrderState = (state: number): string => {
   const result = orderStateMapping[state];
+  if (!result) {
+    throw new Error(`Unknown state: ${state}`);
+  }
+  return result;
+};
+
+export const mapFilterState = (state: string): string => {
+  const result = filterMapping[state];
   if (!result) {
     throw new Error(`Unknown state: ${state}`);
   }

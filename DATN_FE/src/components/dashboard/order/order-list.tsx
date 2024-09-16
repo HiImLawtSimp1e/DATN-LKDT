@@ -4,7 +4,12 @@ import Pagination from "@/components/ui/pagination";
 import { formatDate, formatPrice } from "@/lib/format/format";
 import Link from "next/link";
 import TagFiled from "@/components/ui/tag";
-import { mapCssTagField, mapOrderState } from "@/lib/enums/OrderState";
+import {
+  mapCssTagField,
+  mapFilterState,
+  mapOrderState,
+  OrderState,
+} from "@/lib/enums/OrderState";
 import Search from "@/components/ui/search";
 import { MdRefresh } from "react-icons/md";
 import { FormEvent } from "react";
@@ -15,9 +20,10 @@ interface IProps {
   orders: IOrder[];
   pages: number;
   currentPage: number;
+  orderState?: string;
 }
 
-const OrderList = ({ orders, pages, currentPage }: IProps) => {
+const OrderList = ({ orders, pages, currentPage, orderState }: IProps) => {
   const pageSize = 10;
   const startIndex = (currentPage - 1) * pageSize;
 
@@ -34,9 +40,6 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
     const formData = new FormData(event.target as HTMLFormElement);
     const searchText = formData.get("searchText") as string;
 
-    console.log(searchText);
-    console.log(searchText.length);
-
     let url: string = `/dashboard/orders`;
 
     if (searchText !== "" && searchText.length > 0) {
@@ -46,17 +49,60 @@ const OrderList = ({ orders, pages, currentPage }: IProps) => {
     router.push(url);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "") {
+      // Khi chọn "Tất cả", đẩy đến /dashboard/orders mà không có orderState
+      router.push("/dashboard/orders");
+    } else {
+      // Khi chọn trạng thái khác, đẩy đến đường dẫn có query orderState
+      router.push(
+        `/dashboard/orders?orderState=${mapFilterState(selectedValue)}`
+      );
+    }
+  };
+
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
       <div className="flex items-center justify-between mb-5">
-        <Search
-          placeholder="Tìm kiếm đơn hàng..."
-          name="searchText"
-          onSubmit={handleSearch}
-        />
+        <div className="flex items-center justify-between">
+          <Search
+            placeholder="Tìm kiếm đơn hàng..."
+            name="searchText"
+            onSubmit={handleSearch}
+          />
+          <div className="mx-4 mb-8 px-3">
+            <label
+              htmlFor="state"
+              className="block mb-2 text-sm font-medium text-white"
+            >
+              Trạng thái hóa đơn
+            </label>
+            <select
+              className="text-sm rounded-lg w-full p-2.5 bg-gray-600 placeholder-gray-400 text-white"
+              id="state"
+              value={orderState || ""}
+              onChange={handleChange}
+            >
+              <option key="" value="">
+                Tất cả
+              </option>
+              {Object.keys(OrderState)
+                .filter((key) => isNaN(Number(key)))
+                .map((key) => {
+                  const stateValue = OrderState[key as keyof typeof OrderState];
+                  return (
+                    <option key={stateValue} value={stateValue}>
+                      {mapOrderState(stateValue)}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+        </div>
         <button
           onClick={() => handleReload()}
-          className="p-2 px-4 flex items-center justify-center mb-5 bg-blue-600 text-white rounded"
+          className="p-2 px-4 flex items-center justify-center mb-4.5 bg-blue-600 text-white rounded"
         >
           <MdRefresh />
           Tải lại

@@ -107,10 +107,14 @@ const OrderDetail = ({ orderDetail, orderItems }: IProps) => {
             </div>
           </div>
         )}
+        <div className="flex justify-end text-xl text-white pb-2 gap-4">
+          <div className="">Phí vận chuyển:</div>
+          <div className=" font-semibold">{formatPrice(30000)}</div>
+        </div>
         <div className="flex justify-end text-xl text-white gap-4">
           <div className="">Thanh toán:</div>
           <div className=" font-semibold">
-            {formatPrice(totalAmount - orderDetail.discountValue)}
+            {formatPrice(totalAmount - orderDetail.discountValue + 30000)}
           </div>
         </div>
       </div>
