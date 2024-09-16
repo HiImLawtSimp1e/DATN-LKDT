@@ -18,6 +18,16 @@ namespace shop.Infrastructure.Configuration
             builder.HasMany(o => o.OrderItems)
                .WithOne(oi => oi.Order)
                .HasForeignKey(oi => oi.OrderId);
+
+            builder.HasOne(o => o.Discount)
+                .WithMany(d => d.Orders)
+                .HasForeignKey(o => o.DiscountId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(o => o.Account)
+                .WithMany(a => a.Orders)
+                .HasForeignKey(o => o.AccountId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

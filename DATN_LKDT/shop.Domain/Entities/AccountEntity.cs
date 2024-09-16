@@ -20,5 +20,7 @@ namespace shop.Domain.Entities
         [JsonIgnore]
         public CartEntity? Cart { get; set; }
         public List<AddressEntity>? Addresses { get; set; }
+        [JsonIgnore]
+        public List<Order>? Orders { get; set; }
     }
 }

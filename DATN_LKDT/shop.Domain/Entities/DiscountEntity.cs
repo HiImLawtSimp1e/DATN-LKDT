@@ -23,5 +23,6 @@ namespace shop.Domain.Entities
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(30);
         public bool IsActive { get; set; } = true;
+        public List<Order>? Orders { get; set; }
     }
 }
