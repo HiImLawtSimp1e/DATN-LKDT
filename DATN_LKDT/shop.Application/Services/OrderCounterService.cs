@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using AppBusiness.Model.Pagination;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.Style;
 using shop.Application.Common;
 using shop.Application.Interfaces;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
@@ -28,13 +30,14 @@ namespace shop.Application.Services
             _mapper = mapper;
             _authService = authService;
         }
+        #region OrderCounterService
         public async Task<ApiResponse<bool>> CreateOrderCounter(Guid? voucherId, CreateOrderCounterDto newOrder)
         {
             var username = _authService.GetUserName();
 
             var newOrderItems = newOrder.OrderItems;
 
-            if(newOrderItems == null || newOrderItems.Count() == 0)
+            if (newOrderItems == null || newOrderItems.Count() == 0)
             {
                 return new ApiResponse<bool>
                 {
@@ -69,7 +72,8 @@ namespace shop.Application.Services
                 TotalPrice = totalAmount,
                 State = OrderState.Delivered,
                 CreatedBy = username,
-                PaymentMethodId = newOrder.PaymentMethodId
+                PaymentMethodId = newOrder.PaymentMethodId,
+                IsCounterOrder = true
             };
 
             var discountValue = 0;
@@ -100,7 +104,7 @@ namespace shop.Application.Services
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return new ApiResponse<bool> 
+            return new ApiResponse<bool>
             {
                 Message = "Tạo đơn hàng thành công"
             };
@@ -114,7 +118,7 @@ namespace shop.Application.Services
                                        .Take(10)
                                        .ToListAsync();
 
-            if(addresses == null)
+            if (addresses == null)
             {
                 return new ApiResponse<List<SearchAddressItemResponse>>();
             }
@@ -152,12 +156,12 @@ namespace shop.Application.Services
                     {
                         ProductId = variant.ProductId,
                         ProductTypeId = variant.ProductTypeId,
-                        ImageUrl = product.ImageUrl, 
+                        ImageUrl = product.ImageUrl,
                         ProductTitle = product.Title,
                         ProductTypeName = variant.ProductType.Name,
                         Price = variant.Price,
                         OriginalPrice = variant.OriginalPrice,
-                        Quantity = 1 
+                        Quantity = 1
                     };
                     result.Add(item);
                 });
@@ -175,7 +179,7 @@ namespace shop.Application.Services
                                             .Where(pm => pm.Name != "Thanh toán khi nhận hàng (COD)")
                                             .ToListAsync();
 
-            if(paymentMethods == null)
+            if (paymentMethods == null)
             {
                 return new ApiResponse<List<PaymentMethod>>
                 {
@@ -226,6 +230,149 @@ namespace shop.Application.Services
                 };
             }
         }
+        #endregion OrderCounterService
+
+        #region ProvisionalOrder
+
+        //Lấy danh sách hóa đơn tạm lưu
+        public async Task<ApiResponse<Pagination<List<Order>>>> GetAdminProvisionalOrders(int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindProvisionalOrders()).Count / pageResults);
+
+            var orders = await _context.Orders
+                                   .Where(o => o.IsCounterOrder && o.State == OrderState.Pending)
+                                   .OrderByDescending(p => p.ModifiedAt)
+                                   .Skip((page - 1) * (int)pageResults)
+                                   .Take((int)pageResults)
+                                   .ToListAsync();
+
+            if (orders == null)
+            {
+                return new ApiResponse<Pagination<List<Order>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy hóa đơn"
+                };
+            }
+
+            var pagingData = new Pagination<List<Order>>
+            {
+                Result = orders,
+                CurrentPage = page,
+                PageResults = (int)pageResults,
+                Pages = (int)pageCount
+            };
+
+            return new ApiResponse<Pagination<List<Order>>>
+            {
+                Data = pagingData
+            };
+        }
+
+        //Tìm kiếm hóa đơn tạm lưu
+        public async Task<ApiResponse<Pagination<List<Order>>>> SearchAdminProvisionalOrders(string searchText, int page, double pageResults)
+        {
+            var pageCount = Math.Ceiling((await FindProvisionalOrdersBySearchText(searchText)).Count / pageResults);
+
+            var orders = await _context.Orders
+                .Where(o => o.InvoiceCode.ToLower().Contains(searchText.ToLower())
+                && o.IsCounterOrder && o.State == OrderState.Pending)
+                .OrderByDescending(p => p.ModifiedAt)
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            if (orders == null)
+            {
+                return new ApiResponse<Pagination<List<Order>>>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy hóa đơn"
+                };
+            }
+
+            var pagingData = new Pagination<List<Order>>
+            {
+                Result = orders,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                PageResults = (int)pageResults
+            };
+
+            return new ApiResponse<Pagination<List<Order>>>
+            {
+                Data = pagingData,
+            };
+        }
+
+        //Tạm lưu hóa đơn
+
+        public  async Task<ApiResponse<bool>> SaveProvisionalInvoice(SaveOrderCounterDto saveOrder)
+        {
+            var username = _authService.GetUserName();
+
+            var newOrderItems = saveOrder.OrderItems;
+
+            if (newOrderItems == null || newOrderItems.Count() == 0)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Chưa có sản phẩm"
+                };
+            }
+
+            var paymentMethod = await _context.PaymentMethods.FirstOrDefaultAsync(pm => pm.Name == "Thanh toán tiền mặt tại quầy");
+            if (paymentMethod == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy phương thức thanh toán"
+                };
+            }
+
+            newOrderItems.ForEach(oi =>
+            {
+                var variant = _context.ProductVariants
+                                    .Include(v => v.ProductType)
+                                    .FirstOrDefault(v => v.ProductId == oi.ProductId && v.ProductTypeId == oi.ProductTypeId);
+
+                variant.Quantity -= oi.Quantity;
+            });
+
+            int totalAmount = 0;
+
+            newOrderItems.ForEach(item => totalAmount += item.Price * item.Quantity);
+
+            var orderItems = _mapper.Map<List<OrderItem>>(newOrderItems);
+
+            var order = new Order
+            {
+                InvoiceCode = GenerateInvoiceCode(),
+                FullName = saveOrder.Name,
+                Email = saveOrder.Email,
+                Phone = saveOrder.PhoneNumber,
+                Address = saveOrder.Address,
+                OrderItems = orderItems,
+                TotalPrice = totalAmount,
+                TotalAmount = totalAmount,
+                State = OrderState.Pending,
+                CreatedBy = username,
+                PaymentMethod = paymentMethod,
+                IsCounterOrder = true
+            };
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return new ApiResponse<bool>
+            {
+                Message = "Lưu đơn hàng thành công"
+            };
+        }
+
+        #endregion ProvisionalOrder
 
         private string GenerateInvoiceCode()
         {
@@ -254,6 +401,21 @@ namespace shop.Application.Services
                 result = (int)voucher.DiscountValue;
             }
             return result;
+        }
+
+        private async Task<List<Order>> FindProvisionalOrders()
+        {
+            return await _context.Orders
+                             .Where(o => o.IsCounterOrder && o.State == OrderState.Pending)
+                             .ToListAsync();
+        }
+
+        private async Task<List<Order>> FindProvisionalOrdersBySearchText(string searchText)
+        {
+            return await _context.Orders
+                                .Where(o => o.InvoiceCode.ToLower().Contains(searchText.ToLower())
+                                && o.IsCounterOrder && o.State == OrderState.Pending)
+                                .ToListAsync();
         }
     }
 }

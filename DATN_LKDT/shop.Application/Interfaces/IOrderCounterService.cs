@@ -1,4 +1,5 @@
-﻿using shop.Application.Common;
+﻿using AppBusiness.Model.Pagination;
+using shop.Application.Common;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
 using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
@@ -13,10 +14,18 @@ namespace shop.Application.Interfaces
 {
     public interface IOrderCounterService
     {
+        #region OrderCounterService
         Task<ApiResponse<bool>> CreateOrderCounter(Guid? voucherId, CreateOrderCounterDto newOrder);
         Task<ApiResponse<List<SearchAddressItemResponse>>> SearchAddressItems(string searchText);
         Task<ApiResponse<List<SearchProductItemResponse>>> SearchProducts(string searchText);
         Task<ApiResponse<List<PaymentMethod>>> GetPaymentMethodSelect();
         Task<ApiResponse<CustomerVoucherResponseDto>> ApplyVoucher(string discountCode, int totalAmount);
+        #endregion OrderCounterService
+
+        #region ProvisionalOrderService
+        Task<ApiResponse<Pagination<List<Order>>>> GetAdminProvisionalOrders(int page, double pageResults);
+        public Task<ApiResponse<Pagination<List<Order>>>> SearchAdminProvisionalOrders(string searchText, int page, double pageResults);
+        Task<ApiResponse<bool>> SaveProvisionalInvoice(SaveOrderCounterDto saveOrder);
+        #endregion ProvisionalOrderService
     }
 }

@@ -50,6 +50,11 @@ const Sidebar = () => {
         },
         {
           title: "Bán hàng",
+          path: "/dashboard/counter-sales/add",
+          icon: <MdArticle />,
+        },
+        {
+          title: "Đơn hàng tạm lưu",
           path: "/dashboard/counter-sales",
           icon: <MdArticle />,
         },

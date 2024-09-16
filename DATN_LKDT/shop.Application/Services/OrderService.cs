@@ -429,6 +429,7 @@ namespace shop.Application.Services
                 Phone = address.PhoneNumber,
                 CreatedBy = "Khách hàng",
                 PaymentMethod = paymentMethod,
+                IsCounterOrder = false
             };
 
             var discountValue = 0;

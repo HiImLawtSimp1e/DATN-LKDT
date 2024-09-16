@@ -27,6 +27,7 @@ namespace shop.Domain.Entities
         public string Address { get; set; } = string.Empty;
         public int DiscountValue { get; set; } = 0;
         public int TotalAmount { get; set; } = 0; 
+        public bool IsCounterOrder { get; set; }
         public Guid? DiscountId { get; set; }
         public DiscountEntity? Discount { get; set; }
         public Guid? AccountId { get; set; }
