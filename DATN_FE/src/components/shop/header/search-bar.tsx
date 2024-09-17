@@ -1,14 +1,14 @@
 "use client";
-import { FormEvent, ChangeEvent, useCallback, useRef } from "react";
+import { FormEvent, ChangeEvent, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import _ from "lodash";
 import { useSearchStore } from "@/lib/store/useSearchStore";
-import Link from "next/link";
 
 const SearchBar = () => {
   const { suggestions, getSuggestions, clearSuggestions } = useSearchStore();
   const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLUListElement>(null);
   const router = useRouter();
 
   const clearInput = () => {
@@ -47,6 +47,24 @@ const SearchBar = () => {
     router.push(`/product/?search=${item}`);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      suggestionsRef.current &&
+      !suggestionsRef.current.contains(event.target as Node) &&
+      inputRef.current &&
+      !inputRef.current.contains(event.target as Node)
+    ) {
+      clearSuggestions(); // Ẩn phần gợi ý khi click ra ngoài
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <form
@@ -66,7 +84,10 @@ const SearchBar = () => {
         </button>
       </form>
       {suggestions?.length > 0 && (
-        <ul className="mt-2 absolute top-14 left-160 bg-white rounded-md border border-gray-100 w-[40%] shadow-sm z-20 xl:w-[25%] md:shadow-md ">
+        <ul
+          ref={suggestionsRef}
+          className="mt-2 absolute top-14 left-160 bg-white rounded-md border border-gray-100 w-[40%] shadow-sm z-20 xl:w-[25%] md:shadow-md "
+        >
           {suggestions.map((item, index) => (
             <li
               key={index}
