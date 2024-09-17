@@ -1,5 +1,7 @@
 import UpdateCategoryForm from "@/components/dashboard/category/update-category-form";
+import AdminLoading from "@/components/dashboard/loading";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Category = async ({ id }: { id: string }) => {
   const cookieStore = nextCookies();
@@ -20,7 +22,11 @@ const Category = async ({ id }: { id: string }) => {
 
 const UpdateCategoryPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  return <Category id={id} />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <Category id={id} />
+    </Suspense>
+  );
 };
 
 export default UpdateCategoryPage;

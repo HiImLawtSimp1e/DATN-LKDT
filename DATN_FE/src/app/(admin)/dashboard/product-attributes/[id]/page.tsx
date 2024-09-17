@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import UpdateProductAttributeForm from "@/components/dashboard/product-attribute/update-product-attribute-form";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const ProductType = async ({ id }: { id: string }) => {
   // Lấy access token từ cookie
@@ -21,7 +23,11 @@ const ProductType = async ({ id }: { id: string }) => {
 
 const UpdateProductAttributePage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  return <ProductType id={id} />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <ProductType id={id} />
+    </Suspense>
+  );
 };
 
 export default UpdateProductAttributePage;

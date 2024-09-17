@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import UpdatePostForm from "@/components/dashboard/post/update-post-form";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Post = async ({ id }: { id: string }) => {
   const cookieStore = nextCookies();
@@ -20,7 +22,11 @@ const Post = async ({ id }: { id: string }) => {
 
 const PostDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  return <Post id={id} />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <Post id={id} />
+    </Suspense>
+  );
 };
 
 export default PostDetailPage;

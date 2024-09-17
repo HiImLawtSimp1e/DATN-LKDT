@@ -1,8 +1,8 @@
-import Loading from "@/components/shop/loading";
 import { Suspense } from "react";
 import HomeShopProductList from "@/components/shop/home/home-product-list";
 import Slider from "@/components/shop/home/home-slider";
 import { slides } from "@/lib/mock/slide";
+import Loading from "@/components/shop/loading";
 
 const Slides = () => {
   return <Slider slides={slides} />;

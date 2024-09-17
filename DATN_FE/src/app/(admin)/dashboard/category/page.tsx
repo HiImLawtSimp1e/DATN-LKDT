@@ -1,5 +1,7 @@
 import CategoryList from "@/components/dashboard/category/category-list";
+import AdminLoading from "@/components/dashboard/loading";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -40,7 +42,7 @@ const Categories = async ({ page, searchText }: IProps) => {
   );
 };
 
-const CategoiesPage = ({
+const CategoriesPage = ({
   searchParams,
 }: {
   searchParams: { page?: number; searchText?: string };
@@ -50,8 +52,13 @@ const CategoiesPage = ({
 
   // Render component Categories với các prop
   return (
-    <Categories page={page || undefined} searchText={searchText || undefined} />
+    <Suspense fallback={<AdminLoading />}>
+      <Categories
+        page={page || undefined}
+        searchText={searchText || undefined}
+      />
+    </Suspense>
   );
 };
 
-export default CategoiesPage;
+export default CategoriesPage;

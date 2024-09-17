@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import AddUserForm from "@/components/dashboard/user/add-user-form";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const User = async () => {
   //get access token form cookie
@@ -19,6 +21,10 @@ const User = async () => {
 };
 
 const AddUserPage = () => {
-  return <User />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <User />
+    </Suspense>
+  );
 };
 export default AddUserPage;

@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import OrderList from "@/components/dashboard/order/order-list";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -59,12 +61,15 @@ const OrdersPage = ({
   const { page, searchText, orderState } = searchParams;
 
   // Render Orders component with params prop
+
   return (
-    <Orders
-      page={page || undefined}
-      searchText={searchText || undefined}
-      orderState={orderState || undefined}
-    />
+    <Suspense fallback={<AdminLoading />}>
+      <Orders
+        page={page || undefined}
+        searchText={searchText || undefined}
+        orderState={orderState || undefined}
+      />
+    </Suspense>
   );
 };
 

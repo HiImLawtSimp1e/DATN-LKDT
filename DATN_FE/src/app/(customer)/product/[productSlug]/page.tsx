@@ -1,4 +1,6 @@
+import Loading from "@/components/shop/loading";
 import ShopProductDetail from "@/components/shop/product-detail/product-detail";
+import { Suspense } from "react";
 
 const Product = async ({ productSlug }: { productSlug: string }) => {
   const res = await fetch(`http://localhost:5000/api/Product/${productSlug}`, {
@@ -14,7 +16,11 @@ const Product = async ({ productSlug }: { productSlug: string }) => {
 
 const ProductDetailPage = ({ params }: { params: { productSlug: string } }) => {
   const { productSlug } = params;
-  return <Product productSlug={productSlug} />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Product productSlug={productSlug} />
+    </Suspense>
+  );
 };
 
 export default ProductDetailPage;

@@ -1,4 +1,6 @@
+import AdminLoading from "@/components/dashboard/loading";
 import AddProductAttributeValueForm from "@/components/dashboard/product-attribute-value/add-product-attribute-value-form";
+import { Suspense } from "react";
 
 interface IProps {
   productId: string;
@@ -30,7 +32,11 @@ const AddProductValuePage = ({
   searchParams: { productId: string };
 }) => {
   const { productId } = searchParams;
-  return <ProductValue productId={productId} />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <ProductValue productId={productId} />
+    </Suspense>
+  );
 };
 
 export default AddProductValuePage;

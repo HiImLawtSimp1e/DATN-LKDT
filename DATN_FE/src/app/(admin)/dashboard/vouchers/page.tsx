@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import VoucherList from "@/components/dashboard/voucher/voucher-list";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -52,7 +54,9 @@ const VouchersPage = ({
 
   // Render Vouchers component with params prop
   return (
-    <Vouchers page={page || undefined} searchText={searchText || undefined} />
+    <Suspense fallback={<AdminLoading />}>
+      <Vouchers page={page || undefined} searchText={searchText || undefined} />
+    </Suspense>
   );
 };
 

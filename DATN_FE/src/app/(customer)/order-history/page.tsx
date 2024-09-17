@@ -1,5 +1,7 @@
+import Loading from "@/components/shop/loading";
 import OrderHistoryList from "@/components/shop/order-history/order-history-list";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Orders = async ({ params }: { params: { page?: number } }) => {
   const cookieStore = nextCookies();
@@ -45,7 +47,11 @@ const OrderHistoryPages = ({
   const { page } = searchParams;
 
   // Render Orders component with params prop
-  return <Orders params={{ page: page || undefined }} />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Orders params={{ page: page || undefined }} />
+    </Suspense>
+  );
 };
 
 export default OrderHistoryPages;

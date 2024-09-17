@@ -1,5 +1,7 @@
+import Loading from "@/components/shop/loading";
 import UpdateAddressForm from "@/components/shop/profile/update-address-form";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Address = async ({ id }: { id: string }) => {
   const cookieStore = nextCookies();
@@ -21,9 +23,9 @@ const Address = async ({ id }: { id: string }) => {
 const UpdateAddressPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Address id={id} />
-    </>
+    </Suspense>
   );
 };
 export default UpdateAddressPage;

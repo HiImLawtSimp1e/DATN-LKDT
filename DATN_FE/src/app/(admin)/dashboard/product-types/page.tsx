@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import ProductTypeList from "@/components/dashboard/productType/product-type-list";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -56,10 +58,12 @@ const ProductTypesPage = ({
 
   // Render component Product Types với các prop
   return (
-    <ProductTypes
-      page={page || undefined}
-      searchText={searchText || undefined}
-    />
+    <Suspense fallback={<AdminLoading />}>
+      <ProductTypes
+        page={page || undefined}
+        searchText={searchText || undefined}
+      />
+    </Suspense>
   );
 };
 

@@ -1,4 +1,6 @@
+import AdminLoading from "@/components/dashboard/loading";
 import AddProductForm from "@/components/dashboard/product/add-product-form";
+import { Suspense } from "react";
 
 const Product = async () => {
   const categorySelectRes = await fetch(
@@ -35,9 +37,9 @@ const Product = async () => {
 
 const AddProductPage = () => {
   return (
-    <>
+    <Suspense fallback={<AdminLoading />}>
       <Product />
-    </>
+    </Suspense>
   );
 };
 export default AddProductPage;

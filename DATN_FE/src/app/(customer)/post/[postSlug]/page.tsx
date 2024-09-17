@@ -1,4 +1,6 @@
+import Loading from "@/components/shop/loading";
 import ShopPostDetail from "@/components/shop/post-detail/post-detail";
+import { Suspense } from "react";
 
 const Post = async ({ postSlug }: { postSlug: string }) => {
   const res = await fetch(`http://localhost:5000/api/Blog/${postSlug}`, {
@@ -14,7 +16,11 @@ const Post = async ({ postSlug }: { postSlug: string }) => {
 
 const PostDetailPage = ({ params }: { params: { postSlug: string } }) => {
   const { postSlug } = params;
-  return <Post postSlug={postSlug} />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Post postSlug={postSlug} />
+    </Suspense>
+  );
 };
 
 export default PostDetailPage;

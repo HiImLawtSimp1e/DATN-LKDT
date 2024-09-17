@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import PostList from "@/components/dashboard/post/post-list";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -48,7 +50,9 @@ const PostsPage = ({
 
   // Render Posts component with params prop
   return (
-    <Posts page={page || undefined} searchText={searchText || undefined} />
+    <Suspense fallback={<AdminLoading />}>
+      <Posts page={page || undefined} searchText={searchText || undefined} />
+    </Suspense>
   );
 };
 

@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import ProductDetail from "@/components/dashboard/product/product-detail";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Product = async ({ id }: { id: number }) => {
   //get access token form cookie
@@ -40,9 +42,9 @@ const Product = async ({ id }: { id: number }) => {
 const ProductDetailPage = ({ params }: { params: { id: number } }) => {
   const { id } = params;
   return (
-    <>
+    <Suspense fallback={<AdminLoading />}>
       <Product id={id} />
-    </>
+    </Suspense>
   );
 };
 export default ProductDetailPage;

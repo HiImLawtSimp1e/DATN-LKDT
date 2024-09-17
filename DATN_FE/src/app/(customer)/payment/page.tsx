@@ -1,5 +1,7 @@
+import Loading from "@/components/shop/loading";
 import PaymentCart from "@/components/shop/payment/payment-cart";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Payment = async () => {
   const cookieStore = nextCookies();
@@ -31,7 +33,11 @@ const Payment = async () => {
 };
 
 const ShoppingCartPage = () => {
-  return <Payment />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Payment />
+    </Suspense>
+  );
 };
 
 export default ShoppingCartPage;

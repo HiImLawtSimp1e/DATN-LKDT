@@ -1,4 +1,6 @@
+import AdminLoading from "@/components/dashboard/loading";
 import UpdateProductImageForm from "@/components/dashboard/product-image/update-image-form";
+import { Suspense } from "react";
 
 interface IProps {
   productId: string;
@@ -32,6 +34,10 @@ const ProductImageDetailPage = ({
 }) => {
   const { productId } = searchParams;
   const { id } = params;
-  return <ProductImage productId={productId} id={id} />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <ProductImage productId={productId} id={id} />
+    </Suspense>
+  );
 };
 export default ProductImageDetailPage;

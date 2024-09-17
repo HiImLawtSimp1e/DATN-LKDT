@@ -1,4 +1,6 @@
+import AdminLoading from "@/components/dashboard/loading";
 import UpdateVariantForm from "@/components/dashboard/variant/update-variant-form";
+import { Suspense } from "react";
 
 interface IProps {
   productId: string;
@@ -30,7 +32,11 @@ const UpdateVariantPage = ({
 }) => {
   const { productId } = searchParams;
   const { id } = params;
-  return <Variant productId={productId} productTypeId={id} />;
+  return (
+    <Suspense fallback={<AdminLoading />}>
+      <Variant productId={productId} productTypeId={id} />
+    </Suspense>
+  );
 };
 
 export default UpdateVariantPage;

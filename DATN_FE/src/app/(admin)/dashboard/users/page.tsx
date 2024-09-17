@@ -1,5 +1,7 @@
+import AdminLoading from "@/components/dashboard/loading";
 import UserList from "@/components/dashboard/user/user-list";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -49,7 +51,9 @@ const UsersPage = async ({
 
   // Render Users component with params prop
   return (
-    <Users page={page || undefined} searchText={searchText || undefined} />
+    <Suspense fallback={<AdminLoading />}>
+      <Users page={page || undefined} searchText={searchText || undefined} />
+    </Suspense>
   );
 };
 

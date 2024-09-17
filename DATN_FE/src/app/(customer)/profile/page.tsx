@@ -1,5 +1,7 @@
+import Loading from "@/components/shop/loading";
 import UserProfile from "@/components/shop/profile/user-profile";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 const Profile = async () => {
   const cookieStore = nextCookies();
@@ -28,7 +30,11 @@ const Profile = async () => {
 };
 
 const ProfilePage = () => {
-  return <Profile />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Profile />
+    </Suspense>
+  );
 };
 
 export default ProfilePage;

@@ -1,5 +1,7 @@
 import ProvisionOrderList from "@/components/dashboard/counter-sales/provision-order-list";
+import AdminLoading from "@/components/dashboard/loading";
 import { cookies as nextCookies } from "next/headers";
+import { Suspense } from "react";
 
 interface IProps {
   page?: number;
@@ -54,10 +56,12 @@ const ProvisionOrdersPage = ({
 
   // Render Orders component with params prop
   return (
-    <ProvisionOrders
-      page={page || undefined}
-      searchText={searchText || undefined}
-    />
+    <Suspense fallback={<AdminLoading />}>
+      <ProvisionOrders
+        page={page || undefined}
+        searchText={searchText || undefined}
+      />
+    </Suspense>
   );
 };
 
