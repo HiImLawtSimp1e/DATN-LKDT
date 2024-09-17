@@ -146,9 +146,11 @@ const OrderList = ({ orders, pages, currentPage, orderState }: IProps) => {
                   <td className="px-4 py-2">{order.createdBy}</td>
                   <td className="px-4 py-2">{order.modifiedBy}</td>
                   <td className="px-4 py-2">
-                    {formatPrice(
-                      order.totalPrice - order.discountValue + 30000
-                    )}
+                    {order.isCounterOrder
+                      ? formatPrice(order.totalPrice - order.discountValue)
+                      : formatPrice(
+                          order.totalPrice - order.discountValue + 30000
+                        )}
                   </td>
                   <td className="px-4 py-2">
                     <Link href={`/dashboard/orders/${order.id}`}>

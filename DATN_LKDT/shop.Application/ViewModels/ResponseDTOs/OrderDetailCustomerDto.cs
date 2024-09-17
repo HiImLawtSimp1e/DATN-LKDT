@@ -19,5 +19,6 @@ namespace shop.Application.ViewModels.ResponseDTOs
         public int DiscountValue { get; set; } = 0;
         public OrderState State { get; set; }
         public DateTime OrderCreatedAt { get; set; }
+        public bool IsCounterOrder { get; set; }
     }
 }

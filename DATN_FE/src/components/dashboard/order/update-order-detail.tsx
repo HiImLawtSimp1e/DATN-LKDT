@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface IProps {
-  orderId: string;
+  orderDetail: IOrderDetail;
   orderState: string;
 }
 
-const UpdateOrderDetail = ({ orderId, orderState }: IProps) => {
+const UpdateOrderDetail = ({ orderDetail, orderState }: IProps) => {
   //using for Update Order State action
   const router = useRouter();
 
@@ -41,7 +41,8 @@ const UpdateOrderDetail = ({ orderId, orderState }: IProps) => {
 
   const isUpdate =
     mapOrderState(Number(orderState)) !== "Hủy bỏ" &&
-    mapOrderState(Number(orderState)) !== "Thành công";
+    mapOrderState(Number(orderState)) !== "Thành công" &&
+    !orderDetail.isCounterOrder;
 
   useEffect(() => {
     if (formState.errors.length > 0 && !toastDisplayed) {
@@ -57,7 +58,7 @@ const UpdateOrderDetail = ({ orderId, orderState }: IProps) => {
     <div className="mt-12">
       {isUpdate ? (
         <form onSubmit={handleSubmit} className="px-4 w-full">
-          <input type="hidden" value={orderId} name="id" />
+          <input type="hidden" value={orderDetail.id} name="id" />
           <label
             htmlFor="state"
             className="block mb-2 text-sm font-medium text-white"

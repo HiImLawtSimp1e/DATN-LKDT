@@ -164,7 +164,8 @@ namespace shop.Application.Services
                 PaymentMethodName = order.PaymentMethod.Name,
                 DiscountValue = order.DiscountValue,
                 OrderCreatedAt = order.CreatedAt,
-                State = order.State
+                State = order.State,
+                IsCounterOrder = order.IsCounterOrder,
             };
 
             return new ApiResponse<OrderDetailCustomerDto>

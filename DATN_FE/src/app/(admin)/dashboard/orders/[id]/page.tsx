@@ -48,7 +48,10 @@ const Order = async ({ id }: { id: string }) => {
         orderDetail={orderDetail.data}
         orderItems={orderItems.data}
       />
-      <UpdateOrderDetail orderId={id} orderState={orderState.data} />
+      <UpdateOrderDetail
+        orderDetail={orderDetail.data}
+        orderState={orderState.data}
+      />
     </>
   );
 };

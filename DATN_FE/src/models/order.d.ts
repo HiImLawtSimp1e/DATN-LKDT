@@ -5,6 +5,7 @@ interface IOrder {
   originalPrice: number;
   discountValue: number;
   state: number;
+  isCounterOrder: boolean;
   createdAt: string;
   modifiedAt: string;
   createdBy: string;
@@ -33,4 +34,5 @@ interface IOrderDetail {
   discountValue: number;
   state: number;
   orderCreatedAt: string;
+  isCounterOrder: boolean;
 }

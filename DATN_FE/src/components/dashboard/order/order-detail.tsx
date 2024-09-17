@@ -1,3 +1,4 @@
+import { mapOrderState } from "@/lib/enums/OrderState";
 import { formatPrice, formatDate } from "@/lib/format/format";
 
 interface IProps {
@@ -21,6 +22,20 @@ const OrderDetail = ({ orderDetail, orderItems }: IProps) => {
     );
   };
 
+  const getOrderType = () => {
+    let result = orderDetail.isCounterOrder
+      ? "Đơn hàng tại quầy"
+      : "Đơn hàng online";
+
+    if (
+      orderDetail.isCounterOrder &&
+      mapOrderState(Number(orderDetail.state)) === "Đang chờ"
+    ) {
+      result += " (Tạm lưu)";
+    }
+    return result;
+  };
+
   return (
     <>
       <div className="shadow-lg rounded-lg overflow-hidden">
@@ -37,6 +52,9 @@ const OrderDetail = ({ orderDetail, orderItems }: IProps) => {
           <div className="mb-2 ml-auto text-lg text-gray-400">
             Phương thức thanh toán:{" "}
             <span className="text-white">{orderDetail.paymentMethodName}</span>
+          </div>
+          <div className="mb-2 ml-auto text-lg text-gray-400">
+            Loại đơn hàng: <span className="text-white">{getOrderType()}</span>
           </div>
         </div>
         <div className="px-6 py-4 border-t border-gray-200">
@@ -107,14 +125,18 @@ const OrderDetail = ({ orderDetail, orderItems }: IProps) => {
             </div>
           </div>
         )}
-        <div className="flex justify-end text-xl text-white pb-2 gap-4">
-          <div className="">Phí vận chuyển:</div>
-          <div className=" font-semibold">{formatPrice(30000)}</div>
-        </div>
+        {!orderDetail.isCounterOrder && (
+          <div className="flex justify-end text-xl text-white pb-2 gap-4">
+            <div className="">Phí vận chuyển:</div>
+            <div className=" font-semibold">{formatPrice(30000)}</div>
+          </div>
+        )}
         <div className="flex justify-end text-xl text-white gap-4">
           <div className="">Thanh toán:</div>
           <div className=" font-semibold">
-            {formatPrice(totalAmount - orderDetail.discountValue + 30000)}
+            {orderDetail.isCounterOrder
+              ? formatPrice(totalAmount - orderDetail.discountValue)
+              : formatPrice(totalAmount - orderDetail.discountValue + 30000)}
           </div>
         </div>
       </div>
