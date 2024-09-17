@@ -17,8 +17,12 @@ import {
   MdAirplaneTicket,
 } from "react-icons/md";
 import MenuLink from "./menu-link";
-import { ReactNode } from "react";
-import { setLogoutPublic } from "@/service/auth-service/auth-service";
+import { ReactNode, useEffect } from "react";
+import {
+  getAuthPublic,
+  setLogoutPublic,
+} from "@/service/auth-service/auth-service";
+import { useInfoStore } from "@/lib/store/useInfoStore";
 
 interface MenuCategory {
   title: string;
@@ -32,12 +36,22 @@ interface MenuItem {
 }
 
 const Sidebar = () => {
+  const { userInfo, getUserInfo } = useInfoStore();
+
+  const authToken = getAuthPublic();
+
   const handleLogout = () => {
     setLogoutPublic();
     if (typeof window !== "undefined") {
       window.location.reload();
     }
   };
+
+  useEffect(() => {
+    if (authToken) {
+      getUserInfo();
+    }
+  }, []);
 
   const menuItems: MenuCategory[] = [
     {
@@ -107,8 +121,8 @@ const Sidebar = () => {
           height="50"
         />
         <div className="flex flex-col">
-          <span className="font-medium">Lawther Nguyen</span>
-          <span className="text-xs text-gray-500">Administrator</span>
+          <span className="font-medium">{userInfo?.userName}</span>
+          <span className="text-xs text-gray-500">{userInfo?.roleName}</span>
         </div>
       </div>
       <ul className="list-none">

@@ -17,6 +17,17 @@ namespace shop.BackendApi.Controllers
         {
             _service = service;
         }
+        [Authorize]
+        [HttpGet("get-user-claims")]
+        public async Task<ActionResult<UserInfoResponseDto>> GetClaimsUserInfo()
+        {
+            var res = await _service.GetClaimsUserInfo();
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
         [HttpPost("register")]
         public async Task<ActionResult<ApiResponse<string>>> Register(RegisterDto req)
         {

@@ -15,7 +15,9 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<string>> AdminLogin(LoginDto loginDTO);
         Task<ApiResponse<bool>> ChangePassword(ChangePasswordDto changePasswordDto);
         Task<ApiResponse<string>> VerifyToken(string token);
+        Task<ApiResponse<UserInfoResponseDto>> GetClaimsUserInfo();
         Guid GetUserId();
         string GetUserName();
+        string GetRoleName();
     }
 }

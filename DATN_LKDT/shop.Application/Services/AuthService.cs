@@ -38,6 +38,23 @@ namespace shop.Application.Services
         public Guid GetUserId() => new Guid(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public string GetUserName() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+        public string GetRoleName() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
+        public async Task<ApiResponse<UserInfoResponseDto>> GetClaimsUserInfo()
+        {
+            var username = GetUserName();
+            var roleName = GetRoleName();
+
+            var result = new UserInfoResponseDto()
+            {
+                UserName = username,
+                RoleName = roleName,
+            };
+            return new ApiResponse<UserInfoResponseDto>()
+            {
+                Data = result
+            };
+        }
         #endregion GetTokenClaimsService
 
         #region AuthService
