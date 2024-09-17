@@ -2,7 +2,7 @@
 
 import { useSearchAddressStore } from "@/lib/store/useSearchAddressStore";
 import _ from "lodash";
-import { ChangeEvent, useCallback, useRef } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef } from "react";
 import { MdSearch } from "react-icons/md";
 import CounterSalesAddressForm from "./counter-sales-address-form";
 
@@ -10,6 +10,7 @@ const CounterSalesAddress = () => {
   const { addressList, getAddresses, setAddress, clearAddresses } =
     useSearchAddressStore();
   const inputRef = useRef<HTMLInputElement>(null);
+  const addressListRef = useRef<HTMLUListElement>(null);
 
   const clearInput = () => {
     clearAddresses();
@@ -36,6 +37,24 @@ const CounterSalesAddress = () => {
     clearInput();
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      addressListRef.current &&
+      !addressListRef.current.contains(event.target as Node) &&
+      inputRef.current &&
+      !inputRef.current.contains(event.target as Node)
+    ) {
+      clearAddresses();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="p-5 rounded-lg bg-gray-600">
       <div className="p-2 flex items-center gap-2 bg-gray-700 rounded-lg w-max">
@@ -51,7 +70,10 @@ const CounterSalesAddress = () => {
       </div>
       <div className="relative">
         {addressList?.length > 0 && (
-          <ul className="mt-2 absolute left-160 w-full shadow-md z-20">
+          <ul
+            ref={addressListRef}
+            className="mt-2 absolute left-160 w-full shadow-md z-20"
+          >
             {addressList.map((item: IAddress, index) => (
               <li
                 key={index}
