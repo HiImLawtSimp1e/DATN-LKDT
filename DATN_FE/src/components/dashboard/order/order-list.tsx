@@ -120,7 +120,7 @@ const OrderList = ({ orders, pages, currentPage, orderState }: IProps) => {
             <thead className="bg-gray-700 text-gray-400 uppercase">
               <tr>
                 <th className="px-4 py-2">#</th>
-                <th className="px-4 py-2">Mã hóa đơn</th>
+                <th className="px-4 py-2">Mã đơn hàng</th>
                 <th className="px-4 py-2">Trạng thái</th>
                 <th className="px-4 py-2">Ngày tạo</th>
                 <th className="px-4 py-2">Ngày sửa</th>

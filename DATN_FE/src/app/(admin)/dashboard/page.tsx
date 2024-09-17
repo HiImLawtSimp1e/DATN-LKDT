@@ -1,46 +1,60 @@
 "use client";
 
-import Card from "@/components/dashboard/card";
+import { useEffect, useState } from "react";
 import Chart from "@/components/dashboard/charts";
 import Transactions from "@/components/dashboard/transactions";
+import { getAuthPublic } from "@/service/auth-service/auth-service";
+import AdminLoading from "@/components/dashboard/loading";
+import AdminError from "@/components/dashboard/error";
 
 const DashboardPage = () => {
-  const cards = [
-    {
-      id: 1,
-      title: "Total Users",
-      number: 10.928,
-      change: 12,
-    },
-    {
-      id: 2,
-      title: "Stock",
-      number: 8.236,
-      change: -2,
-    },
-    {
-      id: 3,
-      title: "Revenue",
-      number: 6.642,
-      change: 18,
-    },
-    {
-      id: 4,
-      title: "Vendor",
-      number: 3.623,
-      change: 14,
-    },
-  ];
+  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = getAuthPublic();
+        const res = await fetch("http://localhost:5000/api/Order/admin", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm header Authorization
+          },
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+
+        const responseData: ApiResponse<PagingParams<IOrder[]>> =
+          await res.json();
+        const { data } = responseData;
+        const { result } = data;
+        setOrders(result);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  if (loading) {
+    return <AdminLoading />;
+  }
+  if (error) {
+    return <AdminError content={error} />;
+  }
   return (
     <div className="flex flex-col">
-      <div className="flex gap-6 rounded-md">
-        {cards.map((item) => (
-          <Card item={item} key={item.id} />
-        ))}
-      </div>
-      <Transactions />
+      <Transactions orders={orders} />
       <Chart />
     </div>
   );
 };
+
 export default DashboardPage;

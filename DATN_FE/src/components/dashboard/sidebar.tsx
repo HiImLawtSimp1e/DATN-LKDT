@@ -41,10 +41,10 @@ const Sidebar = () => {
 
   const menuItems: MenuCategory[] = [
     {
-      title: "Pages",
+      title: "Quản lý",
       list: [
         {
-          title: "Dashboard",
+          title: "Trang chủ",
           path: "/dashboard",
           icon: <MdDashboard />,
         },
@@ -92,26 +92,6 @@ const Sidebar = () => {
           title: "Bài viết",
           path: "/dashboard/posts",
           icon: <MdOutlinePostAdd />,
-        },
-      ],
-    },
-    {
-      title: "Analytics",
-      list: [
-        {
-          title: "Revenue",
-          path: "/dashboard/revenue",
-          icon: <MdWork />,
-        },
-        {
-          title: "Reports",
-          path: "/dashboard/reports",
-          icon: <MdAnalytics />,
-        },
-        {
-          title: "Teams",
-          path: "/dashboard/teams",
-          icon: <MdPeople />,
         },
       ],
     },
