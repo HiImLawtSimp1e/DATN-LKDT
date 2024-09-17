@@ -120,5 +120,38 @@ namespace shop.BackendApi.Controllers
             }
             return Ok(res);
         }
+        [HttpPost("provisional-order/{orderId}")]
+        public async Task<ActionResult<ApiResponse<bool>>> AddToCart(Guid orderId, OrderCounterItemDto newItem)
+        {
+            var response = await _service.AddToCart(orderId, newItem);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+        [HttpPut("provisional-order/{orderId}")]
+        public async Task<ActionResult<ApiResponse<bool>>> UpdateQuantity(Guid orderId, OrderCounterItemDto updateItem)
+        {
+            var response = await _service.UpdateQuantity(orderId, updateItem);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+        [HttpDelete("provisional-order/{orderId}")]
+        public async Task<ActionResult<ApiResponse<bool>>> RemoveFromCart(Guid orderId, Guid productId, Guid productTypeId)
+        {
+            var response = await _service.RemoveFromCart(orderId, productId, productTypeId);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }

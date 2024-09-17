@@ -1,5 +1,6 @@
 ﻿using AppBusiness.Model.Pagination;
 using shop.Application.Common;
+using shop.Application.ViewModels.RequestDTOs;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
 using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
@@ -26,6 +27,9 @@ namespace shop.Application.Interfaces
         Task<ApiResponse<Pagination<List<Order>>>> GetAdminProvisionalOrders(int page, double pageResults);
         public Task<ApiResponse<Pagination<List<Order>>>> SearchAdminProvisionalOrders(string searchText, int page, double pageResults);
         Task<ApiResponse<bool>> SaveProvisionalInvoice(SaveOrderCounterDto saveOrder);
+        Task<ApiResponse<bool>> AddToCart(Guid orderId, OrderCounterItemDto newItem);
+        Task<ApiResponse<bool>> UpdateQuantity(Guid orderId, OrderCounterItemDto updateItem);
+        Task<ApiResponse<bool>> RemoveFromCart(Guid orderId, Guid productId, Guid productTypeId);
         #endregion ProvisionalOrderService
     }
 }

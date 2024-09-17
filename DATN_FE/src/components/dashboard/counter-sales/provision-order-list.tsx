@@ -6,7 +6,7 @@ import Link from "next/link";
 import TagFiled from "@/components/ui/tag";
 import { mapCssTagField, mapOrderState } from "@/lib/enums/OrderState";
 import Search from "@/components/ui/search";
-import { MdAdd, MdRefresh } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import AdminNotFoundPage from "../not-found";
@@ -90,9 +90,7 @@ const ProvisionOrderList = ({ orders, pages, currentPage }: IProps) => {
                   <td className="px-4 py-2">{order.createdBy}</td>
                   <td className="px-4 py-2">{order.modifiedBy}</td>
                   <td className="px-4 py-2">
-                    {formatPrice(
-                      order.totalPrice - order.discountValue + 30000
-                    )}
+                    {formatPrice(order.totalPrice - order.discountValue)}
                   </td>
                   <td className="px-4 py-2">
                     <Link href={`/dashboard/orders/${order.id}`}>

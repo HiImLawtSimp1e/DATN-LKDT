@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.Style;
 using shop.Application.Common;
 using shop.Application.Interfaces;
+using shop.Application.ViewModels.RequestDTOs;
 using shop.Application.ViewModels.RequestDTOs.OrderCounterDto;
 using shop.Application.ViewModels.ResponseDTOs.CustomerResponseDto;
 using shop.Application.ViewModels.ResponseDTOs.OrderCounterDto;
@@ -136,9 +137,9 @@ namespace shop.Application.Services
             var products = await _context.Products
               .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
               && p.IsActive && !p.Deleted)
-              .Include(p => p.ProductVariants.Where(pv => !pv.Deleted))
+              .Include(p => p.ProductVariants.Where(pv => !pv.Deleted && pv.Quantity > 0))
               .ThenInclude(pv => pv.ProductType)
-            .Take(10)
+              .Take(10)
               .ToListAsync();
 
             if (products == null)
@@ -372,6 +373,210 @@ namespace shop.Application.Services
             };
         }
 
+        // Thêm sản phẩm vào đơn hàng tạm lưu
+
+        public async Task<ApiResponse<bool>> AddToCart(Guid orderId, OrderCounterItemDto newItem)
+        {
+            var order = await _context.Orders
+                                        .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if(order == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy đơn hàng"
+                };
+            }
+
+            if(!order.IsCounterOrder || order.State != OrderState.Pending)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Chỉ có thể thay đổi đơn hàng tạm lưu"
+                };
+            }
+
+            var variant = await _context.ProductVariants
+                                  .FirstOrDefaultAsync(v => v.ProductId == newItem.ProductId
+                                  && v.ProductTypeId == newItem.ProductTypeId
+                                  && v.IsActive && !v.Deleted);
+
+            if (variant == null) 
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Sản phẩm đã ngừng bán"
+                };
+            }
+
+            if (variant.Quantity <= 0)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Sản phẩm đã hết số lượng"
+                };
+            }
+
+            var orderItem = _mapper.Map<OrderItem>(newItem);
+            _context.OrderItems.Add(orderItem);
+
+            variant.Quantity -= newItem.Quantity;
+
+            await _context.SaveChangesAsync();
+
+            await UpdateTotalAmountProvisionalOrderAsync(orderId);
+
+            return new ApiResponse<bool>
+            {
+                Data = true,
+                Message = "Đã thêm sản phẩm vào đơn hàng"
+            };
+        }
+
+        // Thay đổi số lượng sản phẩm đơn hàng tạm lưu
+
+        public async Task<ApiResponse<bool>> UpdateQuantity(Guid orderId, OrderCounterItemDto updateItem)
+        {
+            var order = await _context.Orders
+                                       .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy đơn hàng"
+                };
+            }
+
+            if (!order.IsCounterOrder || order.State != OrderState.Pending)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Chỉ có thể thay đổi đơn hàng tạm lưu"
+                };
+            }
+
+            var variant = await _context.ProductVariants
+                                  .FirstOrDefaultAsync(v => v.ProductId == updateItem.ProductId
+                                  && v.ProductTypeId == updateItem.ProductTypeId
+                                  && v.IsActive && !v.Deleted);
+
+            if (variant == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Sản phẩm đã ngừng bán"
+                };
+            }
+
+            if (variant.Quantity <= 0)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Sản phẩm đã hết số lượng"
+                };
+            }
+
+            var orderItem = await _context.OrderItems
+                                    .FirstOrDefaultAsync(oi => oi.ProductId == updateItem.ProductId
+                                    && oi.ProductTypeId == updateItem.ProductTypeId
+                                    && oi.OrderId == orderId);
+
+            if(orderItem == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy sản phẩm trong đơn hàng"
+                };
+            }
+
+            orderItem.Quantity += updateItem.Quantity;
+            variant.Quantity -= updateItem.Quantity;
+
+            await _context.SaveChangesAsync();
+
+            await UpdateTotalAmountProvisionalOrderAsync(orderId);
+
+            return new ApiResponse<bool>
+            {
+                Data = true,
+                Message = "Đã thêm sản phẩm vào đơn hàng"
+            };
+        }
+
+        public async Task<ApiResponse<bool>> RemoveFromCart(Guid orderId, Guid productId, Guid productTypeId)
+        {
+            var order = await _context.Orders
+                                     .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy đơn hàng"
+                };
+            }
+
+            if (!order.IsCounterOrder || order.State != OrderState.Pending)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Chỉ có thể thay đổi đơn hàng tạm lưu"
+                };
+            }
+
+            var variant = await _context.ProductVariants
+                                  .FirstOrDefaultAsync(v => v.ProductId == productId
+                                  && v.ProductTypeId == productTypeId);
+
+            if (variant == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy sản phẩm"
+                };
+            }
+
+            var orderItem = await _context.OrderItems
+                                    .FirstOrDefaultAsync(oi => oi.ProductId == productId
+                                    && oi.ProductTypeId == productTypeId
+                                    && oi.OrderId == orderId);
+
+            if (orderItem == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy sản phẩm trong đơn hàng"
+                };
+            }
+
+            variant.Quantity += orderItem.Quantity;
+            _context.OrderItems.RemoveRange(orderItem);
+
+            await _context.SaveChangesAsync();
+
+            await UpdateTotalAmountProvisionalOrderAsync(orderId);
+
+            return new ApiResponse<bool>
+            {
+                Data = true,
+                Message = "Đã xóa sản phẩm khỏi đơn hàng"
+            };
+        }
+
         #endregion ProvisionalOrder
 
         private string GenerateInvoiceCode()
@@ -416,6 +621,31 @@ namespace shop.Application.Services
                                 .Where(o => o.InvoiceCode.ToLower().Contains(searchText.ToLower())
                                 && o.IsCounterOrder && o.State == OrderState.Pending)
                                 .ToListAsync();
+        }
+
+        private async Task<bool> UpdateTotalAmountProvisionalOrderAsync(Guid orderId)
+        {
+            var order = await _context.Orders
+                                  .Include(o => o.OrderItems) 
+                                  .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if(order == null)
+            {
+                return false;
+            }
+
+            var totalAmount = 0;
+
+            if(order.OrderItems != null)
+            {
+                order.OrderItems.ForEach(oi => totalAmount += oi.Price * oi.Quantity);
+            }
+
+            order.TotalPrice = totalAmount;
+            order.TotalAmount = totalAmount;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

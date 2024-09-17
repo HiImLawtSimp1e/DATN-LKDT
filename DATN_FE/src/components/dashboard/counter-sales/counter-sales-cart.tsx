@@ -280,14 +280,14 @@ const CounterSaleCart = () => {
                   <p className="text-sm text-gray-300">đã bao gồm VAT</p>
                 </div>
               </div>
-              <form onSubmit={handleSaveSubmit}>
+              {/* <form onSubmit={handleSaveSubmit}>
                 <button
                   type="submit"
                   className="mt-6 w-full rounded-md bg-yellow-500 text-2xl py-4 font-medium text-blue-50 md:text-lg md:py-2 hover:bg-yellow-600"
                 >
                   {isLoading ? "Đang xử lý..." : "Tạm lưu đơn hàng"}
                 </button>
-              </form>
+              </form> */}
               <form onSubmit={handleSubmit}>
                 <button
                   type="submit"
