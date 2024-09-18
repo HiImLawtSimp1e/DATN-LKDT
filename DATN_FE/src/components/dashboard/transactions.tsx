@@ -2,7 +2,7 @@ import Image from "next/image";
 import TagFiled from "../ui/tag";
 import AdminNotFoundPage from "./not-found";
 import { mapCssTagField, mapOrderState } from "@/lib/enums/OrderState";
-import { formatPrice } from "@/lib/format/format";
+import { formatDate, formatPrice } from "@/lib/format/format";
 import Link from "next/link";
 
 interface IProps {
@@ -53,7 +53,7 @@ const Transactions = ({ orders }: IProps) => {
                         context={mapOrderState(order.state)}
                       />
                     </td>
-                    <td className="px-6 py-4">{order.createdBy}</td>
+                    <td className="px-6 py-4">{formatDate(order.createdAt)}</td>
                     <td className="px-6 py-4">
                       {order.isCounterOrder
                         ? formatPrice(order.totalPrice - order.discountValue)

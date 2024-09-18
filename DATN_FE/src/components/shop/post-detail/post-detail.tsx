@@ -20,7 +20,7 @@ const ShopPostDetail = ({ post }: IProps) => {
           }}
         ></div>
         <Image
-          src={post.image}
+          src={post?.image || "/product.png"}
           layout="fill"
           objectFit="cover"
           className="z-0 rounded-xl"

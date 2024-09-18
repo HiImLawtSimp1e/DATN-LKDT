@@ -109,6 +109,16 @@ const Sidebar = () => {
         },
       ],
     },
+    {
+      title: "Thống Kê",
+      list: [
+        {
+          title: "Doanh thu",
+          path: "/dashboard/analytics",
+          icon: <MdAnalytics />,
+        },
+      ],
+    },
   ];
   return (
     <div className="sticky top-10">
