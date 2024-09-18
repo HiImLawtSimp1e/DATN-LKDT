@@ -12,7 +12,7 @@ using static System.Net.WebRequestMethods;
 
 namespace shop.Infrastructure.Initialization
 {
-  public class Seeding
+    public class Seeding
     {
         public static void SeedingAccount(ModelBuilder modelBuilder)
         {
@@ -71,6 +71,86 @@ namespace shop.Infrastructure.Initialization
                        PasswordHash = passwordHash3,
                        PasswordSalt = passwordSalt3,
                        RoleId = new Guid("5b3a05b0-c011-4593-abd1-cb2e486f8e43")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("a3339dd7-94b9-4f12-9d18-2ee341b4f35c"),
+                       Username = "nguyenvanminh@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("6060ab5a-ca8b-409c-87b2-363a69f06e66"),
+                       Username = "lethimai@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("0e5c838e-f387-4183-a1c1-4c1e802ab180"),
+                       Username = "tranlan@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("ae4c4f03-aa8a-4f37-a7cb-c5bc06e08d74"),
+                       Username = "nguyenan@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("463d52ee-4c4e-40b0-a8f3-e59086878964"),
+                       Username = "phantuyet@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("80cd99a5-f3e4-43f6-a725-f4e07fa7cd7d"),
+                       Username = "vuvankhai@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   },
+                   new AccountEntity
+                   {
+                       Id = new Guid("c36aab76-f6cc-46f6-a6c3-730d54b61a48"),
+                       Username = "lehoanganh@example.com",
+                       PasswordHash = passwordHash4,
+                       PasswordSalt = passwordSalt4,
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639")
+                   }, 
+                   new AccountEntity
+                   {
+                       Id = new Guid("4b45812f-2f47-41b9-b913-39bed1b02c1d"),
+                       Username = "tranle@example.com", 
+                       PasswordHash = passwordHash4, 
+                       PasswordSalt = passwordSalt4, 
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639") 
+                   }, 
+                   new AccountEntity
+                   {
+                       Id = new Guid("3a9477da-b75c-4ef6-9bf6-a93aa5ffaf6f"),
+                       Username = "hoangmai@example.com", 
+                       PasswordHash = passwordHash4, 
+                       PasswordSalt = passwordSalt4, 
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639") 
+                   }, 
+                   new AccountEntity
+                   {
+                       Id = new Guid("d15fcb08-fcb1-4a55-b012-b2be211ed2c1"),
+                       Username = "lehoa@example.com", 
+                       PasswordHash = passwordHash4, 
+                       PasswordSalt = passwordSalt4, 
+                       RoleId = new Guid("9ebee0d5-323a-4052-af12-827a9e856639") 
                    }
                  );
 
@@ -144,7 +224,108 @@ namespace shop.Infrastructure.Initialization
                        PhoneNumber = "1234567892",
                        Address = "121 Đường Cầu Giấy ,Cầu Giấy, Hà Nội",
                        IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("a3339dd7-94b9-4f12-9d18-2ee341b4f35c"),
+                       Name = "Nguyễn Văn Minh",
+                       Email = "minhnguyen@example.com",
+                       PhoneNumber = "0987654321",
+                       Address = "456 Đường Nguyễn Trãi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh",
+                       IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("6060ab5a-ca8b-409c-87b2-363a69f06e66"),
+                       Name = "Lê Thị Mai",
+                       Email = "lethimai@example.com",
+                       PhoneNumber = "0912345679",
+                       Address = "789 Đường Lê Văn Sỹ, Phường 13, Quận 3, TP. Hồ Chí Minh",
+                       IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("0e5c838e-f387-4183-a1c1-4c1e802ab180"),
+                       Name = "Trần Thị Lan",
+                       Email = "tranlan@example.com",
+                       PhoneNumber = "0908765432",
+                       Address = "123 Đường Lê Lai, Phường Phú Hòa, TP. Thủ Dầu Một, Bình Dương",
+                       IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("ae4c4f03-aa8a-4f37-a7cb-c5bc06e08d74"),
+                       Name = "Nguyễn Thị An",
+                       Email = "nguyenan@example.com",
+                       PhoneNumber = "0976543210",
+                       Address = "456 Đường Nguyễn Thái Học, Phường 10, TP. Cần Thơ",
+                       IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("463d52ee-4c4e-40b0-a8f3-e59086878964"),
+                       Name = "Phan Thị Tuyết",
+                       Email = "phantuyet@example.com",
+                       PhoneNumber = "0901234567",
+                       Address = "789 Đường Võ Văn Tần, Phường 5, Quận 3, TP. Hồ Chí Minh",
+                       IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("80cd99a5-f3e4-43f6-a725-f4e07fa7cd7d"),
+                       Name = "Vũ Văn Khải",
+                       Email = "vuvankhai@example.com",
+                       PhoneNumber = "0912345678",
+                       Address = "123 Đường Trường Chinh, Phường 14, Quận Tân Bình, TP. Hồ Chí Minh",
+                       IsMain = true
+                   },
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("c36aab76-f6cc-46f6-a6c3-730d54b61a48"),
+                       Name = "Lê Hoàng Anh",
+                       Email = "lehoanganh@example.com",
+                       PhoneNumber = "0923456789",
+                       Address = "234 Đường Hà Huy Tập, Phường Đông Vệ, TP. Thanh Hóa",
+                       IsMain = true
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(),
+                       AccountId = new Guid("4b45812f-2f47-41b9-b913-39bed1b02c1d"),
+                       Name = "Trần Thị Lệ",
+                       Email = "tranle@example.com",
+                       PhoneNumber = "0987654321",
+                       Address = "123 Đường Nguyễn Văn Linh, Phường Tân Hưng, Quận 7, TP. Hồ Chí Minh",
+                       IsMain = true
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(), 
+                       AccountId = new Guid("3a9477da-b75c-4ef6-9bf6-a93aa5ffaf6f"),
+                       Name = "Hoàng Thị Mai",
+                       Email = "hoangmai@example.com",
+                       PhoneNumber = "0976543210",
+                       Address = "456 Đường Phan Chu Trinh, Phường 5, TP. Đà Nẵng",
+                       IsMain = true
+                   }, 
+                   new AddressEntity
+                   {
+                       Id = Guid.NewGuid(), 
+                       AccountId = new Guid("d15fcb08-fcb1-4a55-b012-b2be211ed2c1"),
+                       Name = "Lê Thị Hòa",
+                       Email = "lehoa@example.com",
+                       PhoneNumber = "0934567890",
+                       Address = "789 Đường Lý Thường Kiệt, Phường Bắc Lý, TP. Quảng Bình",
+                       IsMain = true
                    }
+
                  );
         }
 
@@ -727,7 +908,7 @@ namespace shop.Infrastructure.Initialization
                       SeoTitle = "Hướng dẫn chọn mua linh kiện điện tử - Mẹo cho người mới bắt đầu",
                       SeoDescription = "Hướng dẫn chi tiết cách chọn mua linh kiện điện tử phù hợp cho người mới bắt đầu.",
                       SeoKeyworks = "chọn mua linh kiện điện tử, hướng dẫn chọn linh kiện, linh kiện điện tử"
-                  }, 
+                  },
                   new BlogEntity
                   {
                       Id = Guid.NewGuid(),
@@ -739,7 +920,7 @@ namespace shop.Infrastructure.Initialization
                       SeoTitle = "10 ứng dụng phổ biến của PLC trong công nghiệp - Tự động hóa công nghiệp",
                       SeoDescription = "Khám phá 10 ứng dụng phổ biến của PLC trong các hệ thống công nghiệp hiện đại.",
                       SeoKeyworks = "PLC, ứng dụng PLC, tự động hóa công nghiệp"
-                  }, 
+                  },
                   new BlogEntity
                   {
                       Id = Guid.NewGuid(),
