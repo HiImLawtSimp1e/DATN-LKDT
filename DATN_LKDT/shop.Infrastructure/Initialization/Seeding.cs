@@ -306,7 +306,10 @@ namespace shop.Infrastructure.Initialization
                 Slug = "kit-arduino-mega2560",
                 Description = "Tính năng: Nhiều chân I/O(54 chân Digital I/O và 16 chân Analog Input), Bộ nhớ lớn(256 KB bộ nhớ Flash, 8 KB SRAM và 4 KB EEPROM), Hỗ trợ PWM & cổng USB",
                 ImageUrl = "https://i.pinimg.com/564x/28/3d/b1/283db15665e274cb4e6d83741238e2ae.jpg",
-                CategoryId = new Guid("a186203e-0d11-4c22-a45e-58ecfeed368f")
+                CategoryId = new Guid("a186203e-0d11-4c22-a45e-58ecfeed368f"),
+                SeoTitle = "KIT Arduino Mega2560",
+                SeoKeyworks = "KIT Arduino Mega2560",
+                SeoDescription = "Tính năng: Nhiều chân I/O(54 chân Digital I/O và 16 chân Analog Input)"
             },
             new Product
             {
@@ -315,7 +318,10 @@ namespace shop.Infrastructure.Initialization
                 Slug = "kit-arduino-uno-r3",
                 Description = "Tính năng: Tương thích với nhiều loại shield (bảng mở rộng) và phụ kiện, Đa dạng chân I/O( với 14 chân Digital I/O (bao gồm 6 chân PWM) và 6 chân Analog Input), 32KB bộ nhớ Flash, 2 KB SRAM và 1 KB EEPROM",
                 ImageUrl = "https://i.pinimg.com/564x/19/3a/65/193a65211060c29ffbddac99ea01ac59.jpg",
-                CategoryId = new Guid("a186203e-0d11-4c22-a45e-58ecfeed368f")
+                CategoryId = new Guid("a186203e-0d11-4c22-a45e-58ecfeed368f"),
+                SeoTitle = "Kit Arduino UNO R3",
+                SeoKeyworks = "Kit Arduino UNO R3",
+                SeoDescription = "Tính năng: Tương thích với nhiều loại shield (bảng mở rộng) và phụ kiện"
             },
             new Product
             {
@@ -324,16 +330,22 @@ namespace shop.Infrastructure.Initialization
                 Slug = "kit-arduino-wifi-esp-32",
                 Description = "Tính năng: Hỗ trợ Wi-Fi 802.11 b/g/n và Bluetooth v4.2, Hiệu suất cao( với bộ xử lý dual-core 32-bit Xtensa LX6, hoạt động ở tần số lên đến 240 MH), Bộ nhớ lớn( với 520 KB SRAM và tùy chọn bộ nhớ Flash từ 4MB trở lên)",
                 ImageUrl = "https://i.pinimg.com/564x/47/68/73/476873b27d117bb46f76f1bb50b73499.jpg",
-                CategoryId = new Guid("a186203e-0d11-4c22-a45e-58ecfeed368f")
+                CategoryId = new Guid("a186203e-0d11-4c22-a45e-58ecfeed368f"),
+                SeoTitle = "Kit Arduino WiFi ESP-32",
+                SeoKeyworks = "Kit Arduino WiFi ESP-32",
+                SeoDescription = "Tính năng: Hỗ trợ Wi-Fi 802.11 b/g/n và Bluetooth v4.2, Hiệu suất cao( với bộ xử lý dual-core 32-bit Xtensa LX6, hoạt động ở tần số lên đến 240 MH)"
             },
             new Product
             {
                 Id = new Guid("4f5c260c-0870-4940-a394-b20c56b3fcca"),
                 CategoryId = new Guid("2c8eb836-090b-4a18-a869-620d7f527180"),
-                Title = "“Bộ Trạm Hàn Makita C11",
+                Title = "Bộ Trạm Hàn Makita C11",
                 Slug = "bo-tram-han-makita-c11",
                 Description = "Tính năng: Tốc độ gia nhiệt nhanh, chế độ ngủ tự động, thiết kế chống tĩnh điện và bảo vệ quá nhiệt.",
                 ImageUrl = "https://i.pinimg.com/564x/22/db/f1/22dbf1e839f495516eba3842d35c7948.jpg",
+                SeoTitle = "Bộ Trạm Hàn Makita C11",
+                SeoKeyworks = "Bộ Trạm Hàn Makita C11",
+                SeoDescription = "Tính năng: Tốc độ gia nhiệt nhanh, chế độ ngủ tự động, thiết kế chống tĩnh điện và bảo vệ quá nhiệt."
             },
             new Product
             {
@@ -343,6 +355,9 @@ namespace shop.Infrastructure.Initialization
                 Slug = "tay-han-dieu-chinh-tq936-80w-200v",
                 Description = "Tính năng: Tốc độ gia nhiệt nhanh, chế độ ngủ tự động, thiết kế chống tĩnh điện và bảo vệ quá nhiệt.",
                 ImageUrl = "https://i.pinimg.com/564x/2e/33/32/2e333249cee6e7f57006ce9aec123f60.jpg",
+                SeoTitle = "Tay Hàn Điều Chỉnh TQ936 80W 200V",
+                SeoKeyworks = "Tay Hàn Điều Chỉnh TQ936 80W 200V",
+                SeoDescription = "Tính năng: Tốc độ gia nhiệt nhanh, chế độ ngủ tự động, thiết kế chống tĩnh điện và bảo vệ quá nhiệt."
             },
             new Product
             {
@@ -352,6 +367,9 @@ namespace shop.Infrastructure.Initialization
                 Slug = "bo-tay-han-908s-80w-220v",
                 Description = "Tính năng: Tốc độ gia nhiệt nhanh, chế độ ngủ tự động, thiết kế chống tĩnh điện và bảo vệ quá nhiệt.",
                 ImageUrl = "https://i.pinimg.com/564x/8c/6f/f3/8c6ff345b262a30473228755be595429.jpg",
+                SeoTitle = "Bộ Tay Hàn 908S-80W 220V",
+                SeoKeyworks = "Bộ Tay Hàn 908S-80W 220V",
+                SeoDescription = "Tính năng: Tốc độ gia nhiệt nhanh, chế độ ngủ tự động, thiết kế chống tĩnh điện và bảo vệ quá nhiệt."
 
             },
             new Product
@@ -362,6 +380,9 @@ namespace shop.Infrastructure.Initialization
                 Slug = "cam-bien-hien-dien-hlk",
                 Description = "Tính năng: Phát hiện chuyển động của con người hoặc vật thể trong phạm vi cảm biến. Dễ dàng tích hợp vào các hệ thống điện tử và nhà thông minh",
                 ImageUrl = "https://i.pinimg.com/564x/d1/60/83/d16083b9db71c03e103d78f9e9d215eb.jpg",
+                SeoTitle = "Cảm Biến Hiện Diện HLK",
+                SeoKeyworks = "Cảm Biến Hiện Diện HLK",
+                SeoDescription = "Tính năng: Phát hiện chuyển động của con người hoặc vật thể trong phạm vi cảm biến. Dễ dàng tích hợp vào các hệ thống điện tử và nhà thông minh"
 
             },
             new Product
@@ -372,6 +393,9 @@ namespace shop.Infrastructure.Initialization
                 Slug = "cam-bien-rung-hdx",
                 Description = "Tính năng: Giám sát độ rung, sử dụng để đảm bảo an toàn và ổn định cho các thiết bị hoặc công trình quan trọng",
                 ImageUrl = "https://i.pinimg.com/564x/ec/3c/d4/ec3cd4cbb811deebd3db2fbbb67fd932.jpg",
+                SeoTitle = "Cảm Biến Rung HDX",
+                SeoKeyworks = "Cảm Biến Rung HDX",
+                SeoDescription = "Tính năng: Giám sát độ rung, sử dụng để đảm bảo an toàn và ổn định cho các thiết bị hoặc công trình quan trọng"
             },
             new Product
             {
@@ -380,7 +404,10 @@ namespace shop.Infrastructure.Initialization
                 Title = "Cảm Biến Siêu Âm SRF",
                 Slug = "cam-bien-sieu-am-srf",
                 Description = "Dùng để đo khoảng cách đến các vật thể mà không cần tiếp xúc. Có thể sử dụng để theo dõi vị trí của các vật thể hoặc robot di động hoặc được tích hợp vào các robot để phát hiện và tránh vật cản khi di chuyển",
-                ImageUrl = "https://i.pinimg.com/564x/f6/38/09/f63809ff0bb62c49c6f11e3cd89cc16a.jpg"
+                ImageUrl = "https://i.pinimg.com/564x/f6/38/09/f63809ff0bb62c49c6f11e3cd89cc16a.jpg",
+                SeoTitle = "Cảm Biến Siêu Âm SRF",
+                SeoKeyworks = "Cảm Biến Siêu Âm SRF",
+                SeoDescription = "Dùng để đo khoảng cách đến các vật thể mà không cần tiếp xúc."
             }
         );
 
