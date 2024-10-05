@@ -25,7 +25,7 @@ const Navbar = () => {
             <Link href="/">Trang chủ</Link>
             <Link href="/product">Sản phẩm</Link>
             <Link href="/post">Bài viết</Link>
-            <Link href="/">Giới thiệu</Link>
+            <Link href="/about-us">Giới thiệu</Link>
           </div>
         </div>
         {/* RIGHT */}

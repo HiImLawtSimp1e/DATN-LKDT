@@ -23,8 +23,7 @@ const Menu = () => {
             <Link href="/">Trang chủ</Link>
             <Link href="/shop">Sản phẩm</Link>
             <Link href="/post">Tin tức</Link>
-            <Link href="/">Giới thiệu</Link>
-            <Link href="/">Đăng xuất</Link>
+            <Link href="/about-us">Giới thiệu</Link>
             <Link href="/">Giỏ hàng (1)</Link>
           </div>
         </div>
