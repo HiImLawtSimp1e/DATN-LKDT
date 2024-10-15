@@ -1,5 +1,6 @@
 import AdminLoading from "@/components/dashboard/loading";
 import AddProductAttributeValueForm from "@/components/dashboard/product-attribute-value/add-product-attribute-value-form";
+import { cookies as nextCookies } from "next/headers";
 import { Suspense } from "react";
 
 interface IProps {
@@ -7,10 +8,17 @@ interface IProps {
 }
 
 const ProductValue = async ({ productId }: IProps) => {
+  //get access token form cookie
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("authToken")?.value || "";
+
   const attributeSelectRes = await fetch(
     `http://localhost:5000/api/ProductAttribute/select/${productId}`,
     {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // header Authorization
+      },
       next: { tags: ["selectProductAttribute"] },
     }
   );
